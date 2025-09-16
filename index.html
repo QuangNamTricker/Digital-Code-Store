@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Tools and Code Store - Cửa hàng công cụ và mã nguồn số</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-code"></i>
+                    <h1>Digital Code Store</h1>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="#">Trang chủ</a></li>
+                        <li><a href="#">Sản phẩm</a></li>
+                        <li><a href="#">Dịch vụ</a></li>
+                        <li><a href="#">Về chúng tôi</a></li>
+                        <li><a href="#">Liên hệ</a></li>
+                    </ul>
+                </nav>
+                <div class="auth-buttons">
+                    <button class="btn btn-outline" onclick="window.location.href='../login/index.html'">
+                        <i class="fas fa-sign-in-alt"></i> Đăng nhập
+                    </button>
+                    <button class="btn btn-primary" onclick="window.location.href='../login/index.html#register'">
+                        <i class="fas fa-user-plus"></i> Đăng ký
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h2>Digital Tools and Code Store</h2>
+                <p>Nền tảng mua bán công cụ, mã nguồn và dịch vụ Facebook hàng đầu. Khám phá các giải pháp công nghệ giúp bạn phát triển kinh doanh và dự án cá nhân.</p>
+                <div class="hero-buttons">
+                    <button class="btn btn-primary" onclick="window.location.href='#products'">
+                        <i class="fas fa-shopping-cart"></i> Mua ngay
+                    </button>
+                    <button class="btn btn-outline" onclick="window.location.href='#features'">
+                        <i class="fas fa-info-circle"></i> Tìm hiểu thêm
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <div class="section-title">
+                <h2>Tại sao chọn chúng tôi?</h2>
+                <p>Digital Tools and Code Store mang đến cho bạn những trải nghiệm mua sắm công nghệ tuyệt vời nhất</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Bảo mật tuyệt đối</h3>
+                    <p>Tất cả giao dịch và thông tin khách hàng được mã hóa và bảo vệ an toàn</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3>Giao hàng nhanh chóng</h3>
+                    <p>Nhận sản phẩm ngay lập tức после thanh toán thành công</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <h3>Hỗ trợ 24/7</h3>
+                    <p>Đội ngũ hỗ trợ luôn sẵn sàng giải đáp mọi thắc mắc của bạn</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script src="script.js" defer></script>
+    <!-- Products Section -->
+    <section class="products" id="products">
+        <div class="container">
+            <div class="section-title">
+                <h2>Sản phẩm nổi bật</h2>
+                <p>Khám phá các công cụ, mã nguồn và dịch vụ Facebook được ưa chuộng nhất</p>
+            </div>
+            <div class="products-grid" id="products-container">
+                <!-- Sản phẩm sẽ được tải động từ Firebase -->
+                <p class="loading-text">Đang tải sản phẩm...</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>Về chúng tôi</h3>
+                    <p>Digital Tools and Code Store là nền tảng cung cấp công cụ, mã nguồn và dịch vụ Facebook chất lượng cao với hơn 5 năm kinh nghiệm.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Danh mục sản phẩm</h3>
+                    <ul>
+                        <li><a href="#">Công cụ Facebook</a></li>
+                        <li><a href="#">Mã nguồn Website</a></li>
+                        <li><a href="#">Dịch vụ Marketing</a></li>
+                        <li><a href="#">Tài liệu hướng dẫn</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Thông tin liên hệ</h3>
+                    <ul>
+                        <li><i class="fas fa-map-marker-alt"></i> 123 Đường Digital, Quận 1, TP.HCM</li>
+                        <li><i class="fas fa-phone"></i> (028) 3456 7890</li>
+                        <li><i class="fas fa-envelope"></i> support@digitalcodestore.com</li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Chính sách</h3>
+                    <ul>
+                        <li><a href="#">Chính sách bảo mật</a></li>
+                        <li><a href="#">Điều khoản sử dụng</a></li>
+                        <li><a href="#">Chính sách hoàn tiền</a></li>
+                        <li><a href="#">Phương thức thanh toán</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 Digital Tools and Code Store. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Firebase App (core functionality) -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <!-- Firebase Authentication -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <!-- Firebase Firestore -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="index.html" ></script>
+    
+</body>
+</html>
