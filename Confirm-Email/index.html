@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tool Tạo Link Facebook</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #1877f2;
+      --primary-hover: #145bc1;
+      --secondary: #6c757d;
+      --secondary-hover: #5a6268;
+      --success: #28a745;
+      --success-hover: #218838;
+      --danger: #dc3545;
+      --danger-hover: #c82333;
+      --dark: #343a40;
+      --light: #f8f9fa;
+      --gray: #f0f2f5;
+      --border-radius: 10px;
+      --box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      --transition: all 0.3s ease;
+    }
+
+    * { 
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: var(--gray);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      animation: fadeIn 0.6s ease-in-out;
+      color: #333;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      width: 90%;
+      max-width: 420px;
+      text-align: center;
+      animation: fadeIn 0.6s ease-in-out;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(to right, var(--primary), var(--success));
+    }
+
+    .logo {
+      margin-bottom: 15px;
+      color: var(--primary);
+      font-size: 28px;
+    }
+
+    h2 {
+      font-size: 20px;
+      margin-bottom: 20px;
+      color: var(--dark);
+      font-weight: 600;
+    }
+
+    .input-group {
+      position: relative;
+      margin-bottom: 20px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px 15px;
+      border-radius: var(--border-radius);
+      border: 1px solid #ddd;
+      font-size: 15px;
+      transition: var(--transition);
+    }
+
+    input:focus {
+      border-color: var(--primary);
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(24, 119, 242, 0.2);
+    }
+
+    .input-icon {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #aaa;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 16px;
+      transition: var(--transition);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+    }
+
+    button:hover {
+      background: var(--primary-hover);
+      transform: translateY(-2px);
+    }
+
+    .btn-success {
+      background: var(--success);
+    }
+
+    .btn-success:hover {
+      background: var(--success-hover);
+    }
+
+    .btn-secondary {
+      background: var(--secondary);
+    }
+
+    .btn-secondary:hover {
+      background: var(--secondary-hover);
+    }
+
+    .btn-danger {
+      background: var(--danger);
+    }
+
+    .btn-danger:hover {
+      background: var(--danger-hover);
+    }
+
+    .btn-sm {
+      padding: 8px 12px;
+      font-size: 14px;
+    }
+
+    .buttons-row {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .extra-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 12px;
+      padding: 12px;
+      background: var(--secondary);
+      color: white;
+      text-decoration: none;
+      border: none;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      font-weight: 600;
+      text-align: center;
+      transition: var(--transition);
+    }
+
+    .extra-btn:hover {
+      background: var(--secondary-hover);
+      transform: translateY(-2px);
+    }
+
+    .link-box {
+      margin-top: 25px;
+      display: none;
+      animation: fadeIn 0.5s ease;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 80px;
+      padding: 12px;
+      font-size: 14px;
+      resize: vertical;
+      border: 1px dashed #ccc;
+      border-radius: var(--border-radius);
+      background: var(--light);
+      word-wrap: break-word;
+      white-space: pre-wrap;
+      margin-bottom: 12px;
+    }
+
+    .copy-btn {
+      background: var(--success);
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      font-weight: 600;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+    }
+
+    .copy-btn:hover {
+      background: var(--success-hover);
+    }
+
+    .history-panel {
+      margin-top: 25px;
+      text-align: left;
+      display: none;
+    }
+
+    .history-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .history-title {
+      font-weight: 600;
+      color: var(--dark);
+    }
+
+    .history-list {
+      max-height: 200px;
+      overflow-y: auto;
+      border: 1px solid #eee;
+      border-radius: var(--border-radius);
+      padding: 10px;
+    }
+
+    .history-item {
+      padding: 8px 10px;
+      border-bottom: 1px solid #eee;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .history-item:last-child {
+      border-bottom: none;
+    }
+
+    .history-email {
+      font-size: 14px;
+      color: var(--dark);
+    }
+
+    .history-actions {
+      display: flex;
+      gap: 5px;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--dark);
+      color: white;
+      padding: 12px 20px;
+      border-radius: 30px;
+      box-shadow: var(--box-shadow);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      z-index: 1000;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .toast.show {
+      opacity: 1;
+      animation: fadeIn 0.3s ease, pulse 0.5s ease;
+    }
+
+    .tabs {
+      display: flex;
+      margin-bottom: 20px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .tab {
+      flex: 1;
+      padding: 10px;
+      text-align: center;
+      cursor: pointer;
+      transition: var(--transition);
+      border-bottom: 3px solid transparent;
+    }
+
+    .tab.active {
+      border-bottom: 3px solid var(--primary);
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .counter {
+      margin-top: 15px;
+      font-size: 14px;
+      color: var(--secondary);
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        padding: 20px;
+        width: 95%;
+      }
+      
+      .buttons-row {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo">
+      <i class="fab fa-facebook"></i>
+    </div>
+    <h2>Get Link Confirm Email Facebook</h2>
+    
+    <div class="tabs">
+      <div class="tab active" onclick="switchTab('generator')">Tạo Link</div>
+      <div class="tab" onclick="switchTab('history')">Lịch sử</div>
+    </div>
+    
+    <div id="generator-tab" class="tab-content active">
+      <div class="input-group">
+        <input type="text" id="email" placeholder="admin@domain.com">
+        <span class="input-icon"><i class="fas fa-envelope"></i></span>
+      </div>
+      
+      <button onclick="generateLink()">
+        <i class="fas fa-link"></i> Tạo Link
+      </button>
+      
+      <div class="counter">
+        Đã tạo: <span id="counter">0</span> link
+      </div>
+
+      <a href="https://drive.google.com/drive/folders/16j6rmqPlqo5YYuFv_30ALUmzGl7WKx2m?usp=drive_link" class="extra-btn">
+        <i class="fas fa-download"></i> Tải bản Offline
+      </a>
+
+      <button class="extra-btn" onclick="watchVideo()">
+        <i class="fas fa-play-circle"></i> Xem Video Hướng Dẫn
+      </button>
+
+      <div class="link-box" id="result">
+        <textarea id="linkText" readonly></textarea>
+        <div class="buttons-row">
+          <button class="copy-btn" onclick="copyLink()">
+            <i class="fas fa-copy"></i> Copy
+          </button>
+          <button class="btn-secondary btn-sm" onclick="openLink()">
+            <i class="fas fa-external-link-alt"></i> Mở
+          </button>
+          <button class="btn-danger btn-sm" onclick="clearLink()">
+            <i class="fas fa-times"></i> Xóa
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <div id="history-tab" class="tab-content">
+      <div class="history-panel" id="history-panel">
+        <div class="history-header">
+          <div class="history-title">Email đã tạo gần đây</div>
+          <button class="btn-danger btn-sm" onclick="clearHistory()">
+            <i class="fas fa-trash"></i> Xóa
+          </button>
+        </div>
+        <div class="history-list" id="history-list">
+          <!-- Lịch sử sẽ được thêm ở đây bằng JavaScript -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">
+    <i class="fas fa-check-circle"></i>
+    <span id="toast-message"></span>
+  </div>
+
+  <script>
+    // Khởi tạo biến toàn cục
+    let generatedLinks = JSON.parse(localStorage.getItem('generatedLinks')) || [];
+    let linkCount = parseInt(localStorage.getItem('linkCount')) || 0;
+    
+    // Cập nhật counter khi tải trang
+    document.getElementById('counter').textContent = linkCount;
+    
+    // Hiển thị lịch sử nếu có
+    if (generatedLinks.length > 0) {
+      document.getElementById('history-panel').style.display = 'block';
+      updateHistoryList();
+    }
+
+    function generateLink() {
+      const email = document.getElementById("email").value.trim();
+      const pattern = /^[^@]+@[^@]+\.[^@]+$/;
+
+      if (!pattern.test(email)) {
+        showToast("❌ Email không hợp lệ");
+        return;
+      }
+
+      const [user, domain] = email.split("@");
+      const encodedUser = encodeURIComponent(user);
+      const encodedDomain = encodeURIComponent(domain);
+
+      const link = `https://m.facebook.com/caa/reg/confirmation/?reg_info=%7B%22contactpoint%22%3A%22${encodedUser}%5Cu0040${encodedDomain}%22%2C%22contactpoint_type%22%3A%22email%22%2C%22is_cp_auto_confirmed%22%3Afalse%2C%22fb_conf_source%22%3Anull%2C%22confirmation_medium%22%3Anull%2C%22registration_flow_id%22%3A%2238181147-d1ca-462e-8692-89f2e046f0b1%22%7D&flow_info=%7B%22flow_name%22%3A%22new_to_family_fb_default%22%2C%22flow_type%22%3A%22ntf%22%7D&current_step=10`;
+
+      document.getElementById("linkText").value = link;
+      document.getElementById("result").style.display = "block";
+      
+      // Lưu vào lịch sử
+      saveToHistory(email, link);
+      
+      // Cập nhật counter
+      linkCount++;
+      document.getElementById('counter').textContent = linkCount;
+      localStorage.setItem('linkCount', linkCount);
+      
+      showToast("✅ Đã tạo link thành công!");
+    }
+
+    function copyLink() {
+      const text = document.getElementById("linkText");
+      text.select();
+      document.execCommand("copy");
+      showToast("✅ Đã copy link!");
+    }
+    
+    function openLink() {
+      const link = document.getElementById("linkText").value;
+      if (link) {
+        window.open(link, '_blank');
+      }
+    }
+    
+    function clearLink() {
+      document.getElementById("linkText").value = "";
+      document.getElementById("result").style.display = "none";
+      document.getElementById("email").value = "";
+    }
+
+    function watchVideo() {
+      window.open("https://t.me/FoxyCrown/8", "_blank");
+    }
+    
+    function saveToHistory(email, link) {
+      // Kiểm tra xem email đã tồn tại trong lịch sử chưa
+      const existingIndex = generatedLinks.findIndex(item => item.email === email);
+      
+      if (existingIndex !== -1) {
+        // Nếu đã tồn tại, xóa bản cũ để thêm bản mới lên đầu
+        generatedLinks.splice(existingIndex, 1);
+      }
+      
+      // Thêm vào đầu mảng
+      generatedLinks.unshift({
+        email: email,
+        link: link,
+        timestamp: new Date().toISOString()
+      });
+      
+      // Giới hạn lịch sử tối đa 10 mục
+      if (generatedLinks.length > 10) {
+        generatedLinks = generatedLinks.slice(0, 10);
+      }
+      
+      // Lưu vào localStorage
+      localStorage.setItem('generatedLinks', JSON.stringify(generatedLinks));
+      
+      // Cập nhật hiển thị
+      document.getElementById('history-panel').style.display = 'block';
+      updateHistoryList();
+    }
+    
+    function updateHistoryList() {
+      const historyList = document.getElementById('history-list');
+      historyList.innerHTML = '';
+      
+      generatedLinks.forEach((item, index) => {
+        const historyItem = document.createElement('div');
+        historyItem.className = 'history-item';
+        
+        historyItem.innerHTML = `
+          <div class="history-email">${item.email}</div>
+          <div class="history-actions">
+            <button class="copy-btn btn-sm" onclick="copyHistoryLink(${index})">
+              <i class="fas fa-copy"></i>
+            </button>
+            <button class="btn-secondary btn-sm" onclick="loadHistoryItem(${index})">
+              <i class="fas fa-edit"></i>
+            </button>
+          </div>
+        `;
+        
+        historyList.appendChild(historyItem);
+      });
+    }
+    
+    function copyHistoryLink(index) {
+      const text = generatedLinks[index].link;
+      navigator.clipboard.writeText(text);
+      showToast("✅ Đã copy link từ lịch sử!");
+    }
+    
+    function loadHistoryItem(index) {
+      const item = generatedLinks[index];
+      document.getElementById('email').value = item.email;
+      document.getElementById('linkText').value = item.link;
+      document.getElementById('result').style.display = 'block';
+      
+      // Chuyển về tab generator
+      switchTab('generator');
+      
+      showToast("✅ Đã tải thông tin từ lịch sử!");
+    }
+    
+    function clearHistory() {
+      generatedLinks = [];
+      localStorage.removeItem('generatedLinks');
+      document.getElementById('history-panel').style.display = 'none';
+      showToast("✅ Đã xóa lịch sử!");
+    }
+    
+    function switchTab(tabName) {
+      // Ẩn tất cả các tab
+      document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.classList.remove('active');
+      });
+      
+      document.querySelectorAll('.tab').forEach(tab => {
+        tab.classList.remove('active');
+      });
+      
+      // Hiển thị tab được chọn
+      document.getElementById(`${tabName}-tab`).classList.add('active');
+      document.querySelector(`.tab:nth-child(${tabName === 'generator' ? 1 : 2})`).classList.add('active');
+    }
+    
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      const toastMessage = document.getElementById('toast-message');
+      
+      toastMessage.textContent = message;
+      toast.classList.add('show');
+      
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3000);
+    }
+  </script>
+</body>
+</html>
