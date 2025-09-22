@@ -1,0 +1,93 @@
+@media (max-width: 992px) {
+    .hero h2 {
+        font-size: 2.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .header-content {
+        flex-wrap: wrap;
+    }
+    
+    .menu-toggle {
+        display: flex;
+    }
+    
+    nav {
+        width: 100%;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+    }
+    
+    nav.active {
+        max-height: 300px;
+    }
+    
+    nav ul {
+        flex-direction: column;
+        padding: 20px 0;
+        gap: 15px;
+    }
+    
+    .auth-buttons {
+        margin-left: auto;
+    }
+    
+    .hero h2 {
+        font-size: 2rem;
+    }
+    
+    .hero p {
+        font-size: 1rem;
+    }
+    
+    .hero-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .section-title h2 {
+        font-size: 2rem;
+    }
+    
+    .feature-card, .product-card {
+        padding: 20px;
+    }
+    
+    .footer-content {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+}
+
+@media (max-width: 576px) {
+    .logo h1 {
+        font-size: 1.5rem;
+    }
+    
+    .auth-buttons {
+        gap: 10px;
+    }
+    
+    .btn {
+        padding: 8px 15px;
+        font-size: 0.9rem;
+    }
+    
+    .hero {
+        padding: 60px 0;
+    }
+    
+    .hero h2 {
+        font-size: 1.8rem;
+    }
+    
+    .features, .products {
+        padding: 50px 0;
+    }
+    
+    .features-grid, .products-grid {
+        grid-template-columns: 1fr;
+    }
+}

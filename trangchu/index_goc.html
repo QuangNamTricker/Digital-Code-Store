@@ -1,0 +1,2467 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trang Chủ - Digital Tools and Code Store</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2980b9;
+            --accent-color: #1abc9c;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+            --success-color: #2ecc71;
+            --warning-color: #f39c12;
+            --danger-color: #e74c3c;
+            --sidebar-width: 280px;
+            --header-height: 70px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            position: relative;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            padding: 20px 0;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            overflow-y: auto;
+            transition: transform 0.3s ease;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 20px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .logo i {
+            font-size: 2.5rem;
+            margin-right: 10px;
+        }
+
+        .logo h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .user-info {
+            text-align: center;
+            padding: 15px 20px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .user-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            color: var(--primary-color);
+            font-size: 2rem;
+        }
+
+        .user-info h2 {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+
+        .user-info p {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .user-role {
+            display: inline-block;
+            margin-top: 5px;
+            padding: 3px 10px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .sidebar-menu {
+            flex: 1;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 25px;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+            cursor: pointer;
+        }
+
+        .menu-item:hover, .menu-item.active {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-left-color: white;
+        }
+
+        .menu-item i {
+            font-size: 1.2rem;
+            margin-right: 15px;
+            width: 24px;
+            text-align: center;
+        }
+
+        .logout-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            text-decoration: none;
+            margin: 20px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .logout-btn:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .logout-btn i {
+            margin-right: 10px;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            padding: 20px;
+            position: relative;
+            transition: margin-left 0.3s ease;
+        }
+
+        .header {
+            background-color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .welcome-text h2 {
+            color: var(--dark-color);
+            margin-bottom: 5px;
+        }
+
+        .welcome-text p {
+            color: #777;
+        }
+
+        .stats-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            margin-right: 15px;
+        }
+
+        .stat-icon.primary {
+            background-color: rgba(52, 152, 219, 0.1);
+            color: var(--primary-color);
+        }
+
+        .stat-icon.success {
+            background-color: rgba(46, 204, 113, 0.1);
+            color: var(--success-color);
+        }
+
+        .stat-icon.warning {
+            background-color: rgba(243, 156, 18, 0.1);
+            color: var(--warning-color);
+        }
+
+        .stat-info h3 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+            color: var(--dark-color);
+        }
+
+        .stat-info p {
+            color: #777;
+            font-size: 0.9rem;
+        }
+
+        .content-section {
+            background-color: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 25px;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            color: var(--dark-color);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f1f1f1;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .product-card {
+            border: 1px solid #eee;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+        }
+
+        .product-image {
+            height: 160px;
+            background-color: #f9f9f9;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .product-info {
+            padding: 15px;
+        }
+
+        .product-info h3 {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            color: var(--dark-color);
+        }
+
+        .product-info p {
+            color: #777;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        .product-price {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        .product-button {
+            width: 100%;
+            padding: 10px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .product-button:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .service-button {
+            width: 100%;
+            padding: 10px;
+            background-color: var(--success-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .service-button:hover {
+            background-color: #27ae60;
+        }
+
+        .transaction-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .transaction-table th,
+        .transaction-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .transaction-table th {
+            background-color: #f9f9f9;
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+
+        .transaction-table tr:hover {
+            background-color: #f5f7fa;
+        }
+
+        .status {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .status.completed {
+            background-color: rgba(46, 204, 113, 0.1);
+            color: var(--success-color);
+        }
+
+        .status.pending {
+            background-color: rgba(243, 156, 18, 0.1);
+            color: var(--warning-color);
+        }
+
+        .status.failed {
+            background-color: rgba(231, 76, 60, 0.1);
+            color: var(--danger-color);
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.5rem;
+            color: #777;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark-color);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+            outline: none;
+        }
+
+        textarea.form-control {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 5px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .btn-success {
+            background-color: var(--success-color);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background-color: #27ae60;
+        }
+
+        .btn-block {
+            width: 100%;
+        }
+
+        .qr-code {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .qr-code img {
+            max-width: 200px;
+            border: 1px solid #eee;
+            border-radius: 8px;
+        }
+
+        /* Page Content (hidden by default) */
+        .page-content {
+            display: none;
+        }
+
+        .page-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        /* Loading states */
+        .loading-text {
+            text-align: center;
+            padding: 40px;
+            color: #777;
+        }
+
+        /* Notification */
+        .notification-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            max-width: 350px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .notification {
+            padding: 15px 20px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            animation: slideInRight 0.3s ease, fadeOut 0.5s ease 4.5s forwards;
+            position: relative;
+            overflow: hidden;
+            background-color: white;
+        }
+
+        .notification.success {
+            border-left: 5px solid var(--success-color);
+        }
+
+        .notification.error {
+            border-left: 5px solid var(--danger-color);
+        }
+
+        .notification.info {
+            border-left: 5px solid var(--primary-color);
+        }
+
+        .notification.warning {
+            border-left: 5px solid var(--warning-color);
+        }
+
+        .notification-icon {
+            margin-right: 15px;
+            font-size: 1.5rem;
+        }
+
+        .notification.success .notification-icon {
+            color: var(--success-color);
+        }
+
+        .notification.error .notification-icon {
+            color: var(--danger-color);
+        }
+
+        .notification.info .notification-icon {
+            color: var(--primary-color);
+        }
+
+        .notification.warning .notification-icon {
+            color: var(--warning-color);
+        }
+
+        .notification-content {
+            flex: 1;
+        }
+
+        .notification-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .notification-message {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .close-notification {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+            margin-left: 10px;
+        }
+
+        /* Purchase History Styles */
+        .order-card {
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            background-color: white;
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #f1f1f1;
+        }
+
+        .order-title {
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+
+        .order-date {
+            color: #777;
+            font-size: 0.9rem;
+        }
+
+        .order-details {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .order-price {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .download-btn {
+            padding: 8px 15px;
+            background-color: var(--success-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.3s ease;
+        }
+
+        .download-btn:hover {
+            background-color: #27ae60;
+        }
+
+        .download-btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .no-download {
+            color: #e74c3c;
+            font-style: italic;
+        }
+
+        /* Mobile Menu Toggle */
+        .mobile-menu-toggle {
+            display: none;
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            z-index: 1100;
+            background-color: var(--primary-color);
+            color: white;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+        }
+
+        /* Search Box */
+        .search-box {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 45px 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+            outline: none;
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #777;
+            font-size: 1.2rem;
+        }
+
+        /* Responsive Table */
+        .table-responsive {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* Refresh Container */
+        .refresh-container {
+            position: relative;
+        }
+
+        .refresh-indicator {
+            position: absolute;
+            top: -30px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            color: var(--primary-color);
+            font-size: 0.9rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .refresh-indicator.active {
+            opacity: 1;
+        }
+
+        /* Admin Panel Styles */
+        .admin-tools {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .admin-tool-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .admin-tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .admin-tool-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: white;
+        }
+
+        .admin-tool-icon.users {
+            background-color: var(--primary-color);
+        }
+
+        .admin-tool-icon.products {
+            background-color: var(--success-color);
+        }
+
+        .admin-tool-icon.deposits {
+            background-color: var(--warning-color);
+        }
+
+        .admin-tool-icon.transactions {
+            background-color: var(--danger-color);
+        }
+
+        .admin-tool-card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            color: var(--dark-color);
+        }
+
+        .admin-tool-card p {
+            color: #777;
+            font-size: 0.9rem;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(100%);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            }
+        }
+
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(-100%);
+                width: var(--sidebar-width);
+            }
+            
+            .sidebar.active {
+                transform: translateX(0);
+            }
+            
+            .logo h1, .user-info, .menu-item span {
+                display: block !important;
+            }
+            
+            .menu-item {
+                justify-content: flex-start;
+                padding: 15px 25px;
+            }
+            
+            .menu-item i {
+                margin-right: 15px;
+            }
+            
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+            }
+            
+            .mobile-menu-toggle {
+                display: flex;
+            }
+
+            .stats-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .header-actions {
+                width: 100%;
+            }
+
+            .header-actions .btn {
+                width: 100%;
+            }
+
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .transaction-table {
+                font-size: 0.85rem;
+            }
+
+            .transaction-table th,
+            .transaction-table td {
+                padding: 8px 10px;
+            }
+
+            .content-section {
+                padding: 15px;
+            }
+
+            .stat-card {
+                padding: 15px;
+            }
+
+            .stat-icon {
+                width: 50px;
+                height: 50px;
+                font-size: 1.5rem;
+            }
+
+            .stat-info h3 {
+                font-size: 1.5rem;
+            }
+
+            .order-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .order-details {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .mobile-menu-toggle {
+                top: 10px;
+                left: 10px;
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+            }
+
+            .main-content {
+                padding: 15px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .user-avatar {
+                width: 60px;
+                height: 60px;
+                font-size: 1.5rem;
+            }
+
+            .user-info h2 {
+                font-size: 1rem;
+            }
+
+            .welcome-text h2 {
+                font-size: 1.2rem;
+            }
+
+            .section-title {
+                font-size: 1.2rem;
+            }
+
+            .modal-content {
+                padding: 20px;
+            }
+
+            .qr-code img {
+                max-width: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Mobile Menu Toggle -->
+    <div class="mobile-menu-toggle" id="mobile-menu-toggle">
+        <i class="fas fa-bars"></i>
+    </div>
+
+    <!-- Notification Container -->
+    <div class="notification-container" id="notification-container"></div>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="logo">
+            <i class="fas fa-code"></i>
+            <h1>Digital Code Store</h1>
+        </div>
+
+        <div class="user-info">
+            <div class="user-avatar">
+                <i class="fas fa-user"></i>
+            </div>
+            <h2 id="user-name">Nguyễn Văn A</h2>
+            <p id="user-email">nguyenvana@example.com</p>
+            <div id="user-role" class="user-role">Thành viên</div>
+        </div>
+
+        <div class="sidebar-menu">
+            <a href="#" class="menu-item active" data-page="home">
+                <i class="fas fa-home"></i>
+                <span>Trang Chủ</span>
+            </a>
+            <a href="#" class="menu-item" data-page="deposit">
+                <i class="fas fa-wallet"></i>
+                <span>Nộp Tiền</span>
+            </a>
+            <a href="#" class="menu-item" data-page="products">
+                <i class="fas fa-shopping-bag"></i>
+                <span>Sản Phẩm</span>
+            </a>
+            <a href="#" class="menu-item" data-page="free-services">
+                <i class="fas fa-gift"></i>
+                <span>Dịch Vụ Miễn Phí</span>
+            </a>
+            <a href="#" class="menu-item" data-page="orders">
+                <i class="fas fa-history"></i>
+                <span>Lịch sử mua hàng</span>
+            </a>
+            <a href="#" class="menu-item" data-page="transactions">
+                <i class="fas fa-exchange-alt"></i>
+                <span>Lịch sử giao dịch</span>
+            </a>
+            <a href="#" class="menu-item admin-only" data-page="admin" style="display: none;">
+                <i class="fas fa-crown"></i>
+                <span>Trang Quản Trị</span>
+            </a>
+            <a href="#" class="menu-item" data-page="settings">
+                <i class="fas fa-cog"></i>
+                <span>Cài đặt</span>
+            </a>
+        </div>
+
+        <a href="#" class="logout-btn" id="logout-btn">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Đăng xuất</span>
+        </a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content" id="main-content">
+        <!-- Home Page -->
+        <div class="page-content active" id="home-page">
+            <div class="header">
+                <div class="welcome-text">
+                    <h2>Xin chào, <span id="greeting-name">Nguyễn Văn A</span>!</h2>
+                    <p>Chúc bạn một ngày làm việc hiệu quả và kiếm được thật nhiều tiền</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-primary" id="show-notification">
+                        <i class="fas fa-bell"></i> Thông báo
+                    </button>
+                </div>
+            </div>
+
+            <div class="stats-cards">
+                <div class="stat-card">
+                    <div class="stat-icon primary">
+                        <i class="fas fa-wallet"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="balance-amount">0 ₫</h3>
+                        <p>Số dư ví</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon success">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="orders-count">0</h3>
+                        <p>Đơn hàng</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon warning">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="products-count">0</h3>
+                        <p>Sản phẩm đã mua</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-section">
+                <h2 class="section-title">Sản phẩm nổi bật</h2>
+                <div class="products-grid" id="featured-products">
+                    <p class="loading-text">Đang tải sản phẩm...</p>
+                </div>
+            </div>
+
+            <div class="content-section">
+                <h2 class="section-title">Dịch vụ miễn phí nổi bật</h2>
+                <div class="products-grid" id="featured-services">
+                    <p class="loading-text">Đang tải dịch vụ...</p>
+                </div>
+            </div>
+
+            <div class="content-section">
+                <h2 class="section-title">Lịch sử giao dịch gần đây</h2>
+                <div class="table-responsive">
+                    <table class="transaction-table">
+                        <thead>
+                            <tr>
+                                <th>Mã giao dịch</th>
+                                <th>Mô tả</th>
+                                <th>Ngày</th>
+                                <th>Số tiền</th>
+                                <th>Trạng thái</th>
+                            </tr>
+                        </thead>
+                        <tbody id="transactions-body">
+                            <tr>
+                                <td colspan="5" class="loading-text">Đang tải dữ liệu...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Deposit Page -->
+        <div class="page-content" id="deposit-page">
+            <div class="header">
+                <div class="welcome-text">
+                    <h2>Nộp tiền vào tài khoản</h2>
+                    <p>Nạp tiền vào ví để mua sản phẩm và sử dụng dịch vụ</p>
+                </div>
+            </div>
+
+            <div class="content-section">
+                <h2 class="section-title">Thông tin nộp tiền</h2>
+                <div class="stats-cards">
+                    <div class="stat-card">
+                        <div class="stat-icon primary">
+                            <i class="fas fa-wallet"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="deposit-balance">0 ₫</h3>
+                            <p>Số dư hiện tại</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="qr-code">
+                    <img src="https://img.vietqr.io/image/MBBANK-2504092007-compact.png?amount=&addInfo=&accountName=T%E1%BB%AB%20Quang%20Nam" alt="QR Code">
+                    <p>Quét mã QR để nộp tiền</p>
+                    <p><strong>Ngân hàng:</strong> MBBank</p>
+                    <p><strong>Số tài khoản:</strong> 2504092007</p>
+                    <p><strong>Chủ tài khoản:</strong> TỪ QUANG NAM</p>
+                </div>
+
+                <form id="deposit-request-form">
+                    <div class="form-group">
+                        <label for="deposit-request-amount">Số tiền (VNĐ)</label>
+                        <input type="number" class="form-control" id="deposit-request-amount" placeholder="Nhập số tiền bạn đã chuyển" required min="1000">
+                    </div>
+                    <div class="form-group">
+                        <label for="deposit-request-description">Nội dung chuyển khoản</label>
+                        <input type="text" class="form-control" id="deposit-request-description" placeholder="Nhập nội dung chuyển khoản bạn đã sử dụng" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Gửi yêu cầu xác nhận</button>
+                </form>
+            </div>
+
+            <div class="content-section">
+                <h2 class="section-title">Lịch sử nộp tiền</h2>
+                <div class="table-responsive">
+                    <table class="transaction-table">
+                        <thead>
+                            <tr>
+                                <th>Mã giao dịch</th>
+                                <th>Số tiền</th>
+                                <th>Nội dung</th>
+                                <th>Ngày yêu cầu</th>
+                                <th>Trạng thái</th>
+                            </tr>
+                        </thead>
+                        <tbody id="deposit-history-body">
+                            <tr>
+                                <td colspan="5" class="loading-text">Đang tải dữ liệu...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Products Page -->
+        <div class="page-content" id="products-page">
+            <div class="header">
+                <div class="welcome-text">
+                    <h2>Danh sách sản phẩm</h2>
+                    <p>Khám phá các công cụ, mã nguồn và dịch vụ được cung cấp</p>
+                </div>
+            </div>
+
+            <div class="content-section">
+                <div class="search-box">
+                    <input type="text" class="search-input" id="product-search" placeholder="Tìm kiếm sản phẩm...">
+                    <div class="search-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                </div>
+                <div class="refresh-container">
+                    <div class="refresh-indicator" id="refresh-indicator">Đang làm mới...</div>
+                    <div class="products-grid" id="all-products">
+                        <p class="loading-text">Đang tải sản phẩm...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Free Services Page -->
+        <div class="page-content" id="free-services-page">
+            <div class="header">
+                <div class="welcome-text">
+                    <h2>Dịch Vụ Miễn Phí</h2>
+                    <p>Khám phá các dịch vụ miễn phí được cung cấp</p>
+                </div>
+            </div>
+
+            <div class="content-section">
+                <div class="search-box">
+                    <input type="text" class="search-input" id="service-search" placeholder="Tìm kiếm dịch vụ...">
+                    <div class="search-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                </div>
+                <div class="products-grid" id="all-services">
+                    <p class="loading-text">Đang tải dịch vụ...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Orders Page (Lịch sử mua hàng) -->
+        <div class="page-content" id="orders-page">
+            <div class="header">
+                <div class="welcome-text">
+                    <h2>Lịch sử mua hàng</h2>
+                    <p>Theo dõi tất cả đơn hàng bạn đã mua</p>
+                </div>
+            </div>
+
+            <div class="content-section">
+                <h2 class="section-title">Đơn hàng của bạn</h2>
+                <div id="orders-list">
+                    <p class="loading-text">Đang tải đơn hàng...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Transactions Page -->
+        <div class="page-content" id="transactions-page">
+            <div class="header">
+                <div class="welcome-text">
+                    <h2>Lịch sử giao dịch</h2>
+                    <p>Theo dõi tất cả giao dịch nạp tiền và mua hàng của bạn</p>
+                </div>
+            </div>
+
+            <div class="content-section">
+                <div class="table-responsive">
+                    <table class="transaction-table">
+                        <thead>
+                            <tr>
+                                <th>Mã giao dịch</th>
+                                <th>Loại</th>
+                                <th>Mô tả</th>
+                                <th>Ngày</th>
+                                <th>Số tiền</th>
+                                <th>Trạng thái</th>
+                            </tr>
+                        </thead>
+                        <tbody id="all-transactions-body">
+                            <tr>
+                                <td colspan="6" class="loading-text">Đang tải dữ liệu...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Admin Page -->
+        <div class="page-content" id="admin-page">
+            <div class="header">
+                <div class="welcome-text">
+                    <h2>Trang Quản Trị</h2>
+                    <p>Quản lý hệ thống và người dùng</p>
+                </div>
+            </div>
+
+            <div class="content-section">
+                <h2 class="section-title">Công Cụ Quản Trị</h2>
+                <div class="admin-tools">
+                    <div class="admin-tool-card" id="manage-users">
+                        <div class="admin-tool-icon users">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h3>Quản Lý Người Dùng</h3>
+                        <p>Xem và quản lý tất cả người dùng trong hệ thống</p>
+                    </div>
+                    <div class="admin-tool-card" id="manage-products">
+                        <div class="admin-tool-icon products">
+                            <i class="fas fa-box"></i>
+                        </div>
+                        <h3>Quản Lý Sản Phẩm</h3>
+                        <p>Thêm, sửa, xóa sản phẩm và dịch vụ</p>
+                    </div>
+                    <div class="admin-tool-card" id="manage-deposits">
+                        <div class="admin-tool-icon deposits">
+                            <i class="fas fa-money-bill-wave"></i>
+                        </div>
+                        <h3>Quản Lý Nạp Tiền</h3>
+                        <p>Duyệt và quản lý các yêu cầu nạp tiền</p>
+                    </div>
+                    <div class="admin-tool-card" id="manage-transactions">
+                        <div class="admin-tool-icon transactions">
+                            <i class="fas fa-exchange-alt"></i>
+                        </div>
+                        <h3>Quản Lý Giao Dịch</h3>
+                        <p>Theo dõi tất cả giao dịch trong hệ thống</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-section">
+                <h2 class="section-title">Thống Kê Hệ Thống</h2>
+                <div class="stats-cards">
+                    <div class="stat-card">
+                        <div class="stat-icon primary">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="total-users">0</h3>
+                            <p>Tổng số người dùng</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon success">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="total-orders">0</h3>
+                            <p>Tổng số đơn hàng</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon warning">
+                            <i class="fas fa-money-bill-wave"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="total-revenue">0 ₫</h3>
+                            <p>Tổng doanh thu</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon danger">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="pending-deposits">0</h3>
+                            <p>Yêu cầu nạp tiền chờ duyệt</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Page -->
+        <div class="page-content" id="settings-page">
+            <div class="header">
+                <div class="welcome-text">
+                    <h2>Cài đặt tài khoản</h2>
+                    <p>Quản lý thông tin và cài đặt tài khoản của bạn</p>
+                </div>
+            </div>
+
+            <div class="content-section">
+                <h2 class="section-title">Thông tin cá nhân</h2>
+                <form id="profile-form">
+                    <div class="form-group">
+                        <label for="profile-name">Họ tên</label>
+                        <input type="text" class="form-control" id="profile-name" placeholder="Nhập họ tên của bạn" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="profile-email">Email</label>
+                        <input type="email" class="form-control" id="profile-email" placeholder="Nhập email của bạn" required disabled>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Cập nhật thông tin</button>
+                </form>
+            </div>
+
+            <div class="content-section">
+                <h2 class="section-title">Đổi mật khẩu</h2>
+                <form id="password-form">
+                    <div class="form-group">
+                        <label for="current-password">Mật khẩu hiện tại</label>
+                        <input type="password" class="form-control" id="current-password" placeholder="Nhập mật khẩu hiện tại" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="new-password">Mật khẩu mới</label>
+                        <input type="password" class="form-control" id="new-password" placeholder="Nhập mật khẩu mới (ít nhất 6 ký tự)" minlength="6" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirm-password">Xác nhận mật khẩu mới</label>
+                        <input type="password" class="form-control" id="confirm-password" placeholder="Xác nhận mật khẩu mới" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Đổi mật khẩu</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase App (core functionality) -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <!-- Firebase Authentication -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <!-- Firebase Firestore -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <!-- Firebase Storage -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
+    
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyA7kY_xl-B1r6pfRlUCVcI8OcLe7rOh11g",
+            authDomain: "digitalcodestore-tuquangnam.firebaseapp.com",
+            projectId: "digitalcodestore-tuquangnam",
+            storageBucket: "digitalcodestore-tuquangnam.firebasestorage.app",
+            messagingSenderId: "226534281162",
+            appId: "1:226534281162:web:9e734c1b07378efb280933",
+            measurementId: "G-9V4G42XSZS"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+        const storage = firebase.storage();
+        
+        // DOM Elements
+        const logoutBtn = document.getElementById('logout-btn');
+        const notificationContainer = document.getElementById('notification-container');
+        const depositRequestForm = document.getElementById('deposit-request-form');
+        const profileForm = document.getElementById('profile-form');
+        const passwordForm = document.getElementById('password-form');
+        const menuItems = document.querySelectorAll('.menu-item');
+        const pageContents = document.querySelectorAll('.page-content');
+        const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('main-content');
+        const productSearch = document.getElementById('product-search');
+        const serviceSearch = document.getElementById('service-search');
+        const refreshIndicator = document.getElementById('refresh-indicator');
+        const adminMenuItems = document.querySelectorAll('.admin-only');
+
+        // Current user data
+        let currentUser = null;
+        let userData = null;
+        let allProducts = [];
+        let allServices = [];
+
+        // Check authentication state
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                currentUser = user;
+                loadUserData(user.uid);
+                setupEventListeners();
+            } else {
+                window.location.href = '../login/index.html';
+            }
+        });
+
+        // Load user data from Firestore
+        function loadUserData(userId) {
+            db.collection('users').doc(userId).get()
+                .then((doc) => {
+                    if (doc.exists) {
+                        userData = doc.data();
+                        
+                        // Update UI with user data
+                        document.getElementById('user-name').textContent = userData.displayName || userData.email;
+                        document.getElementById('greeting-name').textContent = userData.displayName || userData.email;
+                        document.getElementById('user-email').textContent = userData.email;
+                        document.getElementById('balance-amount').textContent = formatPrice(userData.balance || 0);
+                        document.getElementById('deposit-balance').textContent = formatPrice(userData.balance || 0);
+                        document.getElementById('profile-name').value = userData.displayName || '';
+                        document.getElementById('profile-email').value = userData.email;
+                        
+                        // Update user role display
+                        const userRoleElement = document.getElementById('user-role');
+                        if (userData.role === 'admin') {
+                            userRoleElement.textContent = 'Quản trị viên';
+                            userRoleElement.style.backgroundColor = 'rgba(231, 76, 60, 0.3)';
+                            
+                            // Show admin menu items
+                            adminMenuItems.forEach(item => {
+                                item.style.display = 'flex';
+                            });
+                        } else {
+                            userRoleElement.textContent = 'Thành viên';
+                        }
+                        
+                        // Load additional data
+                        loadFeaturedProducts();
+                        loadFeaturedServices();
+                        loadTransactions(userId);
+                        loadDepositHistory(userId);
+                        loadAllProducts();
+                        loadAllServices();
+                        loadAllTransactions(userId);
+                        loadOrdersCount(userId);
+                        loadOrders(userId);
+                        
+                        // Load admin data if user is admin
+                        if (userData.role === 'admin') {
+                            loadAdminStats();
+                        }
+                    }
+                })
+                .catch((error) => {
+                    showNotification('Có lỗi xảy ra khi tải dữ liệu người dùng', 'error');
+                    console.error("Error loading user data:", error);
+                });
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Logout
+            logoutBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                auth.signOut().then(() => {
+                    window.location.href = 'login.html';
+                });
+            });
+
+            // Mobile menu toggle
+            mobileMenuToggle.addEventListener('click', () => {
+                sidebar.classList.toggle('active');
+            });
+
+            // Close sidebar when clicking outside on mobile
+            mainContent.addEventListener('click', () => {
+                if (window.innerWidth < 992 && sidebar.classList.contains('active')) {
+                    sidebar.classList.remove('active');
+                }
+            });
+
+            // Menu navigation
+            menuItems.forEach(item => {
+                item.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const page = item.getAttribute('data-page');
+                    
+                    // Update active menu item
+                    menuItems.forEach(i => i.classList.remove('active'));
+                    item.classList.add('active');
+                    
+                    // Show corresponding page
+                    pageContents.forEach(content => content.classList.remove('active'));
+                    document.getElementById(`${page}-page`).classList.add('active');
+                    
+                    // Close sidebar on mobile after selection
+                    if (window.innerWidth < 992) {
+                        sidebar.classList.remove('active');
+                    }
+                    
+                    // Reload data when switching to specific pages
+                    if (page === 'transactions') {
+                        loadAllTransactions(currentUser.uid);
+                    } else if (page === 'deposit') {
+                        loadDepositHistory(currentUser.uid);
+                    } else if (page === 'products') {
+                        loadAllProducts();
+                    } else if (page === 'free-services') {
+                        loadAllServices();
+                    } else if (page === 'orders') {
+                        loadOrders(currentUser.uid);
+                    } else if (page === 'admin' && userData.role === 'admin') {
+                        loadAdminStats();
+                    }
+                });
+            });
+
+            // Product search functionality
+            productSearch.addEventListener('input', (e) => {
+                const searchTerm = e.target.value.toLowerCase();
+                filterProducts(searchTerm);
+            });
+
+            // Service search functionality
+            serviceSearch.addEventListener('input', (e) => {
+                const searchTerm = e.target.value.toLowerCase();
+                filterServices(searchTerm);
+            });
+
+            // Pull to refresh functionality
+            let touchStartY = 0;
+            const productsContainer = document.getElementById('all-products');
+            
+            productsContainer.addEventListener('touchstart', (e) => {
+                touchStartY = e.touches[0].clientY;
+            });
+
+            productsContainer.addEventListener('touchmove', (e) => {
+                const touchY = e.touches[0].clientY;
+                const scrollTop = productsContainer.scrollTop;
+                
+                // If at top of container and pulling down
+                if (scrollTop === 0 && touchY > touchStartY + 50) {
+                    refreshIndicator.classList.add('active');
+                    loadAllProducts();
+                    
+                    // Hide refresh indicator after 2 seconds
+                    setTimeout(() => {
+                        refreshIndicator.classList.remove('active');
+                    }, 2000);
+                }
+            });
+
+            // Deposit form
+            depositRequestForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const amount = parseInt(document.getElementById('deposit-request-amount').value);
+                const description = document.getElementById('deposit-request-description').value;
+                
+                if (amount < 1000) {
+                    showNotification('Số tiền nộp tối thiểu là 1,000 VNĐ', 'error');
+                    return;
+                }
+                
+                // Create deposit request
+                db.collection('deposit_requests').add({
+                    userId: currentUser.uid,
+                    amount: amount,
+                    description: description,
+                    status: 'pending',
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                }).then(() => {
+                    showNotification('Đã gửi yêu cầu nộp tiền thành công. Vui lòng chờ quản trị viên xác nhận.', 'success');
+                    depositRequestForm.reset();
+                    loadDepositHistory(currentUser.uid);
+                }).catch((error) => {
+                    showNotification('Có lỗi xảy ra khi gửi yêu cầu nộp tiền', 'error');
+                    console.error("Error creating deposit request:", error);
+                });
+            });
+
+            // Profile form
+            profileForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const displayName = document.getElementById('profile-name').value;
+                
+                // Update user profile
+                currentUser.updateProfile({
+                    displayName: displayName
+                }).then(() => {
+                    // Update Firestore
+                    return db.collection('users').doc(currentUser.uid).update({
+                        displayName: displayName
+                    });
+                }).then(() => {
+                    showNotification('Cập nhật thông tin thành công', 'success');
+                    // Reload user data
+                    loadUserData(currentUser.uid);
+                }).catch((error) => {
+                    showNotification('Có lỗi xảy ra khi cập nhật thông tin', 'error');
+                    console.error("Error updating profile:", error);
+                });
+            });
+
+            // Password form
+            passwordForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const currentPassword = document.getElementById('current-password').value;
+                const newPassword = document.getElementById('new-password').value;
+                const confirmPassword = document.getElementById('confirm-password').value;
+
+                if (newPassword !== confirmPassword) {
+                    showNotification('Mật khẩu mới và xác nhận mật khẩu không khớp', 'error');
+                    return;
+                }
+
+                // Re-authenticate user
+                const credential = firebase.auth.EmailAuthProvider.credential(
+                    currentUser.email,
+                    currentPassword
+                );
+
+                currentUser.reauthenticateWithCredential(credential)
+                    .then(() => {
+                        // Update password
+                        return currentUser.updatePassword(newPassword);
+                    })
+                    .then(() => {
+                        showNotification('Đổi mật khẩu thành công', 'success');
+                        passwordForm.reset();
+                    })
+                    .catch((error) => {
+                        showNotification('Có lỗi xảy ra khi đổi mật khẩu: ' + error.message, 'error');
+                        console.error("Error changing password:", error);
+                    });
+            });
+
+            // Show notification button (for demo)
+            document.getElementById('show-notification').addEventListener('click', () => {
+                showNotification('Đây là thông báo mẫu!', 'info');
+            });
+
+            // Admin tool cards
+            document.getElementById('manage-users')?.addEventListener('click', () => {
+                showNotification('Chức năng quản lý người dùng sẽ được phát triển sau', 'info');
+            });
+
+            document.getElementById('manage-products')?.addEventListener('click', () => {
+                showNotification('Chức năng quản lý sản phẩm sẽ được phát triển sau', 'info');
+            });
+
+            document.getElementById('manage-deposits')?.addEventListener('click', () => {
+                showNotification('Chức năng quản lý nạp tiền sẽ được phát triển sau', 'info');
+            });
+
+            document.getElementById('manage-transactions')?.addEventListener('click', () => {
+                showNotification('Chức năng quản lý giao dịch sẽ được phát triển sau', 'info');
+            });
+        }
+
+        // Filter products based on search term
+        function filterProducts(searchTerm) {
+            const allProductsContainer = document.getElementById('all-products');
+            
+            if (!allProducts.length) return;
+            
+            if (!searchTerm) {
+                renderProducts(allProducts);
+                return;
+            }
+            
+            const filteredProducts = allProducts.filter(product => 
+                product.name.toLowerCase().includes(searchTerm) || 
+                (product.description && product.description.toLowerCase().includes(searchTerm))
+            );
+            
+            renderProducts(filteredProducts);
+        }
+
+        // Filter services based on search term
+        function filterServices(searchTerm) {
+            const allServicesContainer = document.getElementById('all-services');
+            
+            if (!allServices.length) return;
+            
+            if (!searchTerm) {
+                renderServices(allServices);
+                return;
+            }
+            
+            const filteredServices = allServices.filter(service => 
+                service.name.toLowerCase().includes(searchTerm) || 
+                (service.description && service.description.toLowerCase().includes(searchTerm))
+            );
+            
+            renderServices(filteredServices);
+        }
+
+        // Render products to the container
+        function renderProducts(products) {
+            const allProductsContainer = document.getElementById('all-products');
+            
+            if (products.length === 0) {
+                allProductsContainer.innerHTML = '<p class="loading-text">Không tìm thấy sản phẩm nào.</p>';
+                return;
+            }
+            
+            allProductsContainer.innerHTML = '';
+            
+            products.forEach((product) => {
+                const productCard = document.createElement('div');
+                productCard.classList.add('product-card');
+                productCard.innerHTML = `
+                    <div class="product-image" style="background-image: url('${product.imageUrl || 'https://via.placeholder.com/250x160?text=No+Image'}');"></div>
+                    <div class="product-info">
+                        <h3>${product.name}</h3>
+                        <p>${product.description || ''}</p>
+                        <div class="product-price">${formatPrice(product.price)}</div>
+                        <button class="product-button" data-product-id="${product.id}">Mua ngay</button>
+                    </div>
+                `;
+                allProductsContainer.appendChild(productCard);
+
+                // Add event listener to buy button
+                productCard.querySelector('.product-button').addEventListener('click', () => {
+                    purchaseProduct(product.id, product);
+                });
+            });
+        }
+
+        // Render services to the container
+        function renderServices(services) {
+            const allServicesContainer = document.getElementById('all-services');
+            
+            if (services.length === 0) {
+                allServicesContainer.innerHTML = '<p class="loading-text">Không tìm thấy dịch vụ nào.</p>';
+                return;
+            }
+            
+            allServicesContainer.innerHTML = '';
+            
+            services.forEach((service) => {
+                const serviceCard = document.createElement('div');
+                serviceCard.classList.add('product-card');
+                serviceCard.innerHTML = `
+                    <div class="product-image" style="background-image: url('${service.imageUrl || 'https://via.placeholder.com/250x160?text=No+Image'}');"></div>
+                    <div class="product-info">
+                        <h3>${service.name}</h3>
+                        <p>${service.description || ''}</p>
+                        <button class="service-button" data-service-url="${service.externalUrl}">Truy cập ngay</button>
+                    </div>
+                `;
+                allServicesContainer.appendChild(serviceCard);
+
+                // Add event listener to access button
+                serviceCard.querySelector('.service-button').addEventListener('click', () => {
+                    window.open(service.externalUrl, '_blank');
+                });
+            });
+        }
+
+        // Load featured products
+        function loadFeaturedProducts() {
+            const featuredProductsContainer = document.getElementById('featured-products');
+            featuredProductsContainer.innerHTML = '<p class="loading-text">Đang tải sản phẩm...</p>';
+
+            db.collection('products').where('status', '==', 'active').where('isFeatured', '==', true).limit(4).get()
+                .then((querySnapshot) => {
+                    featuredProductsContainer.innerHTML = '';
+                    if (querySnapshot.empty) {
+                        featuredProductsContainer.innerHTML = '<p class="loading-text">Không có sản phẩm nổi bật.</p>';
+                        return;
+                    }
+                    querySnapshot.forEach((doc) => {
+                        const product = { id: doc.id, ...doc.data() };
+                        const productCard = document.createElement('div');
+                        productCard.classList.add('product-card');
+                        productCard.innerHTML = `
+                            <div class="product-image" style="background-image: url('${product.imageUrl || 'https://via.placeholder.com/250x160?text=No+Image'}');"></div>
+                            <div class="product-info">
+                                <h3>${product.name}</h3>
+                                <p>${product.description || ''}</p>
+                                <div class="product-price">${formatPrice(product.price)}</div>
+                                <button class="product-button" data-product-id="${doc.id}">Mua ngay</button>
+                            </div>
+                        `;
+                        featuredProductsContainer.appendChild(productCard);
+
+                        // Add event listener to buy button
+                        productCard.querySelector('.product-button').addEventListener('click', () => {
+                            purchaseProduct(doc.id, product);
+                        });
+                    });
+                })
+                .catch((error) => {
+                    showNotification('Có lỗi xảy ra khi tải sản phẩm nổi bật', 'error');
+                    console.error("Error loading featured products:", error);
+                });
+        }
+
+        // Load featured services
+        function loadFeaturedServices() {
+            const featuredServicesContainer = document.getElementById('featured-services');
+            featuredServicesContainer.innerHTML = '<p class="loading-text">Đang tải dịch vụ...</p>';
+
+            db.collection('free_services').where('status', '==', 'active').where('isFeatured', '==', true).limit(4).get()
+                .then((querySnapshot) => {
+                    featuredServicesContainer.innerHTML = '';
+                    if (querySnapshot.empty) {
+                        featuredServicesContainer.innerHTML = '<p class="loading-text">Không có dịch vụ nổi bật.</p>';
+                        return;
+                    }
+                    querySnapshot.forEach((doc) => {
+                        const service = { id: doc.id, ...doc.data() };
+                        const serviceCard = document.createElement('div');
+                        serviceCard.classList.add('product-card');
+                        serviceCard.innerHTML = `
+                            <div class="product-image" style="background-image: url('${service.imageUrl || 'https://via.placeholder.com/250x160?text=No+Image'}');"></div>
+                            <div class="product-info">
+                                <h3>${service.name}</h3>
+                                <p>${service.description || ''}</p>
+                                <button class="service-button" data-service-url="${service.externalUrl}">Truy cập ngay</button>
+                            </div>
+                        `;
+                        featuredServicesContainer.appendChild(serviceCard);
+
+                        // Add event listener to access button
+                        serviceCard.querySelector('.service-button').addEventListener('click', () => {
+                            window.open(service.externalUrl, '_blank');
+                        });
+                    });
+                })
+                .catch((error) => {
+                    showNotification('Có lỗi xảy ra khi tải dịch vụ nổi bật', 'error');
+                    console.error("Error loading featured services:", error);
+                });
+        }
+
+        // Load all products
+        function loadAllProducts() {
+            const allProductsContainer = document.getElementById('all-products');
+            allProductsContainer.innerHTML = '<p class="loading-text">Đang tải sản phẩm...</p>';
+
+            db.collection('products').where('status', '==', 'active').get()
+                .then((querySnapshot) => {
+                    allProductsContainer.innerHTML = '';
+                    if (querySnapshot.empty) {
+                        allProductsContainer.innerHTML = '<p class="loading-text">Không có sản phẩm nào.</p>';
+                        return;
+                    }
+                    
+                    allProducts = [];
+                    querySnapshot.forEach((doc) => {
+                        allProducts.push({ id: doc.id, ...doc.data() });
+                    });
+                    
+                    renderProducts(allProducts);
+                })
+                .catch((error) => {
+                    showNotification('Có lỗi xảy ra khi tải sản phẩm', 'error');
+                    console.error("Error loading all products:", error);
+                });
+        }
+
+        // Load all services
+        function loadAllServices() {
+            const allServicesContainer = document.getElementById('all-services');
+            allServicesContainer.innerHTML = '<p class="loading-text">Đang tải dịch vụ...</p>';
+
+            db.collection('free_services').where('status', '==', 'active').get()
+                .then((querySnapshot) => {
+                    allServicesContainer.innerHTML = '';
+                    if (querySnapshot.empty) {
+                        allServicesContainer.innerHTML = '<p class="loading-text">Không có dịch vụ nào.</p>';
+                        return;
+                    }
+                    
+                    allServices = [];
+                    querySnapshot.forEach((doc) => {
+                        allServices.push({ id: doc.id, ...doc.data() });
+                    });
+                    
+                    renderServices(allServices);
+                })
+                .catch((error) => {
+                    showNotification('Có lỗi xảy ra khi tải dịch vụ', 'error');
+                    console.error("Error loading all services:", error);
+                });
+        }
+
+        // Purchase product
+        function purchaseProduct(productId, product) {
+            if (userData.balance < product.price) {
+                showNotification('Số dư không đủ để mua sản phẩm này', 'error');
+                return;
+            }
+
+            // Create transaction record
+            db.collection('transactions').add({
+                userId: currentUser.uid,
+                type: 'purchase',
+                amount: product.price,
+                description: `Mua sản phẩm: ${product.name}`,
+                status: 'completed',
+                productId: productId,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            }).then(() => {
+                // Deduct balance
+                return db.collection('users').doc(currentUser.uid).update({
+                    balance: firebase.firestore.FieldValue.increment(-product.price)
+                });
+            }).then(() => {
+                // Create order record - FIXED: Include downloadUrl from product
+                return db.collection('orders').add({
+                    userId: currentUser.uid,
+                    productId: productId,
+                    productName: product.name,
+                    amount: product.price,
+                    status: 'completed',
+                    downloadUrl: product.downloadUrl || '', // Đảm bảo lấy downloadUrl từ product
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+            }).then(() => {
+                showNotification('Mua sản phẩm thành công', 'success');
+                // Reload user data and transactions
+                loadUserData(currentUser.uid);
+                loadTransactions(currentUser.uid);
+                loadAllTransactions(currentUser.uid);
+                loadOrdersCount(currentUser.uid);
+                loadOrders(currentUser.uid);
+            }).catch((error) => {
+                showNotification('Có lỗi xảy ra khi mua sản phẩm', 'error');
+                console.error("Error purchasing product:", error);
+            });
+        }
+
+        // Load user transactions
+        function loadTransactions(userId) {
+            const transactionsBody = document.getElementById('transactions-body');
+            transactionsBody.innerHTML = '<tr><td colspan="5" class="loading-text">Đang tải dữ liệu...</td></tr>';
+
+            db.collection('transactions')
+                .where('userId', '==', userId)
+                .orderBy('createdAt', 'desc')
+                .limit(5)
+                .get()
+                .then((querySnapshot) => {
+                    transactionsBody.innerHTML = '';
+                    if (querySnapshot.empty) {
+                        transactionsBody.innerHTML = '<tr><td colspan="5" class="loading-text">Không có giao dịch nào.</td></tr>';
+                        return;
+                    }
+                    
+                    querySnapshot.forEach((doc) => {
+                        const transaction = doc.data();
+                        const tr = document.createElement('tr');
+                        
+                        // Format date
+                        const date = transaction.createdAt ? transaction.createdAt.toDate().toLocaleString('vi-VN') : 'N/A';
+                        
+                        tr.innerHTML = `
+                            <td>${doc.id.substring(0, 8)}</td>
+                            <td>${transaction.description || 'Giao dịch'}</td>
+                            <td>${date}</td>
+                            <td>${formatPrice(transaction.amount)}</td>
+                            <td><span class="status ${transaction.status}">${getStatusText(transaction.status)}</span></td>
+                        `;
+                        transactionsBody.appendChild(tr);
+                    });
+                })
+                .catch((error) => {
+                    console.error("Error loading transactions:", error);
+                    // Fallback without ordering
+                    db.collection('transactions')
+                        .where('userId', '==', userId)
+                        .get()
+                        .then((querySnapshot) => {
+                            transactionsBody.innerHTML = '';
+                            if (querySnapshot.empty) {
+                                transactionsBody.innerHTML = '<tr><td colspan="5" class="loading-text">Không có giao dịch nào.</td></tr>';
+                                return;
+                            }
+                            
+                            const transactions = [];
+                            querySnapshot.forEach((doc) => {
+                                transactions.push({id: doc.id, ...doc.data()});
+                            });
+                            
+                            // Sort manually by createdAt
+                            transactions.sort((a, b) => {
+                                const dateA = a.createdAt ? (typeof a.createdAt.toDate === 'function' ? a.createdAt.toDate() : new Date(a.createdAt)) : new Date(0);
+                                const dateB = b.createdAt ? (typeof b.createdAt.toDate === 'function' ? b.createdAt.toDate() : new Date(b.createdAt)) : new Date(0);
+                                return dateB - dateA;
+                            }).slice(0, 5);
+                            
+                            transactions.forEach(transaction => {
+                                const tr = document.createElement('tr');
+                                let date = 'N/A';
+                                if (transaction.createdAt && typeof transaction.createdAt.toDate === 'function') {
+                                    date = transaction.createdAt.toDate().toLocaleString('vi-VN');
+                                } else if (transaction.createdAt) {
+                                    date = new Date(transaction.createdAt).toLocaleString('vi-VN');
+                                }
+                                
+                                tr.innerHTML = `
+                                    <td>${transaction.id.substring(0, 8)}</td>
+                                    <td>${transaction.description || 'Giao dịch'}</td>
+                                    <td>${date}</td>
+                                    <td>${formatPrice(transaction.amount || 0)}</td>
+                                    <td><span class="status ${transaction.status || 'pending'}">${getStatusText(transaction.status || 'pending')}</span></td>
+                                `;
+                                transactionsBody.appendChild(tr);
+                            });
+                        })
+                        .catch((fallbackError) => {
+                            console.error("Fallback error:", fallbackError);
+                            transactionsBody.innerHTML = '<tr><td colspan="5" class="loading-text">Có lỗi xảy ra khi tải lịch sử giao dịch</td></tr>';
+                        });
+                });
+        }
+
+        // Load deposit history
+        function loadDepositHistory(userId) {
+            const depositHistoryBody = document.getElementById('deposit-history-body');
+            depositHistoryBody.innerHTML = '<tr><td colspan="5" class="loading-text">Đang tải dữ liệu...</td></tr>';
+
+            db.collection('deposit_requests')
+                .where('userId', '==', userId)
+                .orderBy('createdAt', 'desc')
+                .get()
+                .then((querySnapshot) => {
+                    depositHistoryBody.innerHTML = '';
+                    if (querySnapshot.empty) {
+                        depositHistoryBody.innerHTML = '<tr><td colspan="5" class="loading-text">Không có lịch sử nộp tiền nào.</td></tr>';
+                        return;
+                    }
+                    
+                    querySnapshot.forEach((doc) => {
+                        const request = doc.data();
+                        const tr = document.createElement('tr');
+                        
+                        // Format date
+                        const date = request.createdAt ? request.createdAt.toDate().toLocaleString('vi-VN') : 'N/A';
+                        
+                        tr.innerHTML = `
+                            <td>${doc.id.substring(0, 8)}</td>
+                            <td>${formatPrice(request.amount)}</td>
+                            <td>${request.description || 'N/A'}</td>
+                            <td>${date}</td>
+                            <td><span class="status ${request.status}">${getStatusText(request.status)}</span></td>
+                        `;
+                        depositHistoryBody.appendChild(tr);
+                    });
+                })
+                .catch((error) => {
+                    console.error("Error loading deposit history:", error);
+                    // Fallback without ordering
+                    db.collection('deposit_requests')
+                        .where('userId', '==', userId)
+                        .get()
+                        .then((querySnapshot) => {
+                            depositHistoryBody.innerHTML = '';
+                            if (querySnapshot.empty) {
+                                depositHistoryBody.innerHTML = '<tr><td colspan="5" class="loading-text">Không có lịch sử nộp tiền nào.</td></tr>';
+                                return;
+                            }
+                            
+                            const requests = [];
+                            querySnapshot.forEach((doc) => {
+                                requests.push({id: doc.id, ...doc.data()});
+                            });
+                            
+                            // Sort manually by createdAt
+                            requests.sort((a, b) => {
+                                const dateA = a.createdAt ? (typeof a.createdAt.toDate === 'function' ? a.createdAt.toDate() : new Date(a.createdAt)) : new Date(0);
+                                const dateB = b.createdAt ? (typeof b.createdAt.toDate === 'function' ? b.createdAt.toDate() : new Date(b.createdAt)) : new Date(0);
+                                return dateB - dateA;
+                            });
+                            
+                            requests.forEach(request => {
+                                const tr = document.createElement('tr');
+                                let date = 'N/A';
+                                if (request.createdAt && typeof request.createdAt.toDate === 'function') {
+                                    date = request.createdAt.toDate().toLocaleString('vi-VN');
+                                } else if (request.createdAt) {
+                                    date = new Date(request.createdAt).toLocaleString('vi-VN');
+                                }
+                                
+                                tr.innerHTML = `
+                                    <td>${request.id.substring(0, 8)}</td>
+                                    <td>${formatPrice(request.amount || 0)}</td>
+                                    <td>${request.description || 'N/A'}</td>
+                                    <td>${date}</td>
+                                    <td><span class="status ${request.status || 'pending'}">${getStatusText(request.status || 'pending')}</span></td>
+                                `;
+                                depositHistoryBody.appendChild(tr);
+                            });
+                        })
+                        .catch((fallbackError) => {
+                            console.error("Fallback error:", fallbackError);
+                            depositHistoryBody.innerHTML = '<tr><td colspan="5" class="loading-text">Có lỗi xảy ra khi tải lịch sử nộp tiền</td></tr>';
+                        });
+                });
+        }
+
+        // Load all transactions
+        function loadAllTransactions(userId) {
+            const allTransactionsBody = document.getElementById('all-transactions-body');
+            allTransactionsBody.innerHTML = '<tr><td colspan="6" class="loading-text">Đang tải dữ liệu...</td></tr>';
+
+            db.collection('transactions')
+                .where('userId', '==', userId)
+                .orderBy('createdAt', 'desc')
+                .get()
+                .then((querySnapshot) => {
+                    allTransactionsBody.innerHTML = '';
+                    if (querySnapshot.empty) {
+                        allTransactionsBody.innerHTML = '<tr><td colspan="6" class="loading-text">Không có giao dịch nào.</td></tr>';
+                        return;
+                    }
+                    
+                    querySnapshot.forEach((doc) => {
+                        const transaction = doc.data();
+                        const tr = document.createElement('tr');
+                        
+                        // Format date
+                        const date = transaction.createdAt ? transaction.createdAt.toDate().toLocaleString('vi-VN') : 'N/A';
+                        
+                        tr.innerHTML = `
+                            <td>${doc.id.substring(0, 8)}</td>
+                            <td>${getTransactionTypeText(transaction.type)}</td>
+                            <td>${transaction.description || 'Giao dịch'}</td>
+                            <td>${date}</td>
+                            <td>${formatPrice(transaction.amount)}</td>
+                            <td><span class="status ${transaction.status}">${getStatusText(transaction.status)}</span></td>
+                        `;
+                        allTransactionsBody.appendChild(tr);
+                    });
+                })
+                .catch((error) => {
+                    console.error("Error loading all transactions:", error);
+                    // Fallback without ordering
+                    db.collection('transactions')
+                        .where('userId', '==', userId)
+                        .get()
+                        .then((querySnapshot) => {
+                            allTransactionsBody.innerHTML = '';
+                            if (querySnapshot.empty) {
+                                allTransactionsBody.innerHTML = '<tr><td colspan="6" class="loading-text">Không có giao dịch nào.</td></tr>';
+                                return;
+                            }
+                            
+                            const transactions = [];
+                            querySnapshot.forEach((doc) => {
+                                transactions.push({id: doc.id, ...doc.data()});
+                            });
+                            
+                            // Sort manually by createdAt
+                            transactions.sort((a, b) => {
+                                const dateA = a.createdAt ? (typeof a.createdAt.toDate === 'function' ? a.createdAt.toDate() : new Date(a.createdAt)) : new Date(0);
+                                const dateB = b.createdAt ? (typeof b.createdAt.toDate === 'function' ? b.createdAt.toDate() : new Date(b.createdAt)) : new Date(0);
+                                return dateB - dateA;
+                            });
+                            
+                            transactions.forEach(transaction => {
+                                const tr = document.createElement('tr');
+                                let date = 'N/A';
+                                if (transaction.createdAt && typeof transaction.createdAt.toDate === 'function') {
+                                    date = transaction.createdAt.toDate().toLocaleString('vi-VN');
+                                } else if (transaction.createdAt) {
+                                    date = new Date(transaction.createdAt).toLocaleString('vi-VN');
+                                }
+                                
+                                tr.innerHTML = `
+                                    <td>${transaction.id.substring(0, 8)}</td>
+                                    <td>${getTransactionTypeText(transaction.type)}</td>
+                                    <td>${transaction.description || 'Giao dịch'}</td>
+                                    <td>${date}</td>
+                                    <td>${formatPrice(transaction.amount || 0)}</td>
+                                    <td><span class="status ${transaction.status || 'pending'}">${getStatusText(transaction.status || 'pending')}</span></td>
+                                `;
+                                allTransactionsBody.appendChild(tr);
+                            });
+                        })
+                        .catch((fallbackError) => {
+                            console.error("Fallback error:", fallbackError);
+                            allTransactionsBody.innerHTML = '<tr><td colspan="6" class="loading-text">Có lỗi xảy ra khi tải lịch sử giao dịch</td></tr>';
+                        });
+                });
+        }
+
+        // Load orders count
+        function loadOrdersCount(userId) {
+            db.collection('orders').where('userId', '==', userId).get()
+                .then((querySnapshot) => {
+                    document.getElementById('orders-count').textContent = querySnapshot.size;
+                    
+                    // Also update products count
+                    const productCount = new Set();
+                    querySnapshot.forEach(doc => {
+                        const order = doc.data();
+                        if (order.productId) {
+                            productCount.add(order.productId);
+                        }
+                    });
+                    document.getElementById('products-count').textContent = productCount.size;
+                })
+                .catch((error) => {
+                    console.error("Error loading orders count:", error);
+                });
+        }
+
+        // Load orders (lịch sử mua hàng) - FIXED
+        function loadOrders(userId) {
+            const ordersContainer = document.getElementById('orders-list');
+            ordersContainer.innerHTML = '<p class="loading-text">Đang tải đơn hàng...</p>';
+
+            db.collection('orders')
+                .where('userId', '==', userId)
+                .orderBy('createdAt', 'desc')
+                .get()
+                .then((querySnapshot) => {
+                    ordersContainer.innerHTML = '';
+                    if (querySnapshot.empty) {
+                        ordersContainer.innerHTML = '<p class="loading-text">Bạn chưa có đơn hàng nào.</p>';
+                        return;
+                    }
+                    
+                    querySnapshot.forEach((doc) => {
+                        const order = doc.data();
+                        const orderCard = document.createElement('div');
+                        orderCard.classList.add('order-card');
+                        
+                        // Format date
+                        const date = order.createdAt ? order.createdAt.toDate().toLocaleString('vi-VN') : 'N/A';
+                        
+                        // Kiểm tra downloadUrl có tồn tại và hợp lệ không
+                        const hasValidDownloadUrl = order.downloadUrl && 
+                                                  order.downloadUrl.trim() !== '' && 
+                                                  order.downloadUrl.startsWith('http');
+                        
+                        orderCard.innerHTML = `
+                            <div class="order-header">
+                                <div class="order-title">${order.productName}</div>
+                                <div class="order-date">${date}</div>
+                            </div>
+                            <div class="order-details">
+                                <div class="order-price">${formatPrice(order.amount)}</div>
+                                ${hasValidDownloadUrl ? 
+                                    `<button class="download-btn" data-download-url="${order.downloadUrl}">
+                                        <i class="fas fa-download"></i> Tải xuống
+                                    </button>` : 
+                                    '<span class="no-download">Liên kết tải xuống không khả dụng</span>'
+                                }
+                            </div>
+                        `;
+                        ordersContainer.appendChild(orderCard);
+
+                        // Add event listener to download button
+                        if (hasValidDownloadUrl) {
+                            const downloadBtn = orderCard.querySelector('.download-btn');
+                            downloadBtn.addEventListener('click', () => {
+                                downloadProduct(order.downloadUrl, order.productName);
+                            });
+                        }
+                    });
+                })
+                .catch((error) => {
+                    console.error("Error loading orders:", error);
+                    ordersContainer.innerHTML = '<p class="loading-text">Có lỗi xảy ra khi tải đơn hàng.</p>';
+                });
+        }
+
+        // Load admin statistics
+        function loadAdminStats() {
+            // Load total users
+            db.collection('users').get()
+                .then((querySnapshot) => {
+                    document.getElementById('total-users').textContent = querySnapshot.size;
+                })
+                .catch((error) => {
+                    console.error("Error loading total users:", error);
+                });
+
+            // Load total orders
+            db.collection('orders').get()
+                .then((querySnapshot) => {
+                    document.getElementById('total-orders').textContent = querySnapshot.size;
+                })
+                .catch((error) => {
+                    console.error("Error loading total orders:", error);
+                });
+
+            // Load total revenue
+            db.collection('transactions')
+                .where('type', 'in', ['purchase', 'deposit'])
+                .where('status', '==', 'completed')
+                .get()
+                .then((querySnapshot) => {
+                    let totalRevenue = 0;
+                    querySnapshot.forEach((doc) => {
+                        const transaction = doc.data();
+                        if (transaction.type === 'purchase') {
+                            totalRevenue += transaction.amount;
+                        }
+                    });
+                    document.getElementById('total-revenue').textContent = formatPrice(totalRevenue);
+                })
+                .catch((error) => {
+                    console.error("Error loading total revenue:", error);
+                });
+
+            // Load pending deposits
+            db.collection('deposit_requests')
+                .where('status', '==', 'pending')
+                .get()
+                .then((querySnapshot) => {
+                    document.getElementById('pending-deposits').textContent = querySnapshot.size;
+                })
+                .catch((error) => {
+                    console.error("Error loading pending deposits:", error);
+                });
+        }
+
+        // Download product
+        function downloadProduct(downloadUrl, productName) {
+            showNotification('Đang chuẩn bị tải xuống...', 'info');
+            
+            // Create a temporary anchor element to trigger download
+            const link = document.createElement('a');
+            link.href = downloadUrl;
+            link.target = '_blank';
+            link.download = productName || 'download';
+            
+            // Simulate click to trigger download
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            showNotification('Đã bắt đầu tải xuống', 'success');
+        }
+
+        // Utility functions
+        function formatPrice(amount) {
+            return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
+        }
+
+        function getStatusText(status) {
+            switch(status) {
+                case 'completed': return 'Hoàn thành';
+                case 'pending': return 'Chờ xử lý';
+                case 'failed': return 'Thất bại';
+                case 'approved': return 'Đã duyệt';
+                case 'rejected': return 'Từ chối';
+                default: return status;
+            }
+        }
+
+        function getTransactionTypeText(type) {
+            switch(type) {
+                case 'purchase': return 'Mua hàng';
+                case 'deposit': return 'Nạp tiền';
+                case 'admin_add': return 'Admin cộng tiền';
+                default: return type;
+            }
+        }
+
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.classList.add('notification', type);
+            
+            let icon = 'fa-info-circle';
+            if (type === 'success') icon = 'fa-check-circle';
+            if (type === 'error') icon = 'fa-exclamation-circle';
+            if (type === 'warning') icon = 'fa-exclamation-triangle';
+            
+            notification.innerHTML = `
+                <div class="notification-icon">
+                    <i class="fas ${icon}"></i>
+                </div>
+                <div class="notification-content">
+                    <div class="notification-message">${message}</div>
+                </div>
+                <button class="close-notification">&times;</button>
+            `;
+
+            // Close button event
+            notification.querySelector('.close-notification').addEventListener('click', () => {
+                notification.remove();
+            });
+
+            notificationContainer.appendChild(notification);
+
+            // Auto-remove after 5 seconds
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.remove();
+                }
+            }, 5000);
+        }
+    </script>
+</body>
+</html>

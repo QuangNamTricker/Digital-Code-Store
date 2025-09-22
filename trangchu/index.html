@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trang Chủ - Digital Tools and Code Store</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Mobile Menu Toggle -->
+    <div class="mobile-menu-toggle" id="mobile-menu-toggle">
+        <i class="fas fa-bars"></i>
+    </div>
+
+    <!-- Notification Container -->
+    <div class="notification-container" id="notification-container"></div>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="logo">
+            <i class="fas fa-code"></i>
+            <h1>Digital Code Store</h1>
+        </div>
+
+        <div class="user-info">
+            <div class="user-avatar">
+                <i class="fas fa-user"></i>
+            </div>
+            <h2 id="user-name">Nguyễn Văn A</h2>
+            <p id="user-email">nguyenvana@example.com</p>
+            <div id="user-role" class="user-role">Thành viên</div>
+        </div>
+
+        <div class="sidebar-menu">
+            <a href="#" class="menu-item active" data-page="home">
+                <i class="fas fa-home"></i>
+                <span>Trang Chủ</span>
+            </a>
+            <a href="#" class="menu-item" data-page="deposit">
+                <i class="fas fa-wallet"></i>
+                <span>Nộp Tiền</span>
+            </a>
+            <a href="#" class="menu-item" data-page="products">
+                <i class="fas fa-shopping-bag"></i>
+                <span>Sản Phẩm</span>
+            </a>
+            <a href="#" class="menu-item" data-page="free-services">
+                <i class="fas fa-gift"></i>
+                <span>Dịch Vụ Miễn Phí</span>
+            </a>
+            <a href="#" class="menu-item" data-page="orders">
+                <i class="fas fa-history"></i>
+                <span>Lịch sử mua hàng</span>
+            </a>
+            <a href="#" class="menu-item" data-page="transactions">
+                <i class="fas fa-exchange-alt"></i>
+                <span>Lịch sử giao dịch</span>
+            </a>
+            <a href="../admin/index.html" class="menu-item admin-only" style="display: none;">
+                <i class="fas fa-crown"></i>
+                <span>Trang Quản Trị</span>
+            </a>
+            <a href="#" class="menu-item" data-page="settings">
+                <i class="fas fa-cog"></i>
+                <span>Cài đặt</span>
+            </a>
+        </div>
+
+        <a href="#" class="logout-btn" id="logout-btn">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Đăng xuất</span>
+        </a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content" id="main-content">
+        <!-- Home Page -->
+        <div class="page-content active" id="home-page">
+            <div class="header">
+                <div class="welcome-text">
+                    <h2>Xin chào, <span id="greeting-name">Nguyễn Văn A</span>!</h2>
+                    <p>Chúc bạn một ngày làm việc hiệu quả và kiếm được thật nhiều tiền</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-primary" id="show-notification">
+                        <i class="fas fa-bell"></i> Thông báo
+                    </button>
+                </div>
+            </div>
+
+            <div class="stats-cards">
+                <div class="stat-card">
+                    <div class="stat-icon primary">
+                        <i class="fas fa-wallet"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="balance-amount">0 ₫</h3>
+                        <p>Số dư ví</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon success">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="orders-count">0</h3>
+                        <p>Đơn hàng</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon warning">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="products-count">0</h3>
+                        <p>Sản phẩm đã mua</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-section">
+                <h2 class="section-title">Sản phẩm nổi bật</h2>
+                <div class="products-grid" id="featured-products">
+                    <p class="loading-text">Đang tải sản phẩm...</p>
+                </div>
+            </div>
+
+            <div class="content-section">
+                <h2 class="section-title">Dịch vụ miễn phí nổi bật</h2>
+                <div class="products-grid" id="featured-services">
+                    <p class="loading-text">Đang tải dịch vụ...</p>
+                </div>
+            </div>
+
+            <div class="content-section">
+                <h2 class="section-title">Lịch sử giao dịch gần đây</h2>
+                <div class="table-responsive">
+                    <table class="transaction-table">
+                        <thead>
+                            <tr>
+                                <th>Mã giao dịch</th>
+                                <th>Mô tả</th>
+                                <th>Ngày</th>
+                                <th>Số tiền</th>
+                                <th>Trạng thái</th>
+                            </tr>
+                        </thead>
+                        <tbody id="transactions-body">
+                            <tr>
+                                <td colspan="5" class="loading-text">Đang tải dữ liệu...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Deposit Page -->
+        <div class="page-content" id="deposit-page">
+            <div class="header">
+                <div class="welcome-text">
+                    <h2>Nộp tiền vào tài khoản</h2>
+                    <p>Nạp tiền vào ví để mua sản phẩm và sử dụng dịch vụ</p>
+                </div>
+            </div>
+
+            <div class="content-section">
+                <h2 class="section-title">Thông tin nộp tiền</h2>
+                <div class="stats-cards">
+                    <div class="stat-card">
+                        <div class="stat-icon primary">
+                            <i class="fas fa-wallet"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="deposit-balance">0 ₫</h3>
+                            <p>Số dư hiện tại</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="qr-code">
+                    <img src="https://img.vietqr.io/image/MBBANK-2504092007-compact.png?amount=&addInfo=&accountName=T%E1%BB%AB%20Quang%20Nam" alt="QR Code">
+                    <p>Quét mã QR để nộp tiền</p>
+                    <p><strong>Ngân hàng:</strong> MBBank</p>
+                    <p><strong>Số tài khoản:</strong> 2504092007</p>
+                    <p><strong>Chủ tài khoản:</strong> TỪ QUANG NAM</p>
+                </div>
+
+                <form id="deposit-request-form">
+                    <div class="form-group">
+                        <label for="deposit-request-amount">Số tiền (VNĐ)</label>
+                        <input type="number" class="form-control" id="deposit-request-amount" placeholder="Nhập số tiền bạn đã chuyển" required min="1000">
+                    </div>
+                    <div class="form-group">
+                        <label for="deposit-request-description">Nội dung chuyển khoản</label>
+                        <input type="text" class="form-control" id="deposit-request-description" placeholder="Nhập nội dung chuyển khoản bạn đã sử dụng" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Gửi yêu cầu xác nhận</button>
+                </form>
+            </div>
+
+            <div class="content-section">
+                <h2 class="section-title">Lịch sử nộp tiền</h2>
+                <div class="table-responsive">
+                    <table class="transaction-table">
+                        <thead>
+                            <tr>
+                                <th>Mã giao dịch</th>
+                                <th>Số tiền</th>
+                                <th>Nội dung</th>
+                                <th>Ngày yêu cầu</th>
+                                <th>Trạng thái</th>
+                            </tr>
+                        </thead>
+                        <tbody id="deposit-history-body">
+                            <tr>
+                                <td colspan="5" class="loading-text">Đang tải dữ liệu...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Products Page -->
+        <div class="page-content" id="products-page">
+            <div class="header">
+                <div class="welcome-text">
+                    <h2>Danh sách sản phẩm</h2>
+                    <p>Khám phá các công cụ, mã nguồn và dịch vụ được cung cấp</p>
+                </div>
+            </div>
+
+            <div class="content-section">
+                <div class="search-box">
+                    <input type="text" class="search-input" id="product-search" placeholder="Tìm kiếm sản phẩm...">
+                    <div class="search-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                </div>
+                <div class="refresh-container">
+                    <div class="refresh-indicator" id="refresh-indicator">Đang làm mới...</div>
+                    <div class="products-grid" id="all-products">
+                        <p class="loading-text">Đang tải sản phẩm...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Free Services Page -->
+        <div class="page-content" id="free-services-page">
+            <div class="header">
+                <div class="welcome-text">
+                    <h2>Dịch Vụ Miễn Phí</h2>
+                    <p>Khám phá các dịch vụ miễn phí được cung cấp</p>
+                </div>
+            </div>
+
+            <div class="content-section">
+                <div class="search-box">
+                    <input type="text" class="search-input" id="service-search" placeholder="Tìm kiếm dịch vụ...">
+                    <div class="search-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                </div>
+                <div class="products-grid" id="all-services">
+                    <p class="loading-text">Đang tải dịch vụ...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Orders Page (Lịch sử mua hàng) -->
+        <div class="page-content" id="orders-page">
+            <div class="header">
+                <div class="welcome-text">
+                    <h2>Lịch sử mua hàng</h2>
+                    <p>Theo dõi tất cả đơn hàng bạn đã mua</p>
+                </div>
+            </div>
+
+            <div class="content-section">
+                <h2 class="section-title">Đơn hàng của bạn</h2>
+                <div id="orders-list">
+                    <p class="loading-text">Đang tải đơn hàng...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Transactions Page -->
+        <div class="page-content" id="transactions-page">
+            <div class="header">
+                <div class="welcome-text">
+                    <h2>Lịch sử giao dịch</h2>
+                    <p>Theo dõi tất cả giao dịch nạp tiền và mua hàng của bạn</p>
+                </div>
+            </div>
+
+            <div class="content-section">
+                <div class="table-responsive">
+                    <table class="transaction-table">
+                        <thead>
+                            <tr>
+                                <th>Mã giao dịch</th>
+                                <th>Loại</th>
+                                <th>Mô tả</th>
+                                <th>Ngày</th>
+                                <th>Số tiền</th>
+                                <th>Trạng thái</th>
+                            </tr>
+                        </thead>
+                        <tbody id="all-transactions-body">
+                            <tr>
+                                <td colspan="6" class="loading-text">Đang tải dữ liệu...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Page -->
+        <div class="page-content" id="settings-page">
+            <div class="header">
+                <div class="welcome-text">
+                    <h2>Cài đặt tài khoản</h2>
+                    <p>Quản lý thông tin và cài đặt tài khoản của bạn</p>
+                </div>
+            </div>
+
+            <div class="content-section">
+                <h2 class="section-title">Thông tin cá nhân</h2>
+                <form id="profile-form">
+                    <div class="form-group">
+                        <label for="profile-name">Họ tên</label>
+                        <input type="text" class="form-control" id="profile-name" placeholder="Nhập họ tên của bạn" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="profile-email">Email</label>
+                        <input type="email" class="form-control" id="profile-email" placeholder="Nhập email của bạn" required disabled>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Cập nhật thông tin</button>
+                </form>
+            </div>
+
+            <div class="content-section">
+                <h2 class="section-title">Đổi mật khẩu</h2>
+                <form id="password-form">
+                    <div class="form-group">
+                        <label for="current-password">Mật khẩu hiện tại</label>
+                        <input type="password" class="form-control" id="current-password" placeholder="Nhập mật khẩu hiện tại" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="new-password">Mật khẩu mới</label>
+                        <input type="password" class="form-control" id="new-password" placeholder="Nhập mật khẩu mới (ít nhất 6 ký tự)" minlength="6" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirm-password">Xác nhận mật khẩu mới</label>
+                        <input type="password" class="form-control" id="confirm-password" placeholder="Xác nhận mật khẩu mới" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Đổi mật khẩu</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase App (core functionality) -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <!-- Firebase Authentication -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <!-- Firebase Firestore -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <!-- Firebase Storage -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
+    
+    <!-- Custom Scripts -->
+    <script src="js/firebase-config.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/products.js"></script>
+    <script src="js/transactions.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

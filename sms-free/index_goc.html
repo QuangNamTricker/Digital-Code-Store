@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Receive SMS - Không quảng cáo</title>
+        <!-- Firebase SDK -->
+        <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body, html {
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+        }
+        
+        #container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            width: 100%;
+        }
+        
+        #header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+        
+        #smsFrame {
+            flex-grow: 1;
+            width: 100%;
+            border: none;
+        }
+        
+        /* CSS để ẩn quảng cáo trên trang receive-sms.cc */
+        #smsFrame {
+            /* Đảm bảo iframe chiếm toàn bộ không gian */
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div id="header">
+            <h1>Receive SMS - Không quảng cáo</h1>
+            <p>Trang web này đã được loại bỏ quảng cáo</p>
+        </div>
+        <iframe 
+            id="smsFrame" 
+            src="https://receive-sms.cc/" 
+            title="Receive SMS" 
+            sandbox="allow-same-origin allow-scripts allow-forms"
+        ></iframe>
+    </div>
+
+    <script>
+                
+                const firebaseConfig = {
+            apiKey: "AIzaSyA7kY_xl-B1r6pfRlUCVcI8OcLe7rOh11g",
+            authDomain: "digitalcodestore-tuquangnam.firebaseapp.com",
+            projectId: "digitalcodestore-tuquangnam",
+            storageBucket: "digitalcodestore-tuquangnam.firebasestorage.app",
+            messagingSenderId: "226534281162",
+            appId: "1:226534281162:web:9e734c1b07378efb280933",
+            measurementId: "G-9V4G42XSZS"
+        };
+
+        
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+        
+        
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                console.log("User is signed in:", user.email);
+                
+                db.collection('tool_access').add({
+                    userId: user.uid,
+                    tool: 'receive_sms',
+                    accessedAt: firebase.firestore.FieldValue.serverTimestamp()
+                }).catch(error => {
+                    console.error("Error logging tool access:", error);
+                });
+            } else {
+                console.log("User is signed out");
+                
+                window.location.href = '../login/index.html';
+            }
+        });
+
+
+        
+        document.getElementById('smsFrame').onload = function() {
+            
+            
+            console.log("Iframe đã tải. Sử dụng CSS để ẩn quảng cáo.");
+        };
+        
+        
+        
+        
+        const style = document.createElement('style');
+        style.textContent = `
+            /* CSS để ẩn quảng cáo - chỉ hoạt động nếu iframe cùng origin */
+            .ads, .ad, .advertisement, [id*='ad'], [class*='ad'] {
+                display: none !important;
+                visibility: hidden !important;
+                height: 0 !important;
+                width: 0 !important;
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

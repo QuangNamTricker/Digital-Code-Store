@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Receive SMS - Không quảng cáo</title>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div id="container">
+        <div id="header">
+            <h1>Receive SMS - Không quảng cáo</h1>
+            <p>Trang web này đã được loại bỏ quảng cáo</p>
+        </div>
+        <iframe 
+            id="smsFrame" 
+            src="https://receive-sms.cc/" 
+            title="Receive SMS" 
+            sandbox="allow-same-origin allow-scripts allow-forms"
+        ></iframe>
+    </div>
+
+    <!-- JavaScript Files -->
+    <script src="js/firebase-config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/adblock.js"></script>
+</body>
+</html>

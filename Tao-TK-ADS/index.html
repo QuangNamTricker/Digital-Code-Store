@@ -1,0 +1,802 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tool Tạo TK ADS - Digital Code Store</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2980b9;
+            --accent-color: #1abc9c;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+            --success-color: #2ecc71;
+            --warning-color: #f39c12;
+            --danger-color: #e74c3c;
+            --sidebar-width: 280px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header Styles */
+        .header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            font-size: 2rem;
+        }
+
+        .logo h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .user-actions {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 50px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background-color: white;
+            color: var(--primary-color);
+        }
+
+        .btn-primary:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 992px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Form Section */
+        .form-section {
+            background-color: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .form-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f1f1f1;
+        }
+
+        .form-header i {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+        }
+
+        .form-header span {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+
+        .input-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .input-icon {
+            padding: 0 15px;
+            background-color: #f9f9f9;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            color: #777;
+        }
+
+        .input-group input,
+        .input-group select {
+            flex: 1;
+            padding: 12px 15px;
+            border: none;
+            font-size: 1rem;
+            background-color: white;
+        }
+
+        .input-group input:focus,
+        .input-group select:focus {
+            outline: none;
+        }
+
+        .login-button {
+            background-color: var(--success-color);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+
+        .login-button:hover {
+            background-color: #27ae60;
+        }
+
+        .submit-button {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .submit-button:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .test-button {
+            background-color: var(--warning-color);
+        }
+
+        .test-button:hover {
+            background-color: #e67e22;
+        }
+
+        /* Log Section */
+        .log-section {
+            background-color: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .log-output {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .log-output label {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--dark-color);
+        }
+
+        #logArea {
+            flex: 1;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            resize: none;
+            font-family: monospace;
+            font-size: 0.9rem;
+            background-color: #f9f9f9;
+            margin-bottom: 10px;
+        }
+
+        .clear-log-button {
+            padding: 8px 15px;
+            background-color: var(--danger-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+            align-self: flex-end;
+            transition: background-color 0.3s ease;
+        }
+
+        .clear-log-button:hover {
+            background-color: #c0392b;
+        }
+
+        /* Footer */
+        .copyright-footer-simple {
+            text-align: center;
+            padding: 20px;
+            background-color: var(--dark-color);
+            color: white;
+            margin-top: auto;
+        }
+
+        .copyright-footer-simple a {
+            color: var(--accent-color);
+            text-decoration: none;
+        }
+
+        .copyright-footer-simple a:hover {
+            text-decoration: underline;
+        }
+
+        /* Notification */
+        .notification-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            max-width: 350px;
+        }
+
+        .notification {
+            padding: 15px 20px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            animation: slideInRight 0.3s ease, fadeOut 0.5s ease 4.5s forwards;
+            position: relative;
+            overflow: hidden;
+            background-color: white;
+        }
+
+        .notification.success {
+            border-left: 5px solid var(--success-color);
+        }
+
+        .notification.error {
+            border-left: 5px solid var(--danger-color);
+        }
+
+        .notification.info {
+            border-left: 5px solid var(--primary-color);
+        }
+
+        .notification.warning {
+            border-left: 5px solid var(--warning-color);
+        }
+
+        .notification-icon {
+            margin-right: 15px;
+            font-size: 1.5rem;
+        }
+
+        .notification.success .notification-icon {
+            color: var(--success-color);
+        }
+
+        .notification.error .notification-icon {
+            color: var(--danger-color);
+        }
+
+        .notification.info .notification-icon {
+            color: var(--primary-color);
+        }
+
+        .notification.warning .notification-icon {
+            color: var(--warning-color);
+        }
+
+        .notification-content {
+            flex: 1;
+        }
+
+        .notification-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .notification-message {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .close-notification {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+            margin-left: 10px;
+        }
+
+        /* Animations */
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(100%);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Notification Container -->
+    <div class="notification-container" id="notification-container"></div>
+
+    <!-- Header -->
+    <div class="header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-ad"></i>
+                <h1>Digital Code Store - Tool Tạo TK ADS</h1>
+            </div>
+            <div class="user-actions">
+                <button class="btn btn-primary" onclick="window.location.href='../trangchu/index.html'">
+                    <i class="fas fa-home"></i> Về trang chủ
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="form-section">
+            <form class="form-card" name="formID" id="form">
+                <div class="form-header">
+                    <i class="fas fa-tools icon"></i>
+                    <span>Tool Tạo TK ADS (JS)</span>
+                </div>
+               
+                <div class="input-group">
+                    <div class="input-icon">
+                        <i class="fas fa-key"></i>
+                    </div>
+                    <input type="text" id="Token" name="Token" placeholder="Access Token" required/>
+                    <button type="button" id="btnLogin" class="login-button">Login</button>
+                </div>
+
+                <div class="input-group">
+                    <div class="input-icon">
+                        <i class="fas fa-briefcase"></i>
+                    </div>
+                    <select id="IDBM" name="IDBM" required>
+                        <option value="">-- Chọn ID Business Manager --</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <div class="input-icon">
+                        <i class="fas fa-signature"></i>
+                    </div>
+                    <input type="text" id="TenTK" name="TenTK" placeholder="TÊN TK" required/>
+                </div>
+                <div class="input-group">
+                    <div class="input-icon">
+                        <i class="fas fa-money-bill-wave"></i>
+                    </div>
+                    <select id="currency" name="currency" required>
+                        <option value="">-- Chọn Tiền Tệ --</option>
+                        <option value="VND">Vietnamese Dong (VND)</option>
+                        <option value="USD" selected>US Dollars (USD) để nguyên change all</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <div class="input-icon">
+                        <i class="fas fa-globe-americas"></i>
+                    </div>
+                    <select id="timezone_id" name="timezone_id" required>
+                        <option value="">-- Chọn Múi Giờ --</option>
+                        <option value="1" selected>TZ_AMERICA_LOS_ANGELES (GMT-7)</option>
+                        <option value="132" >TZ_ASIA_HO_CHI_MINH (GMT+7)</option>
+                    </select>
+                </div>
+                 <div class="input-group">
+                    <div class="input-icon">
+                        <i class="fas fa-plus-circle"></i>
+                    </div>
+                    <input type="number" id="numAccounts" name="numAccounts" placeholder="Số lượng tài khoản muốn tạo" min="1" value="1" required/>
+                </div>
+                <button type="submit" class="submit-button">Bắt đầu tạo</button>
+            </form>
+        </div>
+
+        <div class="log-section">
+            <div class="log-output">
+                <label for="logArea">Log:</label>
+                <textarea id="logArea" rows="18" readonly></textarea>
+                <button id="clearLogButton" class="clear-log-button">Xóa Log</button>
+            </div>
+            <button id="btnGetToken" class="submit-button test-button">GET TOKEN</button>
+        </div>
+    </div>
+
+    <footer class="copyright-footer-simple">
+        <p class="developer">Phát triển bởi: <a href="https://www.facebook.com/tuquangnam07" target="_blank">Từ Quang Nam</a></p>
+    </footer>
+
+    <div id="fb-root"></div>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
+
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyA7kY_xl-B1r6pfRlUCVcI8OcLe7rOh11g",
+            authDomain: "digitalcodestore-tuquangnam.firebaseapp.com",
+            projectId: "digitalcodestore-tuquangnam",
+            storageBucket: "digitalcodestore-tuquangnam.firebasestorage.app",
+            messagingSenderId: "226534281162",
+            appId: "1:226534281162:web:9e734c1b07378efb280933",
+            measurementId: "G-9V4G42XSZS"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        // Check authentication state
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                // User is signed in
+                db.collection('users').doc(user.uid).get()
+                    .then((doc) => {
+                        if (doc.exists) {
+                            const userData = doc.data();
+                            showNotification('Thông báo', `Xin chào ${userData.displayName || userData.email}!`, 'info');
+                        }
+                    })
+                    .catch((error) => {
+                        console.error("Error getting user document:", error);
+                    });
+            } else {
+                // User is signed out
+                window.location.href = 'login.html';
+            }
+        });
+
+        const $logArea = $('#logArea');
+        const $tokenInput = $('#Token');
+        const $idBmSelect = $('#IDBM');
+        const $numAccountsInput = $('#numAccounts');
+
+        // Hàm để thêm nội dung vào ô log
+        function appendToLog(message) {
+            if ($logArea.length === 0) {
+                console.error("Lỗi: Không tìm thấy phần tử #logArea. Không thể ghi log.");
+                return;
+            }
+            const now = new Date();
+            const timeString = now.toLocaleTimeString();
+            $logArea.val($logArea.val() + `[${timeString}] ${message}\n`);
+            $logArea.scrollTop($logArea[0].scrollHeight);
+        }
+
+        // Hàm hiển thị thông báo
+        function showNotification(title, message, type = 'info') {
+            const notificationContainer = document.getElementById('notification-container');
+            
+            const notification = document.createElement('div');
+            notification.classList.add('notification', type);
+            
+            let icon = 'fa-info-circle';
+            if (type === 'success') icon = 'fa-check-circle';
+            if (type === 'error') icon = 'fa-exclamation-circle';
+            if (type === 'warning') icon = 'fa-exclamation-triangle';
+            
+            notification.innerHTML = `
+                <div class="notification-icon">
+                    <i class="fas ${icon}"></i>
+                </div>
+                <div class="notification-content">
+                    <div class="notification-title">${title}</div>
+                    <div class="notification-message">${message}</div>
+                </div>
+                <button class="close-notification">&times;</button>
+            `;
+            
+            notificationContainer.appendChild(notification);
+            
+            // Auto remove after 5 seconds
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.remove();
+                }
+            }, 5000);
+            
+            // Manual close
+            notification.querySelector('.close-notification').addEventListener('click', () => {
+                notification.remove();
+            });
+        }
+
+        // Hàm mở trang lấy token
+        function openTokenExplorer() {
+            window.open("https://developers.facebook.com/tools/explorer/596593044332985/", "_blank");
+        }
+
+        // Hàm xử lý Login và lấy ID BM
+        function handleLoginAndGetBMs() {
+            appendToLog('Đang thực hiện Login và lấy danh sách Business Manager IDs...');
+            const accessToken = $tokenInput.val().trim();
+
+            if (!accessToken) {
+                appendToLog('❌ Vui lòng nhập Access Token vào ô "Access Token" trước khi Login.');
+                showNotification('Lỗi', 'Vui lòng nhập Access Token trước khi Login', 'error');
+                return;
+            }
+
+            // Call API /me/businesses với Access Token từ input
+            FB.api(
+                '/me/businesses',
+                'GET',
+                { "access_token": accessToken },
+                function(response) {
+                    if (!response || response.error) {
+                        const error = response ? response.error : { message: 'Lỗi không xác định khi lấy ID BM', code: 'N/A', type: 'N/A' };
+                        appendToLog(`❌ Lỗi khi Login / lấy ID BM: ${error.message} (Code: ${error.code}, Type: ${error.type})`);
+                        showNotification('Lỗi', `Lỗi khi lấy ID BM: ${error.message}`, 'error');
+                        if (error.error_user_msg) {
+                            appendToLog(`    Chi tiết người dùng: ${error.error_user_msg}`);
+                        }
+                        if (error.code === 200 && error.error_subcode === 33) {
+                            appendToLog('    Lưu ý: Access Token của bạn có thể không có đủ quyền (scope) "business_management".');
+                            appendToLog('    Vui lòng kiểm tra lại quyền của Access Token tại Facebook Graph API Explorer.');
+                        }
+                    } else {
+                        if (response.data && response.data.length > 0) {
+                            appendToLog('✅ Đã tìm thấy các Business Manager ID:');
+                            showNotification('Thành công', 'Đã tìm thấy Business Manager IDs', 'success');
+                            $idBmSelect.empty();
+                            $idBmSelect.append('<option value="">-- Chọn ID Business Manager --</option>');
+
+                            response.data.forEach((business, index) => {
+                                appendToLog(`    ${index + 1}. Tên: "${business.name}" | ID: ${business.id}`);
+                                $idBmSelect.append(`<option value="${business.id}">${business.name} (${business.id})</option>`);
+                            });
+
+                            if (response.data.length > 0) {
+                                $idBmSelect.val(response.data[0].id);
+                                appendToLog(`💡 Đã tự động chọn ID BM đầu tiên: "${response.data[0].name}" (${response.data[0].id})`);
+                            }
+                           
+                            appendToLog('👍 Quá trình Login và điền ID BM đã hoàn tất. Bạn có thể tiếp tục tạo tài khoản.');
+                        } else {
+                            appendToLog('⚠️ Không tìm thấy Business Manager nào cho tài khoản này. Vui lòng kiểm tra lại quyền của Access Token.');
+                            showNotification('Cảnh báo', 'Không tìm thấy Business Manager nào', 'warning');
+                        }
+                    }
+                }
+            );
+        }
+
+        // Khởi tạo Facebook JavaScript SDK
+        window.fbAsyncInit = function() {
+            FB.init({
+                appId      : '596593044332985',
+                cookie     : true,
+                xfbml      : true,
+                version    : 'v23.0'
+            });
+            FB.getLoginStatus(function(response) {
+                if (response.status === 'connected') {
+                    appendToLog(`✅ Facebook JS SDK đã kết nối. ID người dùng: ${response.authResponse.userID}`);
+                } else {
+                    appendToLog('💡 Facebook JS SDK đã sẵn sàng.');
+                    appendToLog('Vui lòng nhập Access Token và nhấn "Login" để bắt đầu.');
+                }
+            });
+        };
+
+        $(document).ready(function () {
+            appendToLog('Tool sẵn sàng hoạt động.');
+
+            $('#clearLogButton').on('click', function() {
+                if ($logArea.length > 0) {
+                    $logArea.val('');
+                    appendToLog('Log đã được xóa.');
+                } else {
+                    console.error("Lỗi: Không tìm thấy phần tử #logArea khi xóa log.");
+                }
+            });
+
+            $('#btnGetToken').on('click', openTokenExplorer);
+            $('#btnLogin').on('click', handleLoginAndGetBMs);
+
+            $('form').on('submit', async function (e) {
+                e.preventDefault();
+
+                const idBm = $idBmSelect.val().trim();
+                const accessToken = $tokenInput.val().trim();
+                const baseAccountName = $('#TenTK').val().trim();
+                const currencyCode = $('#currency').val();
+                const timezoneId = $('#timezone_id').val();
+                const numberOfAccountsToCreate = parseInt($numAccountsInput.val());
+
+                if (!idBm || !accessToken || !baseAccountName || !currencyCode || !timezoneId || !numberOfAccountsToCreate || numberOfAccountsToCreate < 1) {
+                    appendToLog('❌ Lỗi: Vui lòng điền đầy đủ các trường bắt buộc và đảm bảo số lượng tài khoản lớn hơn 0.');
+                    showNotification('Lỗi', 'Vui lòng điền đầy đủ thông tin', 'error');
+                    return;
+                }
+
+                appendToLog('Đang bắt đầu quá trình tạo tài khoản...');
+                showNotification('Thông báo', 'Đang bắt đầu tạo tài khoản...', 'info');
+
+                let accountCount = 0;
+                let errorOccurred = false;
+
+                for (let i = 1; i <= numberOfAccountsToCreate; i++) {
+                    if (errorOccurred) {
+                        appendToLog('Dừng tạo tài khoản do lỗi đã xảy ra ở lần trước.');
+                        break;
+                    }
+
+                    const currentAccountName = `${baseAccountName} ${i}`;
+                    appendToLog(`💡 Thông tin: Đang tạo tài khoản: "${currentAccountName}" (Lần thứ ${i} trên ${numberOfAccountsToCreate})`);
+
+                    const apiPath = `/${idBm}/adaccount`;
+
+                    const params = {
+                        "currency": currencyCode,
+                        "name": currentAccountName,
+                        "end_advertiser": "596593044332985",
+                        "timezone_id": timezoneId,
+                        "media_agency": "128492518355415",
+                        "partner": "596593044332985",
+                        "access_token": accessToken
+                    };
+
+                    try {
+                        const response = await new Promise((resolve, reject) => {
+                            FB.api(apiPath, 'POST', params, function(response) {
+                                if (!response || response.error) {
+                                    const error = response ? response.error : { message: 'Empty response or unknown error', code: 'N/A', type: 'N/A', fbtrace_id: 'N/A' };
+                                    reject(error);
+                                } else {
+                                    resolve(response);
+                                }
+                            });
+                        });
+
+                        const newAccountId = response.id;
+                        const returnedCurrency = response.currency || currencyCode;
+                        const returnedTimezone = response.timezone_id || timezoneId;
+                        const returnedName = response.name || currentAccountName;
+
+                        appendToLog(`✅ Tạo TK Thành công: "${returnedName}" (ID: ${newAccountId}) | Tiền tệ: ${returnedCurrency} | Múi giờ: ${returnedTimezone}`);
+                        showNotification('Thành công', `Đã tạo tài khoản: ${returnedName}`, 'success');
+                        accountCount++;
+
+                        // Lưu thông tin tài khoản vào Firebase
+                        const user = auth.currentUser;
+                        if (user) {
+                            db.collection('created_accounts').add({
+                                userId: user.uid,
+                                accountName: returnedName,
+                                accountId: newAccountId,
+                                currency: returnedCurrency,
+                                timezone: returnedTimezone,
+                                businessManagerId: idBm,
+                                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                            }).catch(error => {
+                                console.error("Lỗi khi lưu thông tin tài khoản:", error);
+                            });
+                        }
+
+                        await new Promise(resolve => setTimeout(resolve, 500));
+
+                    } catch (error) {
+                        errorOccurred = true;
+                        const errorMessage = error.message || 'Lỗi không xác định.';
+                        const errorCode = error.code || 'N/A';
+                        const errorType = error.type || 'N/A';
+                        const errorFbtraceId = error.fbtrace_id || 'N/A';
+                        const errorUserMessage = error.error_user_msg || 'Không có thông báo cho người dùng.';
+
+                        appendToLog(`❌ Lỗi khi tạo tài khoản "${currentAccountName}":`);
+                        appendToLog(`    Message: ${errorMessage}`);
+                        showNotification('Lỗi', `Lỗi khi tạo tài khoản: ${errorMessage}`, 'error');
+                        
+                        if (errorUserMessage !== 'Không có thông báo cho người dùng.') {
+                            appendToLog(`    Chi tiết người dùng: ${errorUserMessage}`);
+                        }
+                        appendToLog(`    Mã lỗi: ${errorCode}`);
+                        appendToLog(`    Loại lỗi: ${errorType}`);
+                        appendToLog(`    FB Trace ID: ${errorFbtraceId}`);
+
+                        if (error.error_data) {
+                            appendToLog(`    Dữ liệu lỗi: ${JSON.stringify(error.error_data, null, 2)}`);
+                        }
+                        if (error.error_subcode) {
+                            appendToLog(`    Subcode: ${error.error_subcode}`);
+                        }
+                        break;
+                    }
+                }
+
+                appendToLog('---------------------------');
+                appendToLog(`Tổng số tài khoản đã tạo thành công: ${accountCount}`);
+                
+                if (errorOccurred) {
+                    appendToLog('Trạng thái chung: LỖI - Đã dừng tạo tài khoản do lỗi API.');
+                    showNotification('Lỗi', 'Đã xảy ra lỗi khi tạo tài khoản', 'error');
+                } else {
+                    appendToLog(`Trạng thái chung: HOÀN THÀNH - Đã tạo ${accountCount} tài khoản.`);
+                    showNotification('Thành công', `Đã tạo ${accountCount} tài khoản thành công`, 'success');
+                }
+
+                if (!errorOccurred && accountCount > 0) {
+                    $('#form')[0].reset();
+                    $tokenInput.val(accessToken);
+                    $idBmSelect.val(idBm);
+                    $numAccountsInput.val(numberOfAccountsToCreate);
+                    appendToLog('Form đã được reset, giữ lại Access Token, ID BM và số lượng đã chọn.');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

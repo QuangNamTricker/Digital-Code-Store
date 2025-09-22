@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Digital Tools and Code Store</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Notification Container -->
+    <div class="notification-container" id="notification-container"></div>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="logo">
+            <i class="fas fa-code"></i>
+            <h1>Admin Panel</h1>
+        </div>
+
+        <div class="admin-info">
+            <div class="admin-avatar">
+                <i class="fas fa-user-shield"></i>
+            </div>
+            <h2 id="admin-name">Administrator</h2>
+            <p id="admin-email">admin@example.com</p>
+        </div>
+
+        <div class="sidebar-menu">
+            <div class="menu-item active" data-page="dashboard">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>Trang Quản Trị</span>
+            </div>
+            <div class="menu-item" data-page="users">
+                <i class="fas fa-users"></i>
+                <span>Quản lý người dùng</span>
+            </div>
+            <div class="menu-item" data-page="products">
+                <i class="fas fa-box"></i>
+                <span>Quản lý sản phẩm</span>
+            </div>
+            <div class="menu-item" data-page="services">
+                <i class="fas fa-gift"></i>
+                <span>Dịch vụ miễn phí</span>
+            </div>
+            <div class="menu-item" data-page="deposits">
+                <i class="fas fa-money-bill-wave"></i>
+                <span>Yêu cầu nộp tiền</span>
+            </div>
+            <div class="menu-item" data-page="transactions">
+                <i class="fas fa-history"></i>
+                <span>Lịch Sử Giao Dịch</span>
+            </div>
+            <div class="menu-item" data-page="stats">
+                <i class="fas fa-chart-bar"></i>
+                <span>Thống Kê</span>
+            </div>
+        </div>
+
+        <div class="logout-btn" id="logout-btn">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Đăng xuất</span>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Header -->
+        <header>
+            <div class="container">
+                <div class="header-content">
+                    <div class="logo">
+                        <i class="fas fa-code"></i>
+                        <h1>Digital Code Store - Admin</h1>
+                    </div>
+                    <div class="admin-actions">
+                        <button class="btn btn-primary" onclick="window.location.href='../trangchu/index.html'">
+                            <i class="fas fa-home"></i> Về trang chủ
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Admin Content -->
+        <div class="container admin-content">
+            <!-- Dashboard Page -->
+            <div class="content-section active" id="dashboard-page">
+                <div class="stats-cards">
+                    <div class="stat-card">
+                        <div class="stat-icon primary">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="total-users">0</h3>
+                            <p>Tổng số người dùng</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon success">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="total-orders">0</h3>
+                            <p>Tổng số đơn hàng</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon warning">
+                            <i class="fas fa-money-bill-wave"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="total-revenue">0</h3>
+                            <p>Doanh thu</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon primary">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="pending-deposits">0</h3>
+                            <p>Yêu cầu nộp tiền chờ xử lý</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-section">
+                    <div class="section-title">
+                        <span>Hoạt động gần đây</span>
+                    </div>
+                    <table id="recent-activities">
+                        <thead>
+                            <tr>
+                                <th>Thời gian</th>
+                                <th>Người dùng</th>
+                                <th>Hành động</th>
+                                <th>Chi tiết</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="4">Đang tải dữ liệu...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Users Management Page -->
+            <div class="content-section" id="users-page">
+                <div class="section-title">
+                    <span>Quản lý người dùng</span>
+                    <div class="section-actions">
+                        <input type="text" id="user-search" class="form-control" placeholder="Tìm kiếm theo Email hoặc ID..." style="width: 300px;">
+                        <button class="btn btn-success" id="export-users-btn">
+                            <i class="fas fa-file-export"></i> Xuất Excel
+                        </button>
+                    </div>
+                </div>
+                <table id="users-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Tên</th>
+                            <th>Email</th>
+                            <th>Số dư</th>
+                            <th>Vai trò</th>
+                            <th>Trạng thái</th>
+                            <th>Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="7">Đang tải dữ liệu...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Products Management Page -->
+            <div class="content-section" id="products-page">
+                <div class="section-title">
+                    <span>Quản lý sản phẩm</span>
+                    <div class="section-actions">
+                        <button class="btn btn-primary" id="add-product-btn">
+                            <i class="fas fa-plus"></i> Thêm sản phẩm
+                        </button>
+                    </div>
+                </div>
+                <table id="products-table">
+                    <thead>
+                        <tr>
+                            <th>Hình ảnh</th>
+                            <th>Tên sản phẩm</th>
+                            <th>Mô tả</th>
+                            <th>Giá</th>
+                            <th>Nổi bật</th>
+                            <th>Trạng thái</th>
+                            <th>Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="7">Đang tải dữ liệu...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Free Services Management Page -->
+            <div class="content-section" id="services-page">
+                <div class="section-title">
+                    <span>Quản lý dịch vụ miễn phí</span>
+                    <div class="section-actions">
+                        <button class="btn btn-primary" id="add-service-btn">
+                            <i class="fas fa-plus"></i> Thêm dịch vụ
+                        </button>
+                    </div>
+                </div>
+                <table id="services-table">
+                    <thead>
+                        <tr>
+                            <th>Hình ảnh</th>
+                            <th>Tên dịch vụ</th>
+                            <th>Mô tả</th>
+                            <th>URL</th>
+                            <th>Nổi bật</th>
+                            <th>Trạng thái</th>
+                            <th>Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="7">Đang tải dữ liệu...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Deposit Requests Page -->
+            <div class="content-section" id="deposits-page">
+                <div class="section-title">
+                    <span>Yêu cầu nộp tiền</span>
+                    <div class="section-actions">
+                        <input type="text" id="deposit-search" class="form-control" placeholder="Tìm kiếm theo ID người dùng..." style="width: 300px;">
+                        <button class="btn btn-success" id="export-deposits-btn">
+                            <i class="fas fa-file-export"></i> Xuất Excel
+                        </button>
+                    </div>
+                </div>
+                <table id="deposits-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Người dùng</th>
+                            <th>Số tiền</th>
+                            <th>Nội dung</th>
+                            <th>Ngày yêu cầu</th>
+                            <th>Trạng thái</th>
+                            <th>Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="7">Đang tải dữ liệu...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Transactions Page -->
+            <div class="content-section" id="transactions-page">
+                <div class="section-title">
+                    <span>Lịch sử giao dịch</span>
+                    <div class="section-actions">
+                        <input type="text" id="transaction-search" class="form-control" placeholder="Tìm kiếm theo ID người dùng..." style="width: 300px;">
+                        <button class="btn btn-success" id="export-transactions-btn">
+                            <i class="fas fa-file-export"></i> Xuất Excel
+                        </button>
+                    </div>
+                </div>
+                <table id="transactions-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Người dùng</th>
+                            <th>Loại</th>
+                            <th>Mô tả</th>
+                            <th>Số tiền</th>
+                            <th>Ngày</th>
+                            <th>Trạng thái</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="7">Đang tải dữ liệu...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Statistics Page -->
+            <div class="content-section" id="stats-page">
+                <div class="section-title">
+                    <span>Thống kê hệ thống</span>
+                </div>
+                <div class="stats-cards">
+                    <div class="stat-card">
+                        <div class="stat-icon primary">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="daily-revenue">0</h3>
+                            <p>Doanh thu hôm nay</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon success">
+                            <i class="fas fa-shopping-bag"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="weekly-orders">0</h3>
+                            <p>Đơn hàng tuần này</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon warning">
+                            <i class="fas fa-user-plus"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="new-users">0</h3>
+                            <p>Người dùng mới (7 ngày)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-section">
+                    <div class="section-title">
+                        <span>Top sản phẩm bán chạy</span>
+                    </div>
+                    <table id="top-products">
+                        <thead>
+                            <tr>
+                                <th>Tên sản phẩm</th>
+                                <th>Số lượng bán</th>
+                                <th>Doanh thu</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div class="modal" id="edit-user-modal">
+        <div class="modal-content">
+            <button class="close-modal">&times;</button>
+            <h2>Chỉnh sửa người dùng</h2>
+            <form id="edit-user-form">
+                <input type="hidden" id="edit-user-id">
+                <div class="form-group">
+                    <label for="edit-user-name">Tên</label>
+                    <input type="text" class="form-control" id="edit-user-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-user-email">Email</label>
+                    <input type="email" class="form-control" id="edit-user-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-user-balance">Số dư (VNĐ)</label>
+                    <input type="number" class="form-control" id="edit-user-balance" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-user-role">Vai trò</label>
+                    <select class="form-control" id="edit-user-role" required>
+                        <option value="user">Người dùng</option>
+                        <option value="admin">Quản trị viên</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="edit-user-status">Trạng thái</label>
+                    <select class="form-control" id="edit-user-status" required>
+                        <option value="active">Hoạt động</option>
+                        <option value="banned">Bị khóa</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%">Lưu thay đổi</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="add-funds-modal">
+        <div class="modal-content">
+            <button class="close-modal">&times;</button>
+            <h2>Cộng tiền cho người dùng</h2>
+            <form id="add-funds-form">
+                <input type="hidden" id="add-funds-user-id">
+                <div class="form-group">
+                    <label for="add-funds-user-name">Người dùng</label>
+                    <input type="text" class="form-control" id="add-funds-user-name" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="add-funds-amount">Số tiền (VNĐ)</label>
+                    <input type="number" class="form-control" id="add-funds-amount" required min="1000">
+                </div>
+                <div class="form-group">
+                    <label for="add-funds-description">Mô tả</label>
+                    <input type="text" class="form-control" id="add-funds-description" value="Admin cộng tiền" required>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%">Cộng tiền</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="product-modal">
+        <div class="modal-content">
+            <button class="close-modal">&times;</button>
+            <h2 id="product-modal-title">Thêm sản phẩm mới</h2>
+            <form id="product-form">
+                <input type="hidden" id="product-id">
+                <div class="form-group">
+                    <label for="product-name">Tên sản phẩm</label>
+                    <input type="text" class="form-control" id="product-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="product-description">Mô tả</label>
+                    <textarea class="form-control" id="product-description" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="product-price">Giá (VNĐ)</label>
+                    <input type="number" class="form-control" id="product-price" required min="0">
+                </div>
+                <div class="form-group">
+                    <label for="product-image">URL hình ảnh</label>
+                    <input type="url" class="form-control" id="product-image" placeholder="https://example.com/image.jpg">
+                </div>
+                <div class="form-group">
+                    <label for="product-downloadUrl">URL tải xuống</label>
+                    <input type="url" class="form-control" id="product-downloadUrl" placeholder="https://example.com/download" required>
+                </div>
+                <div class="form-group">
+                    <label for="product-isFeatured">Sản phẩm nổi bật</label>
+                    <select class="form-control" id="product-isFeatured">
+                        <option value="false">Không</option>
+                        <option value="true">Có</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="product-status">Trạng thái</label>
+                    <select class="form-control" id="product-status" required>
+                        <option value="active">Hoạt động</option>
+                        <option value="inactive">Ngừng hoạt động</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Lưu sản phẩm</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="service-modal">
+        <div class="modal-content">
+            <button class="close-modal">&times;</button>
+            <h2 id="service-modal-title">Thêm dịch vụ miễn phí</h2>
+            <form id="service-form">
+                <input type="hidden" id="service-id">
+                <div class="form-group">
+                    <label for="service-name">Tên dịch vụ</label>
+                    <input type="text" class="form-control" id="service-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="service-description">Mô tả</label>
+                    <textarea class="form-control" id="service-description" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="service-image">URL hình ảnh</label>
+                    <input type="url" class="form-control" id="service-image" placeholder="https://example.com/image.jpg">
+                </div>
+                <div class="form-group">
+                    <label for="service-externalUrl">URL liên kết</label>
+                    <input type="url" class="form-control" id="service-externalUrl" placeholder="https://example.com/service" required>
+                </div>
+                <div class="form-group">
+                    <label for="service-isFeatured">Dịch vụ nổi bật</label>
+                    <select class="form-control" id="service-isFeatured">
+                        <option value="false">Không</option>
+                        <option value="true">Có</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="service-status">Trạng thái</label>
+                    <select class="form-control" id="service-status" required>
+                        <option value="active">Hoạt động</option>
+                        <option value="inactive">Ngừng hoạt động</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Lưu dịch vụ</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+    <!-- App Scripts -->
+    <script src="js/firebase-config.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/navigation.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/users.js"></script>
+    <script src="js/products.js"></script>
+    <script src="js/services.js"></script>
+    <script src="js/deposits.js"></script>
+    <script src="js/transactions.js"></script>
+    <script src="js/stats.js"></script>
+    <script src="js/modals.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
