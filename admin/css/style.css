@@ -656,3 +656,56 @@ textarea.form-control {
     margin-bottom: 15px;
     flex-wrap: wrap;
 }
+/* Coupon Management Styles */
+.form-row {
+    display: flex;
+    gap: 15px;
+}
+
+.form-row .form-group {
+    flex: 1;
+}
+
+.form-text {
+    font-size: 12px;
+    color: #6c757d;
+    margin-top: 5px;
+}
+
+.badge {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: normal;
+}
+
+.badge-primary { background-color: #007bff; color: white; }
+.badge-success { background-color: #28a745; color: white; }
+.badge-info { background-color: #17a2b8; color: white; }
+.badge-secondary { background-color: #6c757d; color: white; }
+.badge-warning { background-color: #ffc107; color: black; }
+
+/* Table actions */
+.btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+    margin: 2px;
+}
+
+.text-center {
+    text-align: center;
+}
+
+/* Multiple select styling */
+select[multiple] {
+    min-height: 100px;
+}
+
+select[multiple] option {
+    padding: 8px;
+    border-bottom: 1px solid #eee;
+}
+
+select[multiple] option:hover {
+    background-color: #f8f9fa;
+}

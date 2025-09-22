@@ -43,6 +43,10 @@
                 <i class="fas fa-gift"></i>
                 <span>Dịch vụ miễn phí</span>
             </div>
+            <div class="menu-item" data-page="coupons">
+                <i class="fas fa-tags"></i>
+                <span>Mã giảm giá</span>
+            </div>
             <div class="menu-item" data-page="deposits">
                 <i class="fas fa-money-bill-wave"></i>
                 <span>Yêu cầu nộp tiền</span>
@@ -237,7 +241,36 @@
                     </tbody>
                 </table>
             </div>
-
+            <!-- Thêm trang quản lý coupons trong admin-content -->
+            <div class="content-section" id="coupons-page">
+                <div class="section-title">
+                    <span>Quản lý mã giảm giá</span>
+                    <div class="section-actions">
+                        <button class="btn btn-primary" id="add-coupon-btn">
+                            <i class="fas fa-plus"></i> Tạo mã giảm giá
+                        </button>
+                    </div>
+                </div>
+                <table id="coupons-table">
+                    <thead>
+                        <tr>
+                            <th>Mã</th>
+                            <th>Mô tả</th>
+                            <th>Loại giảm giá</th>
+                            <th>Giá trị</th>
+                            <th>Hết hạn</th>
+                            <th>Đã sử dụng</th>
+                            <th>Trạng thái</th>
+                            <th>Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="8">Đang tải dữ liệu...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
             <!-- Deposit Requests Page -->
             <div class="content-section" id="deposits-page">
                 <div class="section-title">
@@ -268,7 +301,89 @@
                     </tbody>
                 </table>
             </div>
-
+            <!-- Thêm modal tạo/chỉnh sửa coupon -->
+            <div class="modal" id="coupon-modal">
+                <div class="modal-content">
+                    <button class="close-modal">&times;</button>
+                    <h2 id="coupon-modal-title">Tạo mã giảm giá mới</h2>
+                    <form id="coupon-form">
+                        <input type="hidden" id="coupon-id">
+                        
+                        <div class="form-group">
+                            <label for="coupon-code">Mã giảm giá *</label>
+                            <input type="text" class="form-control" id="coupon-code" required 
+                                placeholder="VD: WELCOME10" maxlength="20" style="text-transform: uppercase;">
+                            <small class="form-text">Mã phải viết hoa, không dấu, không khoảng trắng</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="coupon-description">Mô tả *</label>
+                            <input type="text" class="form-control" id="coupon-description" required 
+                                placeholder="VD: Giảm 10% cho đơn hàng đầu tiên">
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group" style="flex: 1;">
+                                <label for="coupon-discountType">Loại giảm giá *</label>
+                                <select class="form-control" id="coupon-discountType" required>
+                                    <option value="percentage">Phần trăm (%)</option>
+                                    <option value="fixed">Số tiền cố định (VNĐ)</option>
+                                </select>
+                            </div>
+                            <div class="form-group" style="flex: 1;">
+                                <label for="coupon-discountValue">Giá trị *</label>
+                                <input type="number" class="form-control" id="coupon-discountValue" required 
+                                    min="1" step="0.01" placeholder="10 hoặc 10000">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="coupon-minOrderValue">Giá trị đơn hàng tối thiểu (VNĐ)</label>
+                            <input type="number" class="form-control" id="coupon-minOrderValue" 
+                                min="0" placeholder="0 = không yêu cầu">
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group" style="flex: 1;">
+                                <label for="coupon-usageLimit">Giới hạn sử dụng</label>
+                                <input type="number" class="form-control" id="coupon-usageLimit" 
+                                    min="0" placeholder="0 = không giới hạn">
+                            </div>
+                            <div class="form-group" style="flex: 1;">
+                                <label for="coupon-oneTimeUse">Mỗi người dùng</label>
+                                <select class="form-control" id="coupon-oneTimeUse">
+                                    <option value="true">Chỉ dùng 1 lần</option>
+                                    <option value="false">Dùng nhiều lần</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="coupon-expiryDate">Ngày hết hạn</label>
+                            <input type="datetime-local" class="form-control" id="coupon-expiryDate">
+                            <small class="form-text">Để trống nếu không có hạn sử dụng</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="coupon-applicableProducts">Áp dụng cho sản phẩm (tùy chọn)</label>
+                            <select class="form-control" id="coupon-applicableProducts" multiple style="height: 100px;">
+                                <!-- Sẽ được điền bằng JavaScript -->
+                            </select>
+                            <small class="form-text">Giữ Ctrl để chọn nhiều sản phẩm. Để trống nếu áp dụng cho tất cả</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="coupon-isActive">Trạng thái</label>
+                            <select class="form-control" id="coupon-isActive" required>
+                                <option value="true">Kích hoạt</option>
+                                <option value="false">Vô hiệu hóa</option>
+                            </select>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary btn-block">Lưu mã giảm giá</button>
+                    </form>
+                </div>
+            </div>
             <!-- Transactions Page -->
             <div class="content-section" id="transactions-page">
                 <div class="section-title">
@@ -519,6 +634,7 @@
     <script src="js/transactions.js"></script>
     <script src="js/stats.js"></script>
     <script src="js/modals.js"></script>
+    <script src="js/coupons.js"></script>
     <script src="js/main.js"></script>
 </body>
 </html>
