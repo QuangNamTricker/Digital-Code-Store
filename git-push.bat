@@ -19,6 +19,8 @@ set BLUE=[94m
 set CYAN=[96m
 set RESET=[0m
 
+:: Chuyển CMD sang UTF-8
+chcp 65001 >nul
 cls
 echo =====================================================
 echo %CYAN% 🚀 DIGITAL CODE STORE - GIT TOOL %RESET%
