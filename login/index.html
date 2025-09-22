@@ -5,15 +5,421 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Đăng nhập - Digital Tools and Code Store</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/auth.css">
+    <style>
+        :root {
+    --primary-color: #3498db;
+    --secondary-color: #2980b9;
+    --accent-color: #1abc9c;
+    --light-color: #ecf0f1;
+    --dark-color: #2c3e50;
+    --success-color: #2ecc71;
+    --warning-color: #f39c12;
+    --danger-color: #e74c3c;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: #333;
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Header Styles */
+header {
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    color: white;
+    padding: 15px 0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo h1 {
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+.logo i {
+    font-size: 2rem;
+    color: white;
+}
+
+.back-button {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 10px 20px;
+    border: 2px solid white;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+}
+
+.back-button:hover {
+    background-color: white;
+    color: var(--primary-color);
+}
+
+/* Auth Container */
+.auth-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 0;
+}
+
+.auth-tabs {
+    width: 100%;
+    max-width: 500px;
+    background-color: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    position: relative;
+    z-index: 1;
+}
+
+.tabs-header {
+    display: flex;
+    border-bottom: 1px solid #eee;
+}
+
+.tab-link {
+    flex: 1;
+    padding: 20px;
+    text-align: center;
+    background: none;
+    border: none;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: #777;
+}
+
+.tab-link.active {
+    color: var(--primary-color);
+    border-bottom: 3px solid var(--primary-color);
+}
+
+.tab-content {
+    padding: 30px;
+}
+
+.tab-pane {
+    display: none;
+}
+
+.tab-pane.active {
+    display: block;
+    animation: fadeIn 0.5s ease;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: var(--dark-color);
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+    outline: none;
+}
+
+.captcha-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.captcha-code {
+    font-size: 1.5rem;
+    font-weight: bold;
+    letter-spacing: 5px;
+    background: #f1f1f1;
+    padding: 5px 15px;
+    border-radius: 5px;
+    color: var(--dark-color);
+}
+
+.btn-refresh {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-refresh:hover {
+    background: var(--secondary-color);
+}
+
+.btn-auth {
+    width: 100%;
+    padding: 12px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-auth:hover {
+    background-color: var(--secondary-color);
+}
+
+.auth-links {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.auth-links a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.auth-links a:hover {
+    text-decoration: underline;
+}
+
+.forgot-password {
+    text-align: right;
+    margin-bottom: 20px;
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+
+.close-modal {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 1.5rem;
+    color: #777;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+/* Notification Popup */
+.notification-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    max-width: 350px;
+}
+
+.notification {
+    padding: 15px 20px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+    display: flex;
+    align-items: center;
+    animation: slideInRight 0.3s ease, fadeOut 0.5s ease 4.5s forwards;
+    position: relative;
+    overflow: hidden;
+}
+
+.notification::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 5px;
+}
+
+.notification-success {
+    background-color: white;
+    border-left: 5px solid var(--success-color);
+    color: var(--dark-color);
+}
+
+.notification-error {
+    background-color: white;
+    border-left: 5px solid var(--danger-color);
+    color: var(--dark-color);
+}
+
+.notification-icon {
+    margin-right: 15px;
+    font-size: 1.5rem;
+}
+
+.notification-success .notification-icon {
+    color: var(--success-color);
+}
+
+.notification-error .notification-icon {
+    color: var(--danger-color);
+}
+
+.notification-content {
+    flex: 1;
+}
+
+.notification-title {
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.notification-message {
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+.close-notification {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.3s ease;
+    margin-left: 10px;
+}
+
+.close-notification:hover {
+    opacity: 1;
+}
+
+/* Footer */
+footer {
+    background-color: rgba(44, 62, 80, 0.8);
+    color: white;
+    padding: 20px 0;
+    text-align: center;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+/* Responsive Design */
+@media (max-width: 576px) {
+    .auth-tabs {
+        margin: 0 15px;
+    }
+    
+    .tab-content {
+        padding: 20px;
+    }
+    
+    .notification-container {
+        left: 15px;
+        right: 15px;
+        max-width: none;
+    }
+}
+    </style>
 </head>
 <body>
     <!-- Notification Container -->
     <div class="notification-container" id="notification-container"></div>
 
     <!-- Header -->
-    <!--#include file="components/header.html" -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-code"></i>
+                    <h1>Digital Code Store</h1>
+                </div>
+                <a href="../index.html" class="back-button">
+                    <i class="fas fa-arrow-left"></i> Quay lại trang chủ
+                </a>
+            </div>
+        </div>
+    </header>
 
     <!-- Auth Container -->
     <div class="auth-container">
@@ -43,7 +449,7 @@
                         <p>Chưa có tài khoản? <a href="#" id="go-to-register">Đăng ký ngay</a></p>
                     </div>
                 </div>
-
+                <link rel="stylesheet" href="styles.css">
                 <!-- Register Tab -->
                 <div class="tab-pane" id="register">
                     <form id="register-form">
@@ -82,7 +488,7 @@
             </div>
         </div>
     </div>
-
+    <script src="script.js" defer></script>
     <!-- Forgot Password Modal -->
     <div class="modal" id="forgot-password-modal">
         <div class="modal-content">
@@ -99,17 +505,306 @@
     </div>
 
     <!-- Footer -->
-    <!--#include file="components/footer.html" -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 Digital Tools and Code Store. All rights reserved.</p>
+        </div>
+    </footer>
+        <!-- Firebase App (core functionality) -->
+        <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+        <!-- Firebase Authentication -->
+        <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+        <!-- Firebase Firestore -->
+        <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script>
+        
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyA7kY_xl-B1r6pfRlUCVcI8OcLe7rOh11g",
+            authDomain: "digitalcodestore-tuquangnam.firebaseapp.com",
+            projectId: "digitalcodestore-tuquangnam",
+            storageBucket: "digitalcodestore-tuquangnam.firebasestorage.app",
+            messagingSenderId: "226534281162",
+            appId: "1:226534281162:web:9e734c1b07378efb280933",
+            measurementId: "G-9V4G42XSZS"
+        };
 
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-    
-    <!-- Custom Scripts -->
-    <script src="js/firebase.js"></script>
-    <script src="js/notifications.js"></script>
-    <script src="js/ui.js"></script>
-    <script src="js/auth.js"></script>
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+        
+        // Tab functionality
+        document.querySelectorAll('.tab-link').forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active class from all tabs
+                document.querySelectorAll('.tab-link').forEach(t => t.classList.remove('active'));
+                // Add active class to clicked tab
+                tab.classList.add('active');
+                
+                // Hide all tab panes
+                document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('active'));
+                // Show the corresponding tab pane
+                document.getElementById(tab.dataset.tab).classList.add('active');
+            });
+        });
+        
+        // Switch between login and register
+        document.getElementById('go-to-register').addEventListener('click', (e) => {
+            e.preventDefault();
+            document.querySelector('[data-tab="register"]').click();
+        });
+        
+        document.getElementById('go-to-login').addEventListener('click', (e) => {
+            e.preventDefault();
+            document.querySelector('[data-tab="login"]').click();
+        });
+        
+        // Generate CAPTCHA
+        function generateCaptcha() {
+            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            let captcha = '';
+            for (let i = 0; i < 4; i++) {
+                captcha += characters.charAt(Math.floor(Math.random() * characters.length));
+            }
+            document.getElementById('captcha').textContent = captcha;
+            return captcha;
+        }
+        
+        let currentCaptcha = generateCaptcha();
+        
+        // Refresh CAPTCHA
+        document.getElementById('refresh-captcha').addEventListener('click', () => {
+            currentCaptcha = generateCaptcha();
+        });
+        
+        // Forgot password modal
+        const forgotPasswordModal = document.getElementById('forgot-password-modal');
+        const forgotPasswordLink = document.getElementById('forgot-password-link');
+        const closeModal = document.querySelector('.close-modal');
+        
+        forgotPasswordLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            forgotPasswordModal.style.display = 'flex';
+        });
+        
+        closeModal.addEventListener('click', () => {
+            forgotPasswordModal.style.display = 'none';
+        });
+        
+        window.addEventListener('click', (e) => {
+            if (e.target === forgotPasswordModal) {
+                forgotPasswordModal.style.display = 'none';
+            }
+        });
+        
+        // Show notification
+        function showNotification(message, type = 'success') {
+            const notificationContainer = document.getElementById('notification-container');
+            const notification = document.createElement('div');
+            notification.className = `notification notification-${type}`;
+            
+            const icon = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle';
+            
+            notification.innerHTML = `
+                <i class="fas ${icon} notification-icon"></i>
+                <div class="notification-content">
+                    <div class="notification-title">${type === 'success' ? 'Thành công' : 'Lỗi'}</div>
+                    <div class="notification-message">${message}</div>
+                </div>
+                <button class="close-notification">&times;</button>
+            `;
+            
+            notificationContainer.appendChild(notification);
+            
+            // Close notification on button click
+            notification.querySelector('.close-notification').addEventListener('click', () => {
+                notification.style.animation = 'fadeOut 0.5s ease forwards';
+                setTimeout(() => {
+                    notification.remove();
+                }, 500);
+            });
+            
+            // Auto remove after 5 seconds
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.style.animation = 'fadeOut 0.5s ease forwards';
+                    setTimeout(() => {
+                        if (notification.parentNode) {
+                            notification.remove();
+                        }
+                    }, 500);
+                }
+            }, 5000);
+        }
+        
+        // Login form submission
+        document.getElementById('login-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            
+            auth.signInWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    // Signed in
+                    const user = userCredential.user;
+                    
+                    // Kiểm tra trạng thái tài khoản trong Firestore
+                    db.collection('users').doc(user.uid).get()
+                        .then((doc) => {
+                            if (doc.exists) {
+                                const userData = doc.data();
+                                
+                                // Kiểm tra nếu tài khoản bị khóa
+                                if (userData.status === 'banned') {
+                                    showNotification('Tài khoản của bạn đã bị khóa. Vui lòng liên hệ quản trị viên.', 'error');
+                                    auth.signOut();
+                                    return;
+                                }
+                                
+                                // Kiểm tra xác thực email
+                                if (user.emailVerified) {
+                                    showNotification('Đăng nhập thành công!', 'success');
+                                    setTimeout(() => {
+                                        window.location.href = '../trangchu/index.html';
+                                    }, 1500);
+                                } else {
+                                    showNotification('Vui lòng xác thực email trước khi đăng nhập. Kiểm tra hộp thư của bạn để tìm liên kết xác minh.', 'error');
+                                    auth.signOut();
+                                }
+                            }
+                        });
+                })
+                .catch((error) => {
+                    let errorMessage = 'Đã xảy ra lỗi khi đăng nhập. Vui lòng thử lại.';
+                    
+                    switch (error.code) {
+                        case 'auth/user-not-found':
+                            errorMessage = 'Email không tồn tại trong hệ thống.';
+                            break;
+                        case 'auth/wrong-password':
+                            errorMessage = 'Mật khẩu không chính xác.';
+                            break;
+                        case 'auth/invalid-email':
+                            errorMessage = 'Email không hợp lệ.';
+                            break;
+                    }
+                    
+                    showNotification(errorMessage, 'error');
+                });
+        });
+        
+        // Register form submission
+        document.getElementById('register-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // Validate CAPTCHA
+            const enteredCaptcha = document.getElementById('register-captcha').value.toUpperCase();
+            if (enteredCaptcha !== currentCaptcha) {
+                showNotification('Mã xác nhận không đúng!', 'error');
+                currentCaptcha = generateCaptcha();
+                return;
+            }
+            
+            // Validate password confirmation
+            const password = document.getElementById('register-password').value;
+            const confirmPassword = document.getElementById('register-confirm-password').value;
+            
+            if (password !== confirmPassword) {
+                showNotification('Mật khẩu xác nhận không khớp!', 'error');
+                return;
+            }
+            
+            const name = document.getElementById('register-name').value;
+            const email = document.getElementById('register-email').value;
+            
+            // Sau khi tạo user thành công, thêm vào Firestore
+            auth.createUserWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    const user = userCredential.user;
+                    
+                    // Update profile với display name
+                    return user.updateProfile({
+                        displayName: name
+                    }).then(() => {
+                        // Tạo document user trong Firestore
+                        return db.collection('users').doc(user.uid).set({
+                            displayName: name,
+                            email: email,
+                            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                            balance: 0,
+                            role: 'user',
+                            status: 'active'
+                        });
+                    }).then(() => {
+                        // Gửi email xác thực
+                        return user.sendEmailVerification();
+                    }).then(() => {
+                        showNotification('Đăng ký thành công! Vui lòng kiểm tra email để xác thực.', 'success');
+                        document.getElementById('register-form').reset();
+                        currentCaptcha = generateCaptcha();
+                        
+                        // Chuyển sang tab đăng nhập sau 3 giây
+                        setTimeout(() => {
+                            document.querySelector('[data-tab="login"]').click();
+                        }, 3000);
+                    });
+                })
+                .catch((error) => {
+                    let errorMessage = 'Đã xảy ra lỗi khi đăng ký. Vui lòng thử lại.';
+                    
+                    switch (error.code) {
+                        case 'auth/email-already-in-use':
+                            errorMessage = 'Email này đã được sử dụng cho tài khoản khác.';
+                            break;
+                        case 'auth/invalid-email':
+                            errorMessage = 'Email không hợp lệ.';
+                            break;
+                        case 'auth/weak-password':
+                            errorMessage = 'Mật khẩu quá yếu. Vui lòng chọn mật khẩu mạnh hơn.';
+                            break;
+                    }
+                    
+                    showNotification(errorMessage, 'error');
+                });
+        });
+        
+        // Forgot password form submission
+        document.getElementById('forgot-password-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('forgot-email').value;
+            
+            auth.sendPasswordResetEmail(email)
+                .then(() => {
+                    showNotification('Email đặt lại mật khẩu đã được gửi! Vui lòng kiểm tra hộp thư của bạn.', 'success');
+                    // Close modal after 3 seconds
+                    setTimeout(() => {
+                        forgotPasswordModal.style.display = 'none';
+                    }, 3000);
+                })
+                .catch((error) => {
+                    let errorMessage = 'Đã xảy ra lỗi khi gửi email đặt lại mật khẩu. Vui lòng thử lại.';
+                    
+                    switch (error.code) {
+                        case 'auth/user-not-found':
+                            errorMessage = 'Email không tồn tại trong hệ thống.';
+                            break;
+                        case 'auth/invalid-email':
+                            errorMessage = 'Email không hợp lệ.';
+                            break;
+                    }
+                    
+                    showNotification(errorMessage, 'error');
+                });
+        });
+        
+        // Check if URL has #register hash and switch to register tab
+        if (window.location.hash === '#register') {
+            document.querySelector('[data-tab="register"]').click();
+        }
+    </script>
+
 </body>
 </html>
