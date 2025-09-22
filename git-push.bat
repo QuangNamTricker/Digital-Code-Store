@@ -2,31 +2,40 @@
 :: ======================================================
 :: 🚀 Digital Code Store Git Tool
 :: Copyright By Từ Quang Nam
-:: Version: 1.0.1
+:: Version: 1.0.2
 :: ======================================================
 
-:: Set màu mặc định (Xanh dương chữ trắng)
-color 1F
+:: Bật ANSI escape code
+for /f "tokens=2 delims=: " %%a in ('reg query HKEY_CURRENT_USER\Console ^| find "VirtualTerminalLevel"') do set vt=%%a
+if not defined vt (
+    reg add HKEY_CURRENT_USER\Console /v VirtualTerminalLevel /t REG_DWORD /d 1 /f >nul
+)
 
-:: Clear màn hình
+:: Định nghĩa màu (ANSI)
+set GREEN=[92m
+set RED=[91m
+set YELLOW=[93m
+set BLUE=[94m
+set CYAN=[96m
+set RESET=[0m
+
 cls
-
-:: Hiện header
 echo =====================================================
-echo   🚀 DIGITAL CODE STORE - GIT TOOL
-echo   ---------------------------------
-echo   Copyright By Từ Quang Nam
-echo   Version: 1.0.1
+echo %CYAN% 🚀 DIGITAL CODE STORE - GIT TOOL %RESET%
+echo ---------------------------------
+echo %YELLOW% Copyright By Từ Quang Nam %RESET%
+echo %YELLOW% Version: 1.0.2 %RESET%
 echo =====================================================
 echo.
 
 :: [1/5] Check trạng thái
-echo [1/5] Checking Git status...
+echo %BLUE%[1/5] Checking Git status...%RESET%
 git status
 echo.
-set /p choice=❓ Ban co muon tiep tuc commit + push khong? (Y/N): 
+set /p choice=❓ %YELLOW%Bạn có muốn tiếp tục commit + push không? (Y/N): %RESET%
 if /I "%choice%" NEQ "Y" (
-    echo ❌ Da huy thao tac.
+    echo %RED%❌ Đã huỷ thao tác.%RESET%
+    echo.
     pause
     exit /b
 )
@@ -55,27 +64,27 @@ for /f "tokens=1-2 delims=: " %%a in ("%time%") do (
 
 set commitMsg=Digital Code Store - Commit #%commitCount% - %ngay% %gio%
 
-echo [2/5] Auto commit message tao ra:
-echo    "%commitMsg%"
+echo %BLUE%[2/5] Auto commit message tạo ra:%RESET%
+echo    %GREEN%"%commitMsg%"%RESET%
 echo.
 
 :: [3/5] Add file
-echo [3/5] Adding all files...
+echo %BLUE%[3/5] Adding all files...%RESET%
 git add .
 echo.
 
 :: [4/5] Commit
-echo [4/5] Committing...
+echo %BLUE%[4/5] Committing...%RESET%
 git commit -m "%commitMsg%"
 echo.
 
 :: [5/5] Push
-echo [5/5] Pushing to GitHub...
+echo %BLUE%[5/5] Pushing to GitHub...%RESET%
 git push origin main
 if errorlevel 1 (
-    color 4F
     echo.
-    echo ❌ Push failed!
+    echo %RED%❌ Push failed!%RESET%
+    echo.
     pause
     exit /b
 )
@@ -83,18 +92,20 @@ if errorlevel 1 (
 :: Ghi log
 echo [%date% %time%] %commitMsg% >> commit-history.txt
 
-:: Thong bao thanh cong
-color 2F
+:: Thông báo thành công
 echo.
 echo =====================================================
-echo ✅ Push thanh cong!
-echo 📂 Log da luu vao commit-history.txt
-echo 🌍 Dang mo repo tren trinh duyet...
+echo %GREEN%✅ Push thành công!%RESET%
+echo %CYAN%📂 Log đã lưu vào commit-history.txt%RESET%
+echo %CYAN%🌍 Repo sẽ mở trên trình duyệt...%RESET%
 echo =====================================================
 echo.
 
-:: Mo repo tren trinh duyet
+:: Mở repo
 start https://github.com/QuangNamTricker/Digital-Code-Store
 
+:: Tạo khoảng trống trước khi đóng tool
+echo.
+echo.
 pause
 exit
