@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tạo Email Để Xác Thực Tài Khoản - Không quảng cáo</title>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script>
+        window.onload = function () {
+          // Tạo overlay
+          let overlay = document.createElement("div");
+          overlay.style.position = "fixed";
+          overlay.style.top = "0";
+          overlay.style.left = "0";
+          overlay.style.width = "100%";
+          overlay.style.height = "100%";
+          overlay.style.backgroundColor = "rgba(0,0,0,0.5)";
+          overlay.style.display = "flex";
+          overlay.style.alignItems = "center";
+          overlay.style.justifyContent = "center";
+          overlay.style.zIndex = "9999"; // đảm bảo nằm trên iframe
+    
+          // Tạo hộp popup
+          let popup = document.createElement("div");
+          popup.style.background = "#fff";
+          popup.style.padding = "20px";
+          popup.style.borderRadius = "10px";
+          popup.style.boxShadow = "0 4px 10px rgba(0,0,0,0.3)";
+          popup.style.maxWidth = "400px";
+          popup.style.textAlign = "center";
+          popup.innerHTML = `
+            <h2 style="margin:0 0 10px;color:red;">⚠ Lưu Ý</h2>
+            <p style="margin:0 0 15px;font-size:16px;">
+              Viết domain mail tự do <br>
+              nhưng bắt buộc phải có <b>@smvmail.com</b> ở cuối.
+              và không được load lại trang.
+            </p>
+          `;
+    
+          // Nút đóng
+          let btn = document.createElement("button");
+          btn.textContent = "Đã hiểu";
+          btn.style.padding = "8px 16px";
+          btn.style.border = "none";
+          btn.style.borderRadius = "5px";
+          btn.style.background = "#007bff";
+          btn.style.color = "#fff";
+          btn.style.cursor = "pointer";
+    
+          btn.onclick = function () {
+            document.body.removeChild(overlay);
+          };
+    
+          popup.appendChild(btn);
+          overlay.appendChild(popup);
+          document.body.appendChild(overlay);
+        };
+      </script>
+</head>
+<body>
+    <div id="container">
+        <div id="header">
+            <h1>Tạo Email Để Xác Thực Tài Khoản - Không quảng cáo</h1>
+            <p>Trang web này đã được loại bỏ quảng cáo</p>
+        </div>
+        <iframe 
+            id="smsFrame" 
+            src="https://smvmail.com/" 
+            title="Tạo Email Để Xác Thực Tài Khoản" 
+            sandbox="allow-same-origin allow-scripts allow-forms"
+        ></iframe>
+    </div>
+    <script>
+        // alert("Lưu Ý: viết domain mail tự do nma yêu cầu có : @smvmail.com cuối cùng")
+      </script>
+    <!-- JavaScript Files -->
+    <script src="js/firebase-config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/adblock.js"></script>
+</body>
+</html>
