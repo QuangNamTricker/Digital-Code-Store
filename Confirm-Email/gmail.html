@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý tài khoản Gmail</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+}
+
+header {
+    background: linear-gradient(135deg, #4285f4, #34a853);
+    color: white;
+    padding: 30px;
+    text-align: center;
+}
+
+header h1 {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+}
+
+header h1 i {
+    margin-right: 15px;
+}
+
+.search-bar {
+    padding: 20px;
+    background: #f8f9fa;
+    display: flex;
+    gap: 10px;
+}
+
+.search-bar input {
+    flex: 1;
+    padding: 12px 15px;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+
+.search-bar input:focus {
+    outline: none;
+    border-color: #4285f4;
+}
+
+.search-bar button {
+    padding: 12px 20px;
+    background: #4285f4;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.search-bar button:hover {
+    background: #3367d6;
+}
+
+.actions {
+    padding: 0 20px 20px;
+    display: flex;
+    gap: 10px;
+}
+
+.btn-primary, .btn-secondary {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-primary {
+    background: #34a853;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #2d9248;
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background: #f8f9fa;
+    color: #495057;
+    border: 2px solid #e9ecef;
+}
+
+.btn-secondary:hover {
+    background: #e9ecef;
+    transform: translateY(-2px);
+}
+
+.table-container {
+    overflow-x: auto;
+    padding: 0 20px 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+th, td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #e9ecef;
+}
+
+th {
+    background: #4285f4;
+    color: white;
+    font-weight: 600;
+    position: sticky;
+    top: 0;
+}
+
+tr:hover {
+    background: #f8f9fa;
+}
+
+.password-cell {
+    font-family: 'Courier New', monospace;
+    position: relative;
+}
+
+.show-password {
+    background: none;
+    border: none;
+    color: #4285f4;
+    cursor: pointer;
+    margin-left: 5px;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 5px;
+}
+
+.edit-btn, .delete-btn {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.3s;
+}
+
+.edit-btn {
+    background: #fbbc05;
+    color: white;
+}
+
+.edit-btn:hover {
+    background: #e6a800;
+}
+
+.delete-btn {
+    background: #ea4335;
+    color: white;
+}
+
+.delete-btn:hover {
+    background: #d33426;
+}
+
+.no-data {
+    text-align: center;
+    padding: 60px 20px;
+    color: #6c757d;
+    display: none;
+}
+
+.no-data i {
+    font-size: 4em;
+    margin-bottom: 20px;
+    color: #dee2e6;
+}
+
+.no-data p {
+    font-size: 1.2em;
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.modal-content {
+    background-color: white;
+    margin: 5% auto;
+    padding: 0;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    animation: slideIn 0.3s;
+}
+
+@keyframes slideIn {
+    from { transform: translateY(-50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.modal-header {
+    background: linear-gradient(135deg, #4285f4, #34a853);
+    color: white;
+    padding: 20px;
+    border-radius: 15px 15px 0 0;
+    display: flex;
+    justify-content: between;
+    align-items: center;
+}
+
+.modal-header h3 {
+    margin: 0;
+}
+
+.close {
+    color: white;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.close:hover {
+    color: #f1f1f1;
+}
+
+form {
+    padding: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: #495057;
+}
+
+.form-group input, .form-group textarea {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+
+.form-group input:focus, .form-group textarea:focus {
+    outline: none;
+    border-color: #4285f4;
+}
+
+.form-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .container {
+        margin: 10px;
+        border-radius: 10px;
+    }
+    
+    header h1 {
+        font-size: 2em;
+    }
+    
+    th, td {
+        padding: 10px 8px;
+        font-size: 14px;
+    }
+    
+    .actions {
+        flex-direction: column;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+    }
+}
+    </style>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-envelope"></i> Quản lý tài khoản Gmail</h1>
+        </header>
+
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Tìm kiếm tài khoản, ghi chú...">
+            <button id="searchBtn"><i class="fas fa-search"></i></button>
+        </div>
+
+        <div class="actions">
+            <button id="addBtn" class="btn-primary">
+                <i class="fas fa-plus"></i> Thêm tài khoản
+            </button>
+            <button id="exportBtn" class="btn-secondary">
+                <i class="fas fa-download"></i> Xuất Excel
+            </button>
+        </div>
+
+        <div class="table-container">
+            <table id="accountsTable">
+                <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>Tài khoản</th>
+                        <th>Mật khẩu</th>
+                        <th>Ghi chú</th>
+                        <th>Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody id="accountsBody">
+                    <!-- Dữ liệu sẽ được thêm bằng JavaScript -->
+                </tbody>
+            </table>
+        </div>
+
+        <div class="no-data" id="noData">
+            <i class="fas fa-inbox"></i>
+            <p>Chưa có tài khoản nào được thêm</p>
+        </div>
+    </div>
+
+    <!-- Modal thêm/sửa tài khoản -->
+    <div id="accountModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Thêm tài khoản mới</h3>
+                <span class="close">&times;</span>
+            </div>
+            <form id="accountForm">
+                <div class="form-group">
+                    <label for="email">Tài khoản Gmail:</label>
+                    <input type="email" id="email" required placeholder="example@gmail.com">
+                </div>
+                <div class="form-group">
+                    <label for="password">Mật khẩu:</label>
+                    <input type="password" id="password" required>
+                </div>
+                <div class="form-group">
+                    <label for="note">Ghi chú:</label>
+                    <textarea id="note" rows="3" placeholder="Ghi chú về tài khoản..."></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="button" id="cancelBtn" class="btn-secondary">Hủy</button>
+                    <button type="submit" class="btn-primary">Lưu</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Dữ liệu mẫu
+let accounts = JSON.parse(localStorage.getItem('gmailAccounts')) || [
+    {
+        id: 1,
+        email: 'example1@gmail.com',
+        password: 'password123',
+        note: 'Tài khoản cá nhân'
+    },
+    {
+        id: 2,
+        email: 'example2@gmail.com',
+        password: 'securepass456',
+        note: 'Tài khoản công việc'
+    }
+];
+
+// DOM Elements
+const accountsBody = document.getElementById('accountsBody');
+const noData = document.getElementById('noData');
+const searchInput = document.getElementById('searchInput');
+const searchBtn = document.getElementById('searchBtn');
+const addBtn = document.getElementById('addBtn');
+const exportBtn = document.getElementById('exportBtn');
+const modal = document.getElementById('accountModal');
+const closeBtn = document.querySelector('.close');
+const cancelBtn = document.getElementById('cancelBtn');
+const accountForm = document.getElementById('accountForm');
+const modalTitle = document.getElementById('modalTitle');
+
+let currentEditId = null;
+let filteredAccounts = [...accounts];
+
+// Hiển thị danh sách tài khoản
+function displayAccounts(accountsToDisplay = filteredAccounts) {
+    accountsBody.innerHTML = '';
+    
+    if (accountsToDisplay.length === 0) {
+        noData.style.display = 'block';
+        return;
+    }
+    
+    noData.style.display = 'none';
+    
+    accountsToDisplay.forEach((account, index) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${index + 1}</td>
+            <td>${account.email}</td>
+            <td class="password-cell">
+                <span class="password-text">••••••••</span>
+                <button class="show-password" onclick="togglePassword(${account.id})">
+                    <i class="fas fa-eye"></i>
+                </button>
+            </td>
+            <td>${account.note || '-'}</td>
+            <td>
+                <div class="action-buttons">
+                    <button class="edit-btn" onclick="editAccount(${account.id})">
+                        <i class="fas fa-edit"></i> Sửa
+                    </button>
+                    <button class="delete-btn" onclick="deleteAccount(${account.id})">
+                        <i class="fas fa-trash"></i> Xóa
+                    </button>
+                </div>
+            </td>
+        `;
+        accountsBody.appendChild(row);
+    });
+}
+
+// Hiển thị/ẩn mật khẩu
+function togglePassword(accountId) {
+    const account = accounts.find(acc => acc.id === accountId);
+    const row = event.target.closest('tr');
+    const passwordCell = row.querySelector('.password-cell');
+    const passwordText = passwordCell.querySelector('.password-text');
+    const eyeIcon = passwordCell.querySelector('.fa-eye');
+    
+    if (passwordText.textContent === '••••••••') {
+        passwordText.textContent = account.password;
+        eyeIcon.className = 'fas fa-eye-slash';
+    } else {
+        passwordText.textContent = '••••••••';
+        eyeIcon.className = 'fas fa-eye';
+    }
+}
+
+// Thêm tài khoản mới
+function addAccount(account) {
+    account.id = Date.now();
+    accounts.push(account);
+    filteredAccounts = [...accounts];
+    saveToLocalStorage();
+    displayAccounts();
+}
+
+// Sửa tài khoản
+function editAccount(accountId) {
+    const account = accounts.find(acc => acc.id === accountId);
+    if (account) {
+        document.getElementById('email').value = account.email;
+        document.getElementById('password').value = account.password;
+        document.getElementById('note').value = account.note || '';
+        currentEditId = accountId;
+        modalTitle.textContent = 'Sửa tài khoản';
+        modal.style.display = 'block';
+    }
+}
+
+// Cập nhật tài khoản
+function updateAccount(accountId, updatedAccount) {
+    const index = accounts.findIndex(acc => acc.id === accountId);
+    if (index !== -1) {
+        accounts[index] = { ...updatedAccount, id: accountId };
+        filteredAccounts = [...accounts];
+        saveToLocalStorage();
+        displayAccounts();
+    }
+}
+
+// Xóa tài khoản
+function deleteAccount(accountId) {
+    if (confirm('Bạn có chắc muốn xóa tài khoản này?')) {
+        accounts = accounts.filter(acc => acc.id !== accountId);
+        filteredAccounts = filteredAccounts.filter(acc => acc.id !== accountId);
+        saveToLocalStorage();
+        displayAccounts();
+    }
+}
+
+// Tìm kiếm
+function searchAccounts() {
+    const searchTerm = searchInput.value.toLowerCase();
+    filteredAccounts = accounts.filter(account => 
+        account.email.toLowerCase().includes(searchTerm) ||
+        (account.note && account.note.toLowerCase().includes(searchTerm))
+    );
+    displayAccounts();
+}
+
+// Xuất Excel
+function exportToExcel() {
+    let csvContent = "data:text/csv;charset=utf-8,";
+    csvContent += "STT,Tài khoản,Mật khẩu,Ghi chú\n";
+    
+    accounts.forEach((account, index) => {
+        const row = [
+            index + 1,
+            account.email,
+            account.password,
+            account.note || ''
+        ].join(',');
+        csvContent += row + "\n";
+    });
+    
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "danh_sach_gmail.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+
+// Lưu vào Local Storage
+function saveToLocalStorage() {
+    localStorage.setItem('gmailAccounts', JSON.stringify(accounts));
+}
+
+// Event Listeners
+addBtn.addEventListener('click', () => {
+    accountForm.reset();
+    currentEditId = null;
+    modalTitle.textContent = 'Thêm tài khoản mới';
+    modal.style.display = 'block';
+});
+
+closeBtn.addEventListener('click', () => {
+    modal.style.display = 'none';
+});
+
+cancelBtn.addEventListener('click', () => {
+    modal.style.display = 'none';
+});
+
+searchBtn.addEventListener('click', searchAccounts);
+searchInput.addEventListener('keyup', searchAccounts);
+
+exportBtn.addEventListener('click', exportToExcel);
+
+accountForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    const note = document.getElementById('note').value;
+    
+    const accountData = { email, password, note };
+    
+    if (currentEditId) {
+        updateAccount(currentEditId, accountData);
+    } else {
+        addAccount(accountData);
+    }
+    
+    modal.style.display = 'none';
+});
+
+// Đóng modal khi click bên ngoài
+window.addEventListener('click', (e) => {
+    if (e.target === modal) {
+        modal.style.display = 'none';
+    }
+});
+
+// Khởi tạo
+displayAccounts();
+    </script>
+</body>
+</html>
