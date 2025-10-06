@@ -7,34 +7,40 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary: #2563eb;
-            --primary-dark: #1d4ed8;
-            --secondary: #7e22ce;
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #8b5cf6;
+            --accent: #06b6d4;
             --success: #10b981;
             --danger: #ef4444;
             --warning: #f59e0b;
-            --dark: #1f2937;
+            --dark: #0f172a;
+            --darker: #020617;
             --light: #f8fafc;
-            --gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --neon-glow: 0 0 10px rgba(59, 130, 246, 0.5), 0 0 20px rgba(59, 130, 246, 0.3), 0 0 30px rgba(59, 130, 246, 0.1);
+            --gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #06b6d4 100%);
+            --gradient-dark: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            --neon-glow: 0 0 20px rgba(99, 102, 241, 0.3), 0 0 40px rgba(99, 102, 241, 0.2), 0 0 60px rgba(99, 102, 241, 0.1);
+            --glass-bg: rgba(15, 23, 42, 0.8);
+            --glass-border: rgba(255, 255, 255, 0.1);
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
         }
 
         body {
-            background: linear-gradient(135deg, #0f172a, #1e293b);
+            background: var(--gradient-dark);
             color: var(--light);
             min-height: 100vh;
             overflow-x: hidden;
+            line-height: 1.6;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             padding: 2rem;
         }
@@ -46,90 +52,135 @@
         }
 
         .logo {
-            font-size: 3rem;
+            font-size: 4rem;
             margin-bottom: 1rem;
             background: var(--gradient);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            animation: pulse 2s infinite;
+            animation: float 3s ease-in-out infinite;
+            filter: drop-shadow(0 0 20px rgba(99, 102, 241, 0.3));
         }
 
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) scale(1); }
+            50% { transform: translateY(-10px) scale(1.05); }
         }
 
         h1 {
-            font-size: 2.5rem;
+            font-size: 3rem;
             margin-bottom: 0.5rem;
             background: var(--gradient);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
+            font-weight: 800;
+            letter-spacing: -0.025em;
         }
 
         .subtitle {
-            font-size: 1.2rem;
-            opacity: 0.8;
+            font-size: 1.3rem;
+            opacity: 0.9;
             margin-bottom: 2rem;
+            font-weight: 300;
         }
 
         .main-content {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 2rem;
+            gap: 2.5rem;
             margin-bottom: 2rem;
         }
 
-        @media (max-width: 768px) {
+        @media (max-width: 1024px) {
             .main-content {
                 grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .logo {
+                font-size: 3.5rem;
             }
         }
 
         .card {
-            background: rgba(30, 41, 59, 0.7);
-            border-radius: 1rem;
-            padding: 2rem;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: transform 0.3s, box-shadow 0.3s;
+            background: var(--glass-bg);
+            border-radius: 1.5rem;
+            padding: 2.5rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.1), transparent);
+            transition: left 0.6s;
+        }
+
+        .card:hover::before {
+            left: 100%;
         }
 
         .card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-8px);
             box-shadow: var(--neon-glow);
+            border-color: rgba(99, 102, 241, 0.3);
         }
 
         .card-title {
-            font-size: 1.5rem;
-            margin-bottom: 1.5rem;
+            font-size: 1.6rem;
+            margin-bottom: 2rem;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 1rem;
+            font-weight: 700;
+        }
+
+        .card-title i {
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
         }
 
         .upload-area {
-            border: 2px dashed rgba(255, 255, 255, 0.3);
-            border-radius: 0.75rem;
-            padding: 3rem 2rem;
+            border: 3px dashed var(--glass-border);
+            border-radius: 1.25rem;
+            padding: 4rem 2rem;
             text-align: center;
             cursor: pointer;
-            transition: all 0.3s;
-            margin-bottom: 1.5rem;
+            transition: all 0.4s;
+            margin-bottom: 2rem;
+            background: rgba(15, 23, 42, 0.5);
+            position: relative;
         }
 
         .upload-area:hover, .upload-area.drag-over {
             border-color: var(--primary);
-            background: rgba(37, 99, 235, 0.1);
+            background: rgba(99, 102, 241, 0.1);
+            transform: scale(1.02);
         }
 
         .upload-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            color: var(--primary);
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
         }
 
         .file-input {
@@ -140,30 +191,49 @@
             background: var(--gradient);
             color: white;
             border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 0.5rem;
+            padding: 1rem 2rem;
+            border-radius: 0.75rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
             display: inline-flex;
             align-items: center;
-            gap: 0.5rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            gap: 0.75rem;
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3);
+            font-size: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
         }
 
         .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(99, 102, 241, 0.4);
         }
 
         .btn:active {
-            transform: translateY(0);
+            transform: translateY(-1px);
         }
 
         .btn:disabled {
             opacity: 0.6;
             cursor: not-allowed;
             transform: none;
+            box-shadow: none;
         }
 
         .btn-primary {
@@ -178,46 +248,90 @@
             background: linear-gradient(135deg, var(--danger), #dc2626);
         }
 
+        .btn-accent {
+            background: linear-gradient(135deg, var(--accent), #0891b2);
+        }
+
         .file-info {
-            margin-top: 1rem;
-            padding: 1rem;
-            background: rgba(15, 23, 42, 0.5);
-            border-radius: 0.5rem;
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            background: rgba(15, 23, 42, 0.6);
+            border-radius: 1rem;
             display: none;
+            border: 1px solid var(--glass-border);
         }
 
         .file-info.show {
             display: block;
-            animation: fadeIn 0.5s;
+            animation: slideDown 0.5s ease-out;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        @keyframes slideDown {
+            from { 
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .file-info-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+            padding: 0.5rem 0;
+        }
+
+        .file-info-item i {
+            width: 20px;
+            color: var(--accent);
         }
 
         .progress-container {
-            margin-top: 1.5rem;
+            margin-top: 2rem;
             display: none;
         }
 
         .progress-container.show {
             display: block;
+            animation: fadeIn 0.5s;
         }
 
         .progress-bar {
-            height: 10px;
+            height: 12px;
             background: rgba(255, 255, 255, 0.1);
-            border-radius: 5px;
+            border-radius: 10px;
             overflow: hidden;
-            margin-bottom: 0.5rem;
+            margin-bottom: 1rem;
+            border: 1px solid var(--glass-border);
         }
 
         .progress {
             height: 100%;
             background: var(--gradient);
             width: 0%;
-            transition: width 0.3s;
+            transition: width 0.4s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
         }
 
         .result-area {
@@ -226,60 +340,110 @@
 
         .result-area.show {
             display: block;
-            animation: slideUp 0.5s;
+            animation: slideUp 0.6s ease-out;
         }
 
         @keyframes slideUp {
-            from { transform: translateY(20px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+            from { 
+                transform: translateY(30px); 
+                opacity: 0; 
+            }
+            to { 
+                transform: translateY(0); 
+                opacity: 1; 
+            }
         }
 
         .code-container {
-            background: #0f172a;
-            border-radius: 0.5rem;
-            padding: 1rem;
-            margin-top: 1rem;
-            max-height: 300px;
+            background: #0a0f1c;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            max-height: 400px;
             overflow-y: auto;
-            font-family: 'Courier New', monospace;
+            font-family: 'Fira Code', 'Courier New', monospace;
             font-size: 0.9rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--glass-border);
+            line-height: 1.5;
+        }
+
+        .code-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .code-container::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.5);
+            border-radius: 4px;
+        }
+
+        .code-container::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 4px;
         }
 
         .terminal {
-            background: #0f172a;
-            border-radius: 0.5rem;
-            padding: 1rem;
-            margin-top: 1rem;
-            font-family: 'Courier New', monospace;
+            background: #0a0f1c;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            font-family: 'Fira Code', 'Courier New', monospace;
             font-size: 0.9rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            height: 200px;
+            border: 1px solid var(--glass-border);
+            height: 300px;
             overflow-y: auto;
+            line-height: 1.5;
+        }
+
+        .terminal::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .terminal::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.5);
+            border-radius: 4px;
+        }
+
+        .terminal::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 4px;
         }
 
         .terminal-line {
-            margin-bottom: 0.25rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
         }
 
-        .terminal-command {
+        .terminal-prompt {
             color: var(--success);
+            font-weight: bold;
+            flex-shrink: 0;
         }
 
         .terminal-output {
             color: var(--light);
+            flex: 1;
         }
 
         .terminal-error {
             color: var(--danger);
         }
 
+        .terminal-success {
+            color: var(--success);
+        }
+
+        .terminal-warning {
+            color: var(--warning);
+        }
+
         .footer {
             text-align: center;
-            margin-top: 3rem;
-            padding-top: 2rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            opacity: 0.7;
+            margin-top: 4rem;
+            padding-top: 3rem;
+            border-top: 1px solid var(--glass-border);
+            opacity: 0.8;
         }
 
         .floating-particles {
@@ -294,16 +458,13 @@
 
         .particle {
             position: absolute;
-            width: 4px;
-            height: 4px;
-            background: var(--primary);
             border-radius: 50%;
             animation: float 15s infinite linear;
         }
 
         @keyframes float {
             0% {
-                transform: translateY(100vh) translateX(0);
+                transform: translateY(100vh) translateX(0) rotate(0deg);
                 opacity: 0;
             }
             10% {
@@ -313,26 +474,29 @@
                 opacity: 1;
             }
             100% {
-                transform: translateY(-100px) translateX(100px);
+                transform: translateY(-100px) translateX(100px) rotate(360deg);
                 opacity: 0;
             }
         }
 
         .notification {
             position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 1rem 1.5rem;
-            border-radius: 0.5rem;
-            background: var(--dark);
+            top: 25px;
+            right: 25px;
+            padding: 1.25rem 1.75rem;
+            border-radius: 1rem;
+            background: var(--glass-bg);
             color: white;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
             transform: translateX(150%);
-            transition: transform 0.3s;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             z-index: 1000;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 1rem;
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            max-width: 400px;
         }
 
         .notification.show {
@@ -351,47 +515,63 @@
             border-left: 4px solid var(--warning);
         }
 
+        .notification.info {
+            border-left: 4px solid var(--accent);
+        }
+
         .cmd-buttons {
             display: flex;
-            gap: 0.5rem;
-            margin-top: 1rem;
+            gap: 1rem;
+            margin-top: 2rem;
             flex-wrap: wrap;
         }
 
         .security-badge {
             display: inline-flex;
             align-items: center;
-            gap: 0.5rem;
-            background: rgba(16, 185, 129, 0.2);
-            padding: 0.5rem 1rem;
+            gap: 0.75rem;
+            background: rgba(16, 185, 129, 0.15);
+            padding: 1rem 1.5rem;
             border-radius: 2rem;
-            margin-top: 1rem;
+            margin-top: 1.5rem;
             border: 1px solid rgba(16, 185, 129, 0.3);
+            backdrop-filter: blur(10px);
         }
 
         .stats {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 1rem;
-            margin-top: 1rem;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
         }
 
         .stat-item {
-            background: rgba(15, 23, 42, 0.5);
-            padding: 1rem;
-            border-radius: 0.5rem;
+            background: rgba(15, 23, 42, 0.6);
+            padding: 1.5rem;
+            border-radius: 1rem;
             text-align: center;
+            border: 1px solid var(--glass-border);
+            transition: transform 0.3s;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-5px);
         }
 
         .stat-value {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: var(--primary);
+            font-size: 2rem;
+            font-weight: 800;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 0.5rem;
         }
 
         .stat-label {
-            font-size: 0.8rem;
+            font-size: 0.9rem;
             opacity: 0.8;
+            font-weight: 500;
         }
 
         .loading-spinner {
@@ -407,6 +587,56 @@
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .feature-item {
+            background: rgba(15, 23, 42, 0.5);
+            padding: 1.5rem;
+            border-radius: 1rem;
+            text-align: center;
+            border: 1px solid var(--glass-border);
+            transition: all 0.3s;
+        }
+
+        .feature-item:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .protection-level {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: rgba(15, 23, 42, 0.6);
+            border-radius: 1rem;
+            border: 1px solid var(--glass-border);
+        }
+
+        .level-badge {
+            background: var(--gradient);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
     </style>
 </head>
 <body>
@@ -418,7 +648,7 @@
                 <i class="fas fa-shield-alt"></i>
             </div>
             <h1>Professional Python Obfuscator</h1>
-            <p class="subtitle">Bảo vệ mã nguồn Python của bạn với công nghệ mã hóa đa lớp chuyên nghiệp</p>
+            <p class="subtitle">Bảo vệ mã nguồn Python của bạn với công nghệ mã hóa đa lớp tiên tiến nhất</p>
             
             <div class="stats">
                 <div class="stat-item">
@@ -432,6 +662,10 @@
                 <div class="stat-item">
                     <div class="stat-value" id="avgTime">0s</div>
                     <div class="stat-label">Thời Gian Trung Bình</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="securityLevel">MAX</div>
+                    <div class="stat-label">Mức Độ Bảo Mật</div>
                 </div>
             </div>
         </header>
@@ -448,28 +682,47 @@
                         <i class="fas fa-cloud-upload-alt"></i>
                     </div>
                     <h3>Kéo & Thả file tại đây</h3>
-                    <p>Hoặc click để chọn file</p>
-                    <p class="small">Chỉ hỗ trợ file .py (Tối đa 1MB)</p>
+                    <p>Hoặc click để chọn file từ máy tính</p>
+                    <p style="margin-top: 1rem; opacity: 0.7; font-size: 0.9rem;">
+                        <i class="fas fa-info-circle"></i> Chỉ hỗ trợ file .py (Tối đa 2MB)
+                    </p>
                     <input type="file" id="fileInput" class="file-input" accept=".py">
                 </div>
 
                 <div class="file-info" id="fileInfo">
-                    <h4>📄 Thông tin file:</h4>
-                    <p id="fileName"><i class="fas fa-file-code"></i> Tên: <span id="fileNameText"></span></p>
-                    <p id="fileSize"><i class="fas fa-weight-hanging"></i> Kích thước: <span id="fileSizeText"></span></p>
-                    <p id="fileType"><i class="fas fa-info-circle"></i> Loại: <span id="fileTypeText">Python file</span></p>
+                    <h4 style="margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                        <i class="fas fa-file-code"></i>
+                        Thông tin file
+                    </h4>
+                    <div class="file-info-item">
+                        <i class="fas fa-tag"></i>
+                        <span><strong>Tên file:</strong> <span id="fileNameText"></span></span>
+                    </div>
+                    <div class="file-info-item">
+                        <i class="fas fa-weight-hanging"></i>
+                        <span><strong>Kích thước:</strong> <span id="fileSizeText"></span></span>
+                    </div>
+                    <div class="file-info-item">
+                        <i class="fas fa-code"></i>
+                        <span><strong>Loại file:</strong> Python Script</span>
+                    </div>
                 </div>
 
-                <button class="btn btn-primary" id="obfuscateBtn" disabled>
+                <div class="protection-level">
+                    <span><i class="fas fa-shield-alt"></i> <strong>Mức độ bảo vệ:</strong></span>
+                    <span class="level-badge">MAXIMUM SECURITY</span>
+                </div>
+
+                <button class="btn btn-primary" id="obfuscateBtn" disabled style="width: 100%; margin-top: 1.5rem; justify-content: center;">
                     <i class="fas fa-lock"></i>
-                    Mã hóa File
+                    Bắt Đầu Mã Hóa
                 </button>
 
                 <div class="progress-container" id="progressContainer">
                     <div class="progress-bar">
                         <div class="progress" id="progressBar"></div>
                     </div>
-                    <p id="progressText">Đang xử lý...</p>
+                    <p id="progressText" style="text-align: center; font-weight: 500;">Đang khởi tạo hệ thống...</p>
                 </div>
             </div>
 
@@ -482,10 +735,15 @@
                 <div class="result-area" id="resultArea">
                     <div class="security-badge">
                         <i class="fas fa-shield-check"></i>
-                        <span>File đã được bảo vệ thành công!</span>
+                        <div>
+                            <strong>File đã được bảo vệ thành công!</strong>
+                            <div style="font-size: 0.9rem; opacity: 0.8; margin-top: 0.25rem;">
+                                Đã gửi backup về Telegram
+                            </div>
+                        </div>
                     </div>
                     
-                    <p class="subtitle">File đã mã hóa:</p>
+                    <p style="margin: 1.5rem 0 1rem 0; font-weight: 600;">File đã mã hóa:</p>
                     <div class="code-container" id="obfuscatedCode">
                         <!-- Code đã mã hóa sẽ hiển thị ở đây -->
                     </div>
@@ -495,9 +753,9 @@
                             <i class="fas fa-download"></i>
                             Tải xuống
                         </button>
-                        <button class="btn btn-primary" id="copyBtn">
+                        <button class="btn btn-accent" id="copyBtn">
                             <i class="fas fa-copy"></i>
-                            Sao chép
+                            Sao chép Code
                         </button>
                         <button class="btn btn-danger" id="resetBtn">
                             <i class="fas fa-redo"></i>
@@ -508,21 +766,28 @@
 
                 <div class="terminal" id="terminal">
                     <div class="terminal-line">
-                        <span class="terminal-command">$</span> Chào mừng đến với Python Obfuscator v2.0
+                        <span class="terminal-prompt">$</span>
+                        <span class="terminal-output">Chào mừng đến với Python Obfuscator v3.0</span>
                     </div>
                     <div class="terminal-line">
-                        <span class="terminal-command">$</span> Hệ thống bảo vệ mã nguồn chuyên nghiệp
+                        <span class="terminal-prompt">$</span>
+                        <span class="terminal-output">Hệ thống bảo vệ mã nguồn chuyên nghiệp</span>
                     </div>
                     <div class="terminal-line">
-                        <span class="terminal-command">$</span> Vui lòng tải lên file Python để bắt đầu
+                        <span class="terminal-prompt">$</span>
+                        <span class="terminal-output">Vui lòng tải lên file Python để bắt đầu</span>
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="footer">
-            <p>© 2024 Professional Python Obfuscator | Bản quyền thuộc về <strong>TỪ QUANG NAM</strong></p>
-            <p>Phiên bản 2.0 | Bảo mật cấp độ tối đa | Powered by Cloudflare Workers</p>
+            <p style="font-size: 1.1rem; margin-bottom: 1rem;">
+                © 2024 Professional Python Obfuscator | Bản quyền thuộc về <strong style="background: var(--gradient); -webkit-background-clip: text; background-clip: text; color: transparent;">TỪ QUANG NAM</strong>
+            </p>
+            <p style="opacity: 0.8;">
+                Phiên bản 3.0 | Bảo mật cấp độ tối đa | Powered by Cloudflare Workers & Telegram API
+            </p>
         </div>
     </div>
 
@@ -532,29 +797,36 @@
     </div>
 
     <script>
-        // Tạo hiệu ứng particles
+        // Tạo hiệu ứng particles nâng cao
         function createParticles() {
             const particlesContainer = document.getElementById('particles');
-            const particleCount = 50;
+            const particleCount = 80;
             
             for (let i = 0; i < particleCount; i++) {
                 const particle = document.createElement('div');
                 particle.classList.add('particle');
                 
-                // Random position
+                // Random properties
                 const left = Math.random() * 100;
-                const delay = Math.random() * 15;
-                const duration = 15 + Math.random() * 10;
-                const size = 2 + Math.random() * 3;
+                const delay = Math.random() * 20;
+                const duration = 20 + Math.random() * 20;
+                const size = 2 + Math.random() * 5;
+                const blur = Math.random() * 5;
                 
                 particle.style.left = `${left}vw`;
                 particle.style.animationDelay = `${delay}s`;
                 particle.style.animationDuration = `${duration}s`;
                 particle.style.width = `${size}px`;
                 particle.style.height = `${size}px`;
+                particle.style.filter = `blur(${blur}px)`;
                 
-                // Random color
-                const colors = ['#2563eb', '#7e22ce', '#10b981', '#f59e0b'];
+                // Random gradient color
+                const colors = [
+                    'radial-gradient(circle, #6366f1, transparent)',
+                    'radial-gradient(circle, #8b5cf6, transparent)',
+                    'radial-gradient(circle, #06b6d4, transparent)',
+                    'radial-gradient(circle, #10b981, transparent)'
+                ];
                 const color = colors[Math.floor(Math.random() * colors.length)];
                 particle.style.background = color;
                 
@@ -575,11 +847,12 @@
             const icon = notification.querySelector('i');
             icon.className = type === 'success' ? 'fas fa-check-circle' : 
                             type === 'error' ? 'fas fa-exclamation-circle' : 
+                            type === 'warning' ? 'fas fa-exclamation-triangle' :
                             'fas fa-info-circle';
             
             setTimeout(() => {
                 notification.classList.remove('show');
-            }, 4000);
+            }, 5000);
         }
 
         // Format kích thước file
@@ -597,17 +870,20 @@
             const line = document.createElement('div');
             line.classList.add('terminal-line');
             
-            if (type === 'command') {
-                const commandSpan = document.createElement('span');
-                commandSpan.classList.add('terminal-command');
-                commandSpan.textContent = '$ ';
-                line.appendChild(commandSpan);
-            } else if (type === 'error') {
-                line.classList.add('terminal-error');
-            }
+            const prompt = document.createElement('span');
+            prompt.classList.add('terminal-prompt');
+            prompt.textContent = '$';
+            line.appendChild(prompt);
             
-            const textNode = document.createTextNode(text);
-            line.appendChild(textNode);
+            const output = document.createElement('span');
+            output.classList.add('terminal-output');
+            if (type === 'error') output.classList.add('terminal-error');
+            if (type === 'success') output.classList.add('terminal-success');
+            if (type === 'warning') output.classList.add('terminal-warning');
+            
+            output.textContent = text;
+            line.appendChild(output);
+            
             terminal.appendChild(line);
             terminal.scrollTop = terminal.scrollHeight;
         }
@@ -695,8 +971,8 @@
                     return;
                 }
                 
-                if (file.size > 1024 * 1024) { // 1MB limit
-                    showNotification('File quá lớn! Vui lòng chọn file nhỏ hơn 1MB', 'error');
+                if (file.size > 2 * 1024 * 1024) { // 2MB limit
+                    showNotification('File quá lớn! Vui lòng chọn file nhỏ hơn 2MB', 'error');
                     return;
                 }
                 
@@ -709,8 +985,9 @@
                 fileInfo.classList.add('show');
                 obfuscateBtn.disabled = false;
                 
-                addTerminalLine(`Đã chọn file: ${file.name}`, 'command');
+                addTerminalLine(`Đã chọn file: ${file.name}`, 'success');
                 addTerminalLine(`Kích thước: ${formatFileSize(file.size)}`, 'output');
+                addTerminalLine('Sẵn sàng để mã hóa...', 'output');
             }
             
             // Xử lý mã hóa
@@ -722,7 +999,7 @@
                 obfuscateBtn.disabled = true;
                 obfuscateBtn.innerHTML = '<div class="loading-spinner"></div> Đang xử lý...';
                 
-                addTerminalLine('Bắt đầu quá trình mã hóa...', 'command');
+                addTerminalLine('🚀 Bắt đầu quá trình mã hóa...', 'command');
                 updateProgress(10, 'Đang đọc file...');
                 
                 try {
@@ -730,8 +1007,8 @@
                     formData.append('file', currentFile);
                     formData.append('filename', currentFile.name);
                     
-                    updateProgress(30, 'Đang kết nối đến server...');
-                    addTerminalLine('Kết nối đến Cloudflare Workers...');
+                    updateProgress(25, 'Đang kết nối đến server...');
+                    addTerminalLine('🌐 Kết nối đến Cloudflare Workers...', 'output');
                     
                     const response = await fetch('https://python-obfuscator.tuquangnamht2007.workers.dev/api/obfuscate', {
                         method: 'POST',
@@ -743,47 +1020,31 @@
                         throw new Error(`Lỗi server: ${response.status} - ${errorText}`);
                     }
                     
-                    updateProgress(60, 'Đang xử lý mã hóa...');
-                    addTerminalLine('Đang mã hóa với nhiều lớp bảo vệ...');
-                    addTerminalLine('✓ Mã hóa base64', 'output');
-                    addTerminalLine('✓ Mã hóa Fernet', 'output');
-                    addTerminalLine('✓ Nén dữ liệu', 'output');
+                    updateProgress(50, 'Đang xử lý mã hóa...');
+                    addTerminalLine('🔒 Đang mã hóa với nhiều lớp bảo vệ...', 'output');
+                    addTerminalLine('   ✓ Mã hóa base64', 'success');
+                    addTerminalLine('   ✓ Mã hóa Fernet', 'success');
+                    addTerminalLine('   ✓ Nén dữ liệu', 'success');
                     
                     const result = await response.json();
                     
                     if (result.success) {
-                        updateProgress(90, 'Đang hoàn tất...');
-                        addTerminalLine('Đang tạo hệ thống bảo vệ...', 'output');
+                        updateProgress(80, 'Đang gửi backup Telegram...');
+                        addTerminalLine('📤 Đang gửi file backup đến Telegram...', 'output');
+                        
+                        updateProgress(95, 'Đang hoàn tất...');
+                        addTerminalLine('🛡️ Đang tạo hệ thống bảo vệ...', 'output');
                         
                         updateProgress(100, 'Hoàn thành!');
-                        addTerminalLine('✅ Mã hóa thành công!', 'output');
+                        addTerminalLine('✅ Mã hóa thành công!', 'success');
+                        addTerminalLine('✅ Cảm ơn bạn đã sử dụng dịch vụ của chúng tôi!', 'success');
                         
                         // Hiển thị kết quả
                         obfuscatedCode = result.obfuscated_code;
                         document.getElementById('obfuscatedCode').textContent = obfuscatedCode;
                         resultArea.classList.add('show');
                         
-                        showNotification('Mã hóa thành công! File đã được bảo vệ.', 'success');
-                        
-                        // Gửi thông báo Telegram
-                        try {
-                            await fetch('https://python-obfuscator.tuquangnamht2007.workers.dev/api/notify', {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                },
-                                body: JSON.stringify({
-                                    filename: currentFile.name,
-                                    filesize: currentFile.size,
-                                    timestamp: new Date().toISOString(),
-                                    user_agent: navigator.userAgent
-                                })
-                            });
-                            addTerminalLine('✓ Copyright By Từ Quang Nam', 'output');
-                        } catch (telegramError) {
-                            console.error('Lỗi gửi Telegram:', telegramError);
-                            addTerminalLine('⚠ Không thể gửi thông báo Telegram', 'output');
-                        }
+                        showNotification('Mã hóa thành công! File đã được bảo vệ và gửi backup.', 'success');
                         
                         const processingTime = (Date.now() - startTime) / 1000;
                         saveStats(true, processingTime);
@@ -801,7 +1062,7 @@
                     saveStats(false, processingTime);
                 } finally {
                     obfuscateBtn.disabled = false;
-                    obfuscateBtn.innerHTML = '<i class="fas fa-lock"></i> Mã hóa File';
+                    obfuscateBtn.innerHTML = '<i class="fas fa-lock"></i> Bắt Đầu Mã Hóa';
                 }
             });
             
@@ -821,7 +1082,7 @@
                 URL.revokeObjectURL(url);
                 
                 showNotification('Đã tải xuống file mã hóa!', 'success');
-                addTerminalLine(`Đã tải xuống: ${a.download}`, 'command');
+                addTerminalLine(`📥 Đã tải xuống: ${a.download}`, 'success');
             });
             
             // Sao chép code
@@ -830,7 +1091,7 @@
                 
                 navigator.clipboard.writeText(obfuscatedCode).then(function() {
                     showNotification('Đã sao chép code vào clipboard!', 'success');
-                    addTerminalLine('Đã sao chép code mã hóa vào clipboard', 'command');
+                    addTerminalLine('📋 Đã sao chép code mã hóa vào clipboard', 'success');
                 }).catch(function() {
                     showNotification('Lỗi khi sao chép!', 'error');
                 });
@@ -850,18 +1111,21 @@
                 const terminal = document.getElementById('terminal');
                 terminal.innerHTML = `
                     <div class="terminal-line">
-                        <span class="terminal-command">$</span> Chào mừng đến với Python Obfuscator v2.0
+                        <span class="terminal-prompt">$</span>
+                        <span class="terminal-output">Chào mừng đến với Python Obfuscator v3.0</span>
                     </div>
                     <div class="terminal-line">
-                        <span class="terminal-command">$</span> Hệ thống bảo vệ mã nguồn chuyên nghiệp
+                        <span class="terminal-prompt">$</span>
+                        <span class="terminal-output">Hệ thống bảo vệ mã nguồn chuyên nghiệp</span>
                     </div>
                     <div class="terminal-line">
-                        <span class="terminal-command">$</span> Vui lòng tải lên file Python để bắt đầu
+                        <span class="terminal-prompt">$</span>
+                        <span class="terminal-output">Vui lòng tải lên file Python để bắt đầu</span>
                     </div>
                 `;
                 
-                addTerminalLine('Đã reset hệ thống', 'command');
-                showNotification('Đã reset thành công!', 'success');
+                addTerminalLine('🔄 Đã reset hệ thống', 'success');
+                showNotification('Đã reset thành công!', 'info');
             });
         });
     </script>
