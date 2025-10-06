@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tool Tạo Gmail - Digital Code Store</title>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2980b9;
+            --accent-color: #1abc9c;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+            --success-color: #2ecc71;
+            --warning-color: #f39c12;
+            --danger-color: #e74c3c;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header Styles */
+        .header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            font-size: 2rem;
+        }
+
+        .logo h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .user-actions {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 50px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background-color: white;
+            color: var(--primary-color);
+        }
+
+        .btn-primary:hover {
+            background-color: #f1f1f1;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid white;
+            color: white;
+        }
+
+        .btn-outline:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            color: var(--dark-color);
+            margin-bottom: 10px;
+        }
+
+        .page-header p {
+            font-size: 1.1rem;
+            color: #777;
+        }
+
+        /* Tool Container */
+        .tool-container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08);
+            margin-bottom: 30px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            color: var(--dark-color);
+            margin-bottom: 8px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            color: #333;
+            font-size: 1em;
+            transition: all 0.3s;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+
+        .analysis-container {
+            background-color: #f0f8ff;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .analysis-title {
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--dark-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .analysis-item {
+            background-color: white;
+            padding: 15px;
+            border-radius: 6px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .analysis-label {
+            font-size: 0.9rem;
+            color: #777;
+            margin-bottom: 5px;
+        }
+
+        .analysis-value {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .options-group {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .option-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .option-item input[type="number"] {
+            width: 80px;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .option-item input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+        }
+
+        .option-item select {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: white;
+        }
+
+        .action-button {
+            width: 100%;
+            padding: 15px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .action-button:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .action-button:disabled {
+            background-color: #a0cfee;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .stats-container {
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .stats-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px;
+            background-color: white;
+            border-radius: 6px;
+            min-width: 120px;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #777;
+        }
+
+        .result-container {
+            margin-top: 25px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 20px;
+            display: none;
+        }
+
+        .result-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .result-header h3 {
+            color: var(--dark-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .result-content {
+            background-color: white;
+            padding: 15px;
+            border-radius: 8px;
+            color: #333;
+            word-break: break-all;
+            font-family: monospace;
+            max-height: 400px;
+            overflow-y: auto;
+            border: 1px solid #eee;
+            margin-bottom: 15px;
+        }
+
+        .result-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+        }
+
+        .copy-btn, .download-btn, .select-all-btn {
+            padding: 8px 15px;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .copy-btn {
+            background-color: var(--success-color);
+        }
+
+        .copy-btn:hover {
+            background-color: #27ae60;
+        }
+
+        .download-btn {
+            background-color: var(--primary-color);
+        }
+
+        .download-btn:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .select-all-btn {
+            background-color: var(--warning-color);
+        }
+
+        .select-all-btn:hover {
+            background-color: #e67e22;
+        }
+
+        .loader {
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+            display: none;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Notification */
+        .notification-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            max-width: 350px;
+        }
+
+        .notification {
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            animation: slideInRight 0.3s ease, fadeOut 0.5s ease 4.5s forwards;
+            position: relative;
+            overflow: hidden;
+            background-color: white;
+        }
+
+        .notification.success {
+            border-left: 5px solid var(--success-color);
+        }
+
+        .notification.error {
+            border-left: 5px solid var(--danger-color);
+        }
+
+        .notification.info {
+            border-left: 5px solid var(--primary-color);
+        }
+
+        .notification.warning {
+            border-left: 5px solid var(--warning-color);
+        }
+
+        .notification-icon {
+            margin-right: 15px;
+            font-size: 1.5rem;
+        }
+
+        .notification.success .notification-icon {
+            color: var(--success-color);
+        }
+
+        .notification.error .notification-icon {
+            color: var(--danger-color);
+        }
+
+        .notification.info .notification-icon {
+            color: var(--primary-color);
+        }
+
+        .notification.warning .notification-icon {
+            color: var(--warning-color);
+        }
+
+        .notification-content {
+            flex: 1;
+        }
+
+        .notification-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .notification-message {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .close-notification {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+            margin-left: 10px;
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(100%);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+
+        /* Footer */
+        .copyright-footer-simple {
+            text-align: center;
+            padding: 20px;
+            background-color: var(--dark-color);
+            color: white;
+            margin-top: auto;
+        }
+
+        .copyright-footer-simple a {
+            color: var(--accent-color);
+            text-decoration: none;
+        }
+
+        .copyright-footer-simple a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .user-actions {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .tool-container {
+                padding: 20px;
+            }
+            
+            .page-header h1 {
+                font-size: 2rem;
+            }
+            
+            .result-actions {
+                flex-direction: column;
+            }
+            
+            .options-group {
+                flex-direction: column;
+            }
+            
+            .analysis-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Notification Container -->
+    <div class="notification-container" id="notification-container"></div>
+
+    <!-- Header -->
+    <div class="header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-envelope"></i>
+                <h1>Digital Code Store</h1>
+            </div>
+            <div class="user-actions">
+                <button class="btn btn-outline" id="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i> Đăng xuất
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="page-header">
+            <h1><i class="fas fa-envelope"></i> Tool Tạo Gmail</h1>
+            <p>Công cụ tạo nhiều địa chỉ Gmail từ một Gmail gốc bằng cách thêm dấu chấm</p>
+        </div>
+
+        <div class="tool-container">
+            <div class="input-group">
+                <label for="gmail-input"><i class="fas fa-envelope"></i> Nhập Gmail gốc</label>
+                <input type="email" id="gmail-input" placeholder="Nhập Gmail gốc của bạn (ví dụ: tuquangnamht2007@gmail.com)">
+            </div>
+
+            <div class="analysis-container" id="analysis-container">
+                <div class="analysis-title">
+                    <i class="fas fa-chart-bar"></i> Phân tích Gmail
+                </div>
+                <div class="analysis-grid">
+                    <div class="analysis-item">
+                        <div class="analysis-label">Tên người dùng</div>
+                        <div class="analysis-value" id="analysis-username">-</div>
+                    </div>
+                    <div class="analysis-item">
+                        <div class="analysis-label">Độ dài tên người dùng</div>
+                        <div class="analysis-value" id="analysis-length">0</div>
+                    </div>
+                    <div class="analysis-item">
+                        <div class="analysis-label">Số dấu chấm tối đa có thể</div>
+                        <div class="analysis-value" id="analysis-max-dots">0</div>
+                    </div>
+                    <div class="analysis-item">
+                        <div class="analysis-label">Tổng số email có thể tạo</div>
+                        <div class="analysis-value" id="analysis-total-emails">0</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="options-group">
+                <div class="option-item">
+                    <input type="checkbox" id="multiple-dots" checked>
+                    <label for="multiple-dots">Tạo nhiều dấu chấm</label>
+                </div>
+                <div class="option-item">
+                    <label for="dots-mode">Chế độ dấu chấm:</label>
+                    <select id="dots-mode">
+                        <option value="auto">Tự động (tối ưu)</option>
+                        <option value="custom">Tùy chỉnh</option>
+                    </select>
+                </div>
+                <div class="option-item custom-dots-option" style="display: none;">
+                    <label for="max-dots">Số dấu chấm tối đa:</label>
+                    <input type="number" id="max-dots" value="3" min="1" max="20">
+                </div>
+                <div class="option-item">
+                    <label for="max-results">Số kết quả tối đa:</label>
+                    <select id="max-results">
+                        <option value="50">50 kết quả</option>
+                        <option value="100" selected>100 kết quả</option>
+                        <option value="200">200 kết quả</option>
+                        <option value="500">500 kết quả</option>
+                        <option value="1000">1000 kết quả</option>
+                        <option value="all">Tất cả</option>
+                    </select>
+                </div>
+            </div>
+
+            <button class="action-button" id="generate-btn">
+                <i class="fas fa-sync-alt"></i> Tạo Gmail
+                <div class="loader" id="generate-loader"></div>
+            </button>
+
+            <div class="stats-container" id="stats-container">
+                <div class="stats-content">
+                    <div class="stat-item">
+                        <div class="stat-value" id="total-count">0</div>
+                        <div class="stat-label">Tổng số Gmail</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="dots-count">0</div>
+                        <div class="stat-label">Dấu chấm tối đa</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="total-dots">0</div>
+                        <div class="stat-label">Tổng số dấu chấm</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="original-email">-</div>
+                        <div class="stat-label">Gmail gốc</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="result-container" id="result-container">
+                <div class="result-header">
+                    <h3><i class="fas fa-list"></i> Danh sách Gmail đã tạo</h3>
+                    <div class="result-actions">
+                        <button class="select-all-btn" id="select-all-btn">
+                            <i class="fas fa-check-square"></i> Chọn tất cả
+                        </button>
+                        <button class="copy-btn" id="copy-all-btn">
+                            <i class="fas fa-copy"></i> Sao chép tất cả
+                        </button>
+                        <button class="download-btn" id="download-btn">
+                            <i class="fas fa-download"></i> Tải về TXT
+                        </button>
+                    </div>
+                </div>
+                <div class="result-content" id="result-content"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="copyright-footer-simple">
+        <p class="developer">Phát triển bởi: <a href="https://www.facebook.com/tuquangnam07" target="_blank">Từ Quang Nam</a></p>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyA7kY_xl-B1r6pfRlUCVcI8OcLe7rOh11g",
+            authDomain: "digitalcodestore-tuquangnam.firebaseapp.com",
+            projectId: "digitalcodestore-tuquangnam",
+            storageBucket: "digitalcodestore-tuquangnam.firebasestorage.app",
+            messagingSenderId: "226534281162",
+            appId: "1:226534281162:web:9e734c1b07378efb280933",
+            measurementId: "G-9V4G42XSZS"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        // Check authentication state
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                console.log("User is signed in:", user.email);
+                // Update user info if needed
+            } else {
+                console.log("User is signed out");
+                // Redirect to login if not authenticated
+                window.location.href = '../login/index.html';
+            }
+        });
+
+        // Logout function
+        document.getElementById('logout-btn').addEventListener('click', () => {
+            auth.signOut().then(() => {
+                window.location.href = '../login/index.html';
+            });
+        });
+
+        // Calculate maximum possible dots and total emails
+        function calculateEmailStats(username) {
+            const length = username.length;
+            // Maximum dots is length - 1
+            const maxDots = length - 1;
+            
+            // Total possible combinations (2^(n-1) where n is length)
+            // Each position between characters can either have a dot or not
+            const totalCombinations = Math.pow(2, length - 1);
+            
+            return {
+                maxDots: maxDots,
+                totalCombinations: totalCombinations
+            };
+        }
+
+        // Generate all possible dot combinations for a string
+        function generateDotCombinations(str, maxDots = null, maxResults = 100) {
+            const results = new Set();
+            const len = str.length;
+            
+            // If maxDots is not specified, use maximum possible
+            const actualMaxDots = maxDots !== null ? maxDots : len - 1;
+            
+            // Function to recursively generate combinations
+            function generate(current, index, dotsUsed) {
+                if (index === len - 1) {
+                    results.add(current + str[index]);
+                    return;
+                }
+                
+                // Add current character without dot
+                generate(current + str[index], index + 1, dotsUsed);
+                
+                // Add current character with dot if we haven't exceeded max dots
+                if (dotsUsed < actualMaxDots && results.size < maxResults) {
+                    generate(current + str[index] + '.', index + 1, dotsUsed + 1);
+                }
+            }
+            
+            generate('', 0, 0);
+            
+            // Convert to array and limit results
+            return Array.from(results).slice(0, maxResults);
+        }
+
+        // Generate email variations with multiple dots
+        function generateEmailVariations(email, multipleDots = true, maxDots = null, maxResults = 100) {
+            // Extract username and domain
+            const [username, domain] = email.split('@');
+            let variations = [];
+            
+            if (multipleDots) {
+                // Generate all possible dot combinations
+                variations = generateDotCombinations(username, maxDots, maxResults)
+                    .map(variation => variation + '@' + domain);
+            } else {
+                // Generate variations with single dot only
+                for (let i = 1; i < username.length; i++) {
+                    if (variations.length >= maxResults) break;
+                    const variation = username.slice(0, i) + '.' + username.slice(i);
+                    variations.push(variation + '@' + domain);
+                }
+            }
+            
+            return variations;
+        }
+
+        // Count total dots in all variations
+        function countTotalDots(variations) {
+            let total = 0;
+            variations.forEach(email => {
+                const username = email.split('@')[0];
+                total += (username.split('.').length - 1);
+            });
+            return total;
+        }
+
+        // Show notification
+        function showNotification(type, title, message) {
+            const container = document.getElementById('notification-container');
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            
+            const icons = {
+                success: 'fas fa-check-circle',
+                error: 'fas fa-exclamation-circle',
+                info: 'fas fa-info-circle',
+                warning: 'fas fa-exclamation-triangle'
+            };
+            
+            notification.innerHTML = `
+                <div class="notification-icon">
+                    <i class="${icons[type]}"></i>
+                </div>
+                <div class="notification-content">
+                    <div class="notification-title">${title}</div>
+                    <div class="notification-message">${message}</div>
+                </div>
+                <button class="close-notification">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            
+            container.appendChild(notification);
+            
+            // Close notification on button click
+            notification.querySelector('.close-notification').addEventListener('click', () => {
+                notification.remove();
+            });
+            
+            // Auto remove after 5 seconds
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.remove();
+                }
+            }, 5000);
+        }
+
+        // Copy to clipboard
+        function copyToClipboard(text) {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            showNotification('success', 'Thành công', 'Đã sao chép vào clipboard!');
+        }
+
+        // Download as text file
+        function downloadTextFile(filename, text) {
+            const element = document.createElement('a');
+            element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+            element.setAttribute('download', filename);
+            element.style.display = 'none';
+            document.body.appendChild(element);
+            element.click();
+            document.body.removeChild(element);
+        }
+
+        // Analyze email when user types
+        document.getElementById('gmail-input').addEventListener('input', function() {
+            const email = this.value.trim();
+            const analysisContainer = document.getElementById('analysis-container');
+            
+            if (email && email.includes('@')) {
+                const [username, domain] = email.split('@');
+                const stats = calculateEmailStats(username);
+                
+                // Update analysis display
+                document.getElementById('analysis-username').textContent = username;
+                document.getElementById('analysis-length').textContent = username.length;
+                document.getElementById('analysis-max-dots').textContent = stats.maxDots;
+                document.getElementById('analysis-total-emails').textContent = stats.totalCombinations.toLocaleString();
+                
+                // Show analysis container
+                analysisContainer.style.display = 'block';
+                
+                // Auto-set max dots if in auto mode
+                if (document.getElementById('dots-mode').value === 'auto') {
+                    // Set reasonable max dots based on username length
+                    let autoMaxDots = Math.min(5, stats.maxDots);
+                    if (username.length > 10) autoMaxDots = Math.min(8, stats.maxDots);
+                    if (username.length > 15) autoMaxDots = Math.min(12, stats.maxDots);
+                    
+                    document.getElementById('max-dots').value = autoMaxDots;
+                }
+            } else {
+                analysisContainer.style.display = 'none';
+            }
+        });
+
+        // Toggle custom dots option based on mode selection
+        document.getElementById('dots-mode').addEventListener('change', function() {
+            const customDotsOption = document.querySelector('.custom-dots-option');
+            if (this.value === 'custom') {
+                customDotsOption.style.display = 'flex';
+            } else {
+                customDotsOption.style.display = 'none';
+                
+                // Auto-set max dots based on email analysis
+                const email = document.getElementById('gmail-input').value.trim();
+                if (email && email.includes('@')) {
+                    const [username] = email.split('@');
+                    const stats = calculateEmailStats(username);
+                    
+                    let autoMaxDots = Math.min(5, stats.maxDots);
+                    if (username.length > 10) autoMaxDots = Math.min(8, stats.maxDots);
+                    if (username.length > 15) autoMaxDots = Math.min(12, stats.maxDots);
+                    
+                    document.getElementById('max-dots').value = autoMaxDots;
+                }
+            }
+        });
+
+        // Generate button click handler
+        document.getElementById('generate-btn').addEventListener('click', () => {
+            const gmailInput = document.getElementById('gmail-input').value.trim();
+            const multipleDots = document.getElementById('multiple-dots').checked;
+            const dotsMode = document.getElementById('dots-mode').value;
+            const maxDotsInput = document.getElementById('max-dots');
+            const maxResultsSelect = document.getElementById('max-results');
+            
+            let maxDots = null;
+            if (dotsMode === 'custom') {
+                maxDots = parseInt(maxDotsInput.value);
+            }
+            
+            let maxResults = maxResultsSelect.value === 'all' ? 1000000 : parseInt(maxResultsSelect.value);
+            
+            const generateBtn = document.getElementById('generate-btn');
+            const generateLoader = document.getElementById('generate-loader');
+            const resultContainer = document.getElementById('result-container');
+            const resultContent = document.getElementById('result-content');
+            const statsContainer = document.getElementById('stats-container');
+            const totalCount = document.getElementById('total-count');
+            const dotsCount = document.getElementById('dots-count');
+            const totalDots = document.getElementById('total-dots');
+            const originalEmail = document.getElementById('original-email');
+            
+            // Validate email
+            if (!gmailInput || !gmailInput.includes('@')) {
+                showNotification('error', 'Lỗi', 'Vui lòng nhập địa chỉ Gmail hợp lệ!');
+                return;
+            }
+            
+            // Validate max dots if in custom mode
+            if (dotsMode === 'custom') {
+                const [username] = gmailInput.split('@');
+                const stats = calculateEmailStats(username);
+                
+                if (maxDots < 1 || maxDots > stats.maxDots) {
+                    showNotification('error', 'Lỗi', `Số dấu chấm tối đa phải từ 1 đến ${stats.maxDots}!`);
+                    return;
+                }
+            }
+            
+            // Show loader
+            generateBtn.disabled = true;
+            generateLoader.style.display = 'block';
+            
+            // Simulate processing time
+            setTimeout(() => {
+                // Generate variations
+                const variations = generateEmailVariations(gmailInput, multipleDots, maxDots, maxResults);
+                
+                // Display results
+                resultContent.innerHTML = variations.join('<br>');
+                resultContainer.style.display = 'block';
+                
+                // Update stats
+                totalCount.textContent = variations.length.toLocaleString();
+                
+                // Calculate actual max dots used
+                let actualMaxDots = 0;
+                variations.forEach(email => {
+                    const username = email.split('@')[0];
+                    const dots = (username.split('.').length - 1);
+                    if (dots > actualMaxDots) actualMaxDots = dots;
+                });
+                
+                dotsCount.textContent = actualMaxDots;
+                totalDots.textContent = countTotalDots(variations).toLocaleString();
+                originalEmail.textContent = gmailInput.split('@')[0];
+                statsContainer.style.display = 'block';
+                
+                // Hide loader
+                generateBtn.disabled = false;
+                generateLoader.style.display = 'none';
+                
+                // Show success notification
+                showNotification('success', 'Thành công', `Đã tạo ${variations.length} địa chỉ Gmail từ ${gmailInput}`);
+            }, 1000);
+        });
+
+        // Select all button click handler
+        document.getElementById('select-all-btn').addEventListener('click', () => {
+            const resultContent = document.getElementById('result-content');
+            const selection = window.getSelection();
+            const range = document.createRange();
+            range.selectNodeContents(resultContent);
+            selection.removeAllRanges();
+            selection.addRange(range);
+            showNotification('info', 'Thông báo', 'Đã chọn tất cả nội dung!');
+        });
+
+        // Copy all button click handler
+        document.getElementById('copy-all-btn').addEventListener('click', () => {
+            const resultContent = document.getElementById('result-content');
+            copyToClipboard(resultContent.textContent);
+        });
+
+        // Download button click handler
+        document.getElementById('download-btn').addEventListener('click', () => {
+            const gmailInput = document.getElementById('gmail-input').value.trim();
+            const resultContent = document.getElementById('result-content');
+            const filename = `gmail_variations_${gmailInput.split('@')[0]}.txt`;
+            downloadTextFile(filename, resultContent.textContent);
+            showNotification('success', 'Thành công', 'Đã tải file thành công!');
+        });
+
+        // Initialize with example
+        document.getElementById('gmail-input').value = 'tuquangnamht2007@gmail.com';
+        // Trigger analysis for the example
+        document.getElementById('gmail-input').dispatchEvent(new Event('input'));
+    </script>
+</body>
+</html>
