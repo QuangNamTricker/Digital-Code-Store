@@ -20,7 +20,8 @@ class EmailAutomationTool:
         
         # Thiết lập giá trị mặc định
         self.default_email = "digitalcodestore.dev@gmail.com"
-        self.default_password = "eqkk sjof hwqx xphr"
+        self.default_password = "ogsn zlxq nhex nonq"
+        # https://myaccount.google.com/u/2/apppasswords
         
         # Biến lưu trữ
         self.email_list = []
