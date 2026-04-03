@@ -1,0 +1,110 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Function to check if user is admin
+    function isAdmin() {
+      return request.auth != null && 
+             exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+             get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+    
+    // Function to check if user owns the document
+    function isUserOwner(userId) {
+      return request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Function to check if user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    // Function to check if document exists
+    function documentExists(documentPath) {
+      return exists(/databases/$(database)/documents/$(documentPath));
+    }
+
+    // ================================
+    // USERS
+    // ================================
+    match /users/{userId} {
+      allow read: if isUserOwner(userId) || isAdmin();
+      allow create: if isUserOwner(userId) && request.auth.uid == userId;
+      allow update: if isUserOwner(userId) || isAdmin(); // user tự update hoặc admin
+      allow delete: if isAdmin(); // chỉ admin có thể xóa
+    }
+    
+    // ================================
+    // PRODUCTS
+    // ================================
+    match /products/{productId} {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin();
+    }
+    
+    // ================================
+    // FREE SERVICES
+    // ================================
+    match /free_services/{serviceId} {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin();
+    }
+    
+// ================================
+// ORDERS
+// ================================
+match /orders/{orderId} {
+  allow read: if isAuthenticated(); // CHO PHÉP TẤT CẢ USER ĐÃ ĐĂNG NHẬP ĐỌC
+  allow create: if request.auth != null && 
+                  request.resource.data.userId == request.auth.uid;
+  allow update: if isAdmin();
+  allow delete: if isAdmin();
+}
+    
+    // ================================
+    // TRANSACTIONS
+    // ================================
+    match /transactions/{transactionId} {
+      allow read: if isUserOwner(resource.data.userId) || isAdmin();
+      allow create: if isUserOwner(request.resource.data.userId) || isAdmin();
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+    
+    // ================================
+    // DEPOSIT REQUESTS
+    // ================================
+    match /deposit_requests/{requestId} {
+      allow read: if isUserOwner(resource.data.userId) || isAdmin();
+      allow create: if isUserOwner(request.resource.data.userId) && request.resource.data.userId == request.auth.uid;
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    // ================================
+    // COUPONS
+    // ================================
+    match /coupons/{couponId} {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin();
+    }
+
+    // ================================
+    // USED COUPONS
+    // ================================
+    match /used_coupons/{usedCouponId} {
+      allow read: if isUserOwner(resource.data.userId) || isAdmin();
+      allow create: if isUserOwner(request.resource.data.userId) && request.resource.data.userId == request.auth.uid;
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    // ================================
+    // PUBLIC (read-only)
+    // ================================
+    match /public/{document} {
+      allow read: if true; // ai cũng đọc được
+      allow write: if isAdmin();
+    }
+  }
+}

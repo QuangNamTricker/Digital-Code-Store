@@ -1,4 +1,4 @@
-// coupons.js
+// admin/js/coupons.js
 class CouponManager {
     constructor() {
         this.db = firebase.firestore();
